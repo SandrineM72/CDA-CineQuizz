@@ -6,11 +6,13 @@ import {
 	Entity,
 	JoinTable,
 	ManyToMany,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
 import { Reward } from "./Reward";
 import { Quiz } from "./Quiz";
+import { Attempt } from "./Attempt";
 
 @ObjectType()
 @Entity()
@@ -29,7 +31,7 @@ export class User extends BaseEntity {
 
 	@Field()
 	@Column()
-	age_range: string;
+	age_range: Enumerator;
 
 	@Field()
 	@Column()
@@ -51,18 +53,20 @@ export class User extends BaseEntity {
 	@UpdateDateColumn()
 	updated_at: Date;
 
-	@Field(() => [Attempt])
-	@JoinTable()
-	@ManyToMany(() => Attempt)
+	// one to many pour garder l'historique des données portées par l'association
+	@OneToMany(
+		() => Attempt,
+		(attempt) => attempt.user,
+	)
 	attempts: Attempt[];
 
-  @Field(() => [Reward])
+	@Field(() => [Reward])
 	@JoinTable()
 	@ManyToMany(() => Reward)
-	rewards: Reward[];
+	won_rewards: Reward[];
 
-  @Field(() => [Quiz])
+	@Field(() => [Quiz])
 	@JoinTable()
 	@ManyToMany(() => Quiz)
-	quizzes: Quiz[];
+	liked_quizzes: Quiz[];
 }
