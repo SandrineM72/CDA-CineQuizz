@@ -11,25 +11,23 @@ import {
 
 } from "typeorm";
 import { User } from "./User";
+import { Reward } from "./Reward";
 
 @ObjectType()
 @Entity()
-export class Reward extends BaseEntity {
+export class Trophy extends BaseEntity {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Field()
-    @Column({type : "text", nullable : false})
-    name: string;
-
-    @Field()
-    @Column()
-    image: string;
 
     @Field(() => [User])
     @JoinTable()
     @ManyToMany(() => User)
     users: User[];
+
+    @Field(() => [Reward])
+    @JoinTable()
+    @ManyToMany(() => Reward)
+    rewards: Reward[];
 
 }

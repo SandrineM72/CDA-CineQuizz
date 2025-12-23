@@ -4,13 +4,15 @@ import {
     Column,
     // CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     // UpdateDateColumn,
 } from "typeorm";
+import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()
-export class Quiz extends BaseEntity {
+export class Decade extends BaseEntity {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
@@ -19,9 +21,9 @@ export class Quiz extends BaseEntity {
     @Column({type : "text", nullable : false})
     name: string;
 
-@OneToMany(
-    () => Decade,
-(decade): decade.quiz,
-)
-decades: Decade[];
+    @OneToMany(
+        () => Quiz,
+    (quiz): quiz.decade,
+    )
+    quizzes: Quiz[];
 }

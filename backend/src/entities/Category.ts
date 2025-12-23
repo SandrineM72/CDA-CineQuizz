@@ -4,11 +4,10 @@ import {
     Column,
     // CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     // UpdateDateColumn,
 } from "typeorm";
-
-import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()

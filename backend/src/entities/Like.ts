@@ -8,49 +8,26 @@ import {
     ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
+
 } from "typeorm";
-import { Reward } from "./Reward";
-import { Quiz } from "./Quiz";
 import { User } from "./User";
+import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()
-export class Attemps extends BaseEntity {
+export class Like extends BaseEntity {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Field()
-    @Column()
-    started_at: Date;
-
-    @Field()
-    @Column()
-    score: number;
-
-    @Field()
-    @Column()
-    percentage_sucess: number;
-
-    @Field()
-    @Column()
-    finished_at: Date;
-
-    @Field()
-    @Column()
-    duration: number;
-
-    @Field()
-    @Column()
-    passed: boolean;
-
-  @Field(() => [User])
+    @Field(() => [User])
     @JoinTable()
     @ManyToMany(() => User)
     users: User[];
 
-  @Field(() => [Quiz])
+    @Field(() => [Quiz])
     @JoinTable()
     @ManyToMany(() => Quiz)
     quizzes: Quiz[];
+
 }

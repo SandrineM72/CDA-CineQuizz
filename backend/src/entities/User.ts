@@ -9,6 +9,8 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
+import { Reward } from "./Reward";
+import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()
@@ -53,4 +55,14 @@ export class User extends BaseEntity {
 	@JoinTable()
 	@ManyToMany(() => Attempt)
 	attempts: Attempt[];
+
+  @Field(() => [Reward])
+	@JoinTable()
+	@ManyToMany(() => Reward)
+	rewards: Reward[];
+
+  @Field(() => [Quiz])
+	@JoinTable()
+	@ManyToMany(() => Quiz)
+	quizzes: Quiz[];
 }

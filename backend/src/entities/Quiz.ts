@@ -4,9 +4,17 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
+import { Category } from "./Category";
+import { Decade } from "./Decade";
+import { Question } from "./Question";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -50,5 +58,28 @@ export class Quiz extends BaseEntity {
     @Field()
     @UpdateDateColumn()
     updated_at: Date;
+
+    @ManyToOne(
+        () => Decade,
+        (decade): decade.quizzes,
+        )
+        decade: Decade;
+
+    @ManyToOne(
+        () => Category,
+        (category): category.quizzes,
+        )
+        category: Category;
+    
+    @OneToMany(
+        () => Question,
+        (question): question.quiz,
+        )
+        questions: Question[];
+    
+    @Field(() => [User])
+    @JoinTable()
+    @ManyToMany(() => User)
+    users: User[];
 
 }
