@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 26, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/sandr/Formation_WCS/Projet_1/CODE/TESTS/tests-frontend-projet1/frontend/src/graphql/client.ts"],"sourcesContent":["import { ApolloClient, HttpLink, InMemoryCache } from \"@apollo/client\";\r\n\r\nconst uri = process.env.NEXT_PUBLIC_GRAPHQL_API_URL;\r\n\r\nconsole.log({ uri });\r\n\r\nconst client = new ApolloClient({\r\n  cache: new InMemoryCache(),\r\n  link: new HttpLink({ uri: uri || \"/graphql\" }),\r\n});\r\n\r\nexport default client;"],"names":[],"mappings":";;;;AAAA;;;;;;AAEA,MAAM;AAEN,QAAQ,GAAG,CAAC;IAAE;AAAI;AAElB,MAAM,SAAS,IAAI,oJAAY,CAAC;IAC9B,OAAO,IAAI,qJAAa;IACxB,MAAM,IAAI,gJAAQ,CAAC;QAAE,KAAK,OAAO;IAAW;AAC9C;uCAEe"}},
+    {"offset": {"line": 54, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/sandr/Formation_WCS/Projet_1/CODE/TESTS/tests-frontend-projet1/frontend/src/pages/_app.tsx"],"sourcesContent":["import \"@/styles/globals.css\";\r\nimport { ApolloProvider } from \"@apollo/client/react\";\r\nimport type { AppProps } from \"next/app\";\r\nimport client from \"@/graphql/client\";\r\n\r\nexport default function App({ Component, pageProps }: AppProps) {\r\n  return (\r\n    <ApolloProvider client={client}>\r\n      <Component {...pageProps} />\r\n    </ApolloProvider>\r\n  );\r\n}"],"names":[],"mappings":";;;;;AACA;AAEA;;;;;;;;;;AAEe,SAAS,IAAI,EAAE,SAAS,EAAE,SAAS,EAAY;IAC5D,qBACE,qKAAC,wKAAc;QAAC,QAAQ,4HAAM;kBAC5B,cAAA,qKAAC;YAAW,GAAG,SAAS;;;;;;;;;;;AAG9B"}}]
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/sandr/Formation_WCS/Projet_1/CODE/TESTS/tests-frontend-projet1/frontend/src/pages/_app.tsx"],"sourcesContent":["import \"@/styles/globals.css\";\r\nimport { ApolloProvider } from \"@apollo/client/react\";\r\nimport type { AppProps } from \"next/app\";\r\nimport client from \"@/graphql/client\";\r\n\r\nexport default function App({ Component, pageProps }: AppProps) {\r\n  return (\r\n    <ApolloProvider client={client}>\r\n      <Component {...pageProps} />\r\n    </ApolloProvider>\r\n  );\r\n}"],"names":[],"mappings":";;;;;AACA;;;;;;;;;;;;;;AAIe,SAAS,IAAI,EAAE,SAAS,EAAE,SAAS,EAAY;IAC5D,qBACE,qKAAC,wKAAc;QAAC,QAAQ;kBACtB,cAAA,qKAAC;YAAW,GAAG,SAAS;;;;;;;;;;;AAG9B"}}]
+}

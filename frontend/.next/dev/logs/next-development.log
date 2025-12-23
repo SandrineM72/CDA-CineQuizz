@@ -1,0 +1,245 @@
+[00:00:01.538] Server  LOG      ✓ Ready in 1043ms
+[00:00:05.045] Server  LOG     {}
+[00:00:05.455] Browser LOG     {"uri":"http://localhost:3000"}
+[00:00:16.578] Browser LOG     Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+[01:04:56.159] Server  LOG      ✓ Compiled in 435ms
+[01:04:57.447] Server  LOG     {}
+[01:04:57.740] Browser LOG     {"uri":"http://localhost:3000"}
+[01:05:08.312] Browser LOG     Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+[01:14:37.639] Server  LOG      ✓ Compiled in 24ms
+[01:30:21.403] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.406] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.410] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.411] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.413] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.416] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.422] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.426] Server  ERROR    ⨯ ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:30:21.487] Server  LOG      ✓ Compiled in 70ms
+[01:30:23.398] Browser ERROR   ./src/components/Layout.tsx:6:1
+Module not found: Can't resolve './ProfileScreen'
+  4 | import Footer from "./Footer";
+  5 | import Header from "./Header";
+> 6 | import ProfileScreen from "./ProfileScreen";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface LayoutProps {
+  9 | 	children: ReactNode;
+
+Import traces:
+  Browser:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+  SSR:
+    ./src/components/Layout.tsx
+    ./src/pages/index.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+[01:30:25.429] Server  LOG      ✓ Compiled in 94ms
+[01:30:46.501] Server  LOG     {}
+[01:30:46.726] Browser LOG     {"uri":"http://localhost:3000"}
+[01:30:57.733] Browser LOG     Download the Apollo DevTools for a better development experience: %s https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+[01:33:47.680] Server  LOG      ✓ Compiled in 203ms
+[01:33:48.763] Browser ERROR   %o
+
+%s
+
+%s
+ {} The above error occurred in the <Main> component. React will try to recreate this component tree from scratch using the error boundary you provided, PagesDevOverlayErrorBoundary.
+[01:34:41.074] Server  LOG      ✓ Compiled in 51ms
+[01:34:42.044] Browser ERROR   %o
+
+%s
+
+%s
+ {} The above error occurred in the <Main> component. React will try to recreate this component tree from scratch using the error boundary you provided, PagesDevOverlayErrorBoundary.
+[02:15:29.957] Server  LOG     {}
+[02:15:29.971] Server  LOG      ✓ Compiled in 78ms
+[02:16:27.529] Server  LOG      ✓ Compiled in 33ms
+[02:16:41.659] Server  LOG      ✓ Compiled in 44ms
+[02:20:34.916] Server  LOG      ✓ Compiled in 48ms
