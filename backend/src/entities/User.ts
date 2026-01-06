@@ -43,7 +43,7 @@ export class User extends BaseEntity {
 	avatar: string;
 
 	@Field()
-	@Column()
+	@Column({default: false})
 	is_admin: boolean;
 
 	@Field()
@@ -82,4 +82,11 @@ export class SignupInput {
   @Field()
   @IsStrongPassword({}, {message: "Le mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},)
   password: string;
+
+  @Field()
+  pseudo : string;
+
+  @Field()
+  age_range : AgeRange;
+
 }

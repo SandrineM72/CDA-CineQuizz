@@ -13,6 +13,7 @@ import { Choice } from "../entities/Choice";
 
 import db from "./index";
 import { AgeRange } from "../types";
+import { hash } from "argon2";
 
 export async function clearDB() {
   await unlink(resolve("src/db/db.sqlite"));
@@ -73,7 +74,7 @@ async function main() {
     email: "marie@example.com",
     pseudo: "MarieCinephile",
     age_range: AgeRange.TOUS_PUBLICS,
-    password: "password123",
+    hashedPassword: await hash ("password123"),
     avatar: "https://example.com/avatar1.png",
     is_admin: false
   }).save();
@@ -82,7 +83,7 @@ async function main() {
     email: "jean@example.com",
     pseudo: "JeanDuCinema",
     age_range: AgeRange.TOUS_PUBLICS,
-    password: "password123",
+    hashedPassword: await hash ("password123"),
     avatar: "https://example.com/avatar2.png",
     is_admin: false
   }).save();
@@ -91,7 +92,7 @@ async function main() {
     email: "admin@cinequizz.com",
     pseudo: "AdminCineQuizz",
     age_range: AgeRange.TOUS_PUBLICS,
-    password: "admin123",
+    hashedPassword: await hash("admin123"),
     avatar: "https://example.com/admin.png",
     is_admin: true
   }).save();
