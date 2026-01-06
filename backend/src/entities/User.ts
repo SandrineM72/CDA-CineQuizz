@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
 import {
 	BaseEntity,
 	Column,
@@ -14,6 +14,7 @@ import { Reward } from "./Reward";
 import { Quiz } from "./Quiz";
 import { Attempt } from "./Attempt";
 import type { AgeRange } from "../types";
+import { IsEmail, IsStrongPassword } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -34,16 +35,15 @@ export class User extends BaseEntity {
 	@Column()
 	age_range: AgeRange ;
 
-	@Field()
 	@Column()
-	password: string;
+	hashedPassword: string;
 
 	@Field()
 	@Column({ type: "text", nullable: true })
 	avatar: string;
 
 	@Field()
-	@Column()
+	@Column({default: false})
 	is_admin: boolean;
 
 	@Field()
@@ -71,4 +71,22 @@ export class User extends BaseEntity {
 	@JoinTable()
 	@ManyToMany(() => Quiz)
 	liked_quizzes: Quiz[];
+}
+
+@InputType()
+export class SignupInput {
+  @Field()
+  @IsEmail({}, {message: "L'Email doit être valide."})
+  email:string;
+
+  @Field()
+  @IsStrongPassword({}, {message: "Le mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},)
+  password: string;
+
+  @Field()
+  pseudo : string;
+
+  @Field()
+  age_range : AgeRange;
+
 }
