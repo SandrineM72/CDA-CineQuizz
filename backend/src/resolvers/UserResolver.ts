@@ -1,7 +1,9 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { SignupInput, User } from "../entities/User";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { LoginInput, SignupInput, User } from "../entities/User";
 import { GraphQLError } from "graphql/error";
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
+import { GraphQLContext } from "../types";
+import { startSession } from "../auth";
 
 @Resolver()
 export default class UserResolver {
@@ -29,5 +31,27 @@ export default class UserResolver {
       const newUser = User.create({ ...data, hashedPassword});
       return await newUser.save();
     }
+  
+  @Mutation(() => String)
+  async login(
+    @Arg("data", () => LoginInput, { validate: true}) data: LoginInput, 
+    @Ctx() context: GraphQLContext,
+  ) {
+    const user = await User.findOne({ where: {pseudo: data.pseudo}});
+    if(!user){
+      throw new GraphQLError("Le Pseudo n'existe pas chez nous", {
+        extensions: {code: "INVALID_CREDENTIALS", http: { status: 401}},
+      });
+    }
+
+    const isValidPassword = await verify(user.hashedPassword, data.password);
+    if(!isValidPassword){
+      throw new GraphQLError("Pseudo ou mot de passe incorect", {
+        extensions: {code: "INVALID_CREDENTIALS", http: { status: 401}},
+      });
+    }
+
+    return startSession(context, user);
+  }
 }
 

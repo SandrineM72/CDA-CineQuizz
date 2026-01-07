@@ -90,3 +90,15 @@ export class SignupInput {
   age_range : AgeRange;
 
 }
+
+@InputType()
+export class LoginInput {
+
+  @Field()
+  pseudo : string;
+
+  @Field()
+  @IsStrongPassword({}, {message: "Le mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},)
+  password: string;
+
+}

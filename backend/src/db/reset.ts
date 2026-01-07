@@ -74,7 +74,7 @@ async function main() {
     email: "marie@example.com",
     pseudo: "MarieCinephile",
     age_range: AgeRange.TOUS_PUBLICS,
-    hashedPassword: await hash ("password123"),
+    hashedPassword: await hash ("Password123!"),
     avatar: "https://example.com/avatar1.png",
     is_admin: false
   }).save();
@@ -83,7 +83,7 @@ async function main() {
     email: "jean@example.com",
     pseudo: "JeanDuCinema",
     age_range: AgeRange.TOUS_PUBLICS,
-    hashedPassword: await hash ("password123"),
+    hashedPassword: await hash ("Password123!"),
     avatar: "https://example.com/avatar2.png",
     is_admin: false
   }).save();
@@ -92,7 +92,7 @@ async function main() {
     email: "admin@cinequizz.com",
     pseudo: "AdminCineQuizz",
     age_range: AgeRange.TOUS_PUBLICS,
-    hashedPassword: await hash("admin123"),
+    hashedPassword: await hash("Password123!"),
     avatar: "https://example.com/admin.png",
     is_admin: true
   }).save();
