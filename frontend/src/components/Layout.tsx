@@ -20,7 +20,7 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
 			</Head>
 			<div className="flex flex-col min-h-screen bg-zinc-900">
 				<Header />
-				<main>{children}</main>
+				<main className="flex-1">{children}</main>
 				<Footer />
 			</div>
 		</>
