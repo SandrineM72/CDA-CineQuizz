@@ -3,7 +3,7 @@ import { LoginInput, SignupInput, User } from "../entities/User";
 import { GraphQLError } from "graphql/error";
 import { hash, verify } from "argon2";
 import { GraphQLContext } from "../types";
-import { startSession } from "../auth";
+import { endSession, getCurrentUser, startSession } from "../auth";
 
 @Resolver()
 export default class UserResolver {
@@ -53,5 +53,22 @@ export default class UserResolver {
 
     return startSession(context, user);
   }
+
+  @Query(() => User, {nullable:true})
+  async me(@Ctx() context: GraphQLContext){
+    try {
+      return await getCurrentUser(context)
+    } catch (error) {
+      console.error(error)
+    }
+    return null
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() context: GraphQLContext) {
+    endSession(context);
+    return true;
+  }
+
 }
 

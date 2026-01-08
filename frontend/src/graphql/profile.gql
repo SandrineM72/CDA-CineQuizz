@@ -1,0 +1,6 @@
+query Profile {
+  me {
+    pseudo
+    id
+  }
+}

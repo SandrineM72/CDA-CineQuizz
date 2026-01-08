@@ -1,3 +1,4 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import Layout from "@/components/Layout";
 import HomePage from "@/components/home/home";
 
