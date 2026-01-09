@@ -27,6 +27,7 @@ export default function Header() {
 	});
 
 	const [logout] = useLogoutMutation();
+	console.log(data);
 
 	const user = data?.me || null;
 	console.log(user);
@@ -49,12 +50,6 @@ export default function Header() {
 				<Link href="/" className="w-max">
 					<h1 className="text-2xl font-bold">CinéQuizz</h1>
 				</Link>
-				{/*  
-				<Button variant="ghost" size="icon" aria-label="Menu">
-					<Menu className="h-6 w-6" />
-				</Button>
-				{user && <button onClick={handleLogout}>déconnexion</button>}
-				*/}
 
 				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>    {/* on utilise cet attribut pour gérer l'état de l'ouverture/fermeture */}
 					<DropdownMenuTrigger asChild>
