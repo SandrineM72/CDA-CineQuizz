@@ -1,13 +1,13 @@
 {
-	"editor.codeActionsOnSave": {
-		"source.organizeImports.biome": "always",
-		"source.fixAll.biome": "always"
-	},
-	"editor.formatOnSave": true,
-	"files.autoSave": "onFocusChange",
-	"css.lint.unknownAtRules": "ignore",
-	"editor.defaultFormatter": "biomejs.biome",
-	"[css]": {
-		"editor.defaultFormatter": "vscode.css-language-features"
-	}
+  "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "always",
+    "source.fixAll.biome": "always"
+  },
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "css.lint.unknownAtRules": "ignore",
+  "editor.defaultFormatter": "fronterior.biome-monorepo",
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

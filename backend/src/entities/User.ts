@@ -55,14 +55,14 @@ export class User extends BaseEntity {
 	updated_at: Date;
 
 	// one to many pour to keep the data's history carried by the association 
-	@Field(() => [Attempt])
+	@Field(() => [Attempt], {nullable: true})
   @OneToMany(
 		() => Attempt,
 		(attempt) => attempt.user,
 	)
 	attempts: Attempt[];
 
-	@Field(() => [Reward])
+	@Field(() => [Reward], {nullable: true})
 	@JoinTable()
 	@ManyToMany(() => Reward)
 	won_rewards: Reward[];
