@@ -127,7 +127,7 @@ export type SignupInput = {
 export type User = {
   __typename?: 'User';
   age_range: Scalars['String']['output'];
-  attempts: Array<Attempt>;
+  attempts?: Maybe<Array<Attempt>>;
   avatar: Scalars['String']['output'];
   created_at: Scalars['DateTimeISO']['output'];
   email: Scalars['String']['output'];
@@ -136,7 +136,7 @@ export type User = {
   liked_quizzes: Array<Quiz>;
   pseudo: Scalars['String']['output'];
   updated_at: Scalars['DateTimeISO']['output'];
-  won_rewards: Array<Reward>;
+  won_rewards?: Maybe<Array<Reward>>;
 };
 
 export type LoginMutationVariables = Exact<{
@@ -154,7 +154,7 @@ export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, email: string, pseudo: string } | null };
+export type ProfileQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, avatar: string, pseudo: string, age_range: string, attempts?: Array<{ __typename?: 'Attempt', id: number }> | null, won_rewards?: Array<{ __typename?: 'Reward', id: number }> | null } | null };
 
 export type SignupMutationVariables = Exact<{
   data: SignupInput;
@@ -234,8 +234,15 @@ export const ProfileDocument = gql`
     query Profile {
   me {
     id
-    email
+    avatar
     pseudo
+    age_range
+    attempts {
+      id
+    }
+    won_rewards {
+      id
+    }
   }
 }
     `;

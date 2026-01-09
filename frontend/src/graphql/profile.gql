@@ -1,7 +1,14 @@
 query Profile {
   me {
     id
-    email
+    avatar
     pseudo
+    age_range
+    attempts {
+      id
+    }
+    won_rewards {
+      id
+    }
   }
 }
