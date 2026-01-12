@@ -79,6 +79,8 @@ export type MutationSignupArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  categories: Array<Category>;
+  decades: Array<Decade>;
   me?: Maybe<User>;
   users: Array<User>;
 };
@@ -139,6 +141,16 @@ export type User = {
   won_rewards?: Maybe<Array<Reward>>;
 };
 
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
+
+export type DecadesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DecadesQuery = { __typename?: 'Query', decades: Array<{ __typename?: 'Decade', id: number, name: string }> };
+
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
@@ -169,6 +181,86 @@ export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string }> };
 
 
+export const CategoriesDocument = gql`
+    query Categories {
+  categories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
+      }
+export function useCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
+        }
+export function useCategoriesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
+        }
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesSuspenseQueryHookResult = ReturnType<typeof useCategoriesSuspenseQuery>;
+export type CategoriesQueryResult = ApolloReactCommon.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const DecadesDocument = gql`
+    query Decades {
+  decades {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useDecadesQuery__
+ *
+ * To run a query within a React component, call `useDecadesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDecadesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDecadesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDecadesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DecadesQuery, DecadesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<DecadesQuery, DecadesQueryVariables>(DecadesDocument, options);
+      }
+export function useDecadesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DecadesQuery, DecadesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<DecadesQuery, DecadesQueryVariables>(DecadesDocument, options);
+        }
+export function useDecadesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<DecadesQuery, DecadesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<DecadesQuery, DecadesQueryVariables>(DecadesDocument, options);
+        }
+export type DecadesQueryHookResult = ReturnType<typeof useDecadesQuery>;
+export type DecadesLazyQueryHookResult = ReturnType<typeof useDecadesLazyQuery>;
+export type DecadesSuspenseQueryHookResult = ReturnType<typeof useDecadesSuspenseQuery>;
+export type DecadesQueryResult = ApolloReactCommon.QueryResult<DecadesQuery, DecadesQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data)
