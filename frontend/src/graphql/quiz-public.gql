@@ -1,0 +1,18 @@
+query QuizPublic {
+  getPublicQuizzes {
+    id
+    title
+    description
+    image
+    age_range
+    time_limit
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+  }
+}

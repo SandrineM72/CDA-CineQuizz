@@ -1,78 +1,90 @@
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useRouter } from "next/router";
+import { useQuizPublicQuery } from "@/graphql/generated/schema";
 import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 export default function HomePage() {
   const router = useRouter();
-
-  // TODO: Remplacer par une vraie requête GraphQL pour récupérer les quiz publics
-  // Query à créer : getPublicQuizzes (where is_public = true AND is_draft = false)
-  const quizList = [
-    {
-      id: 1,
-      title: "Les Comédies Françaises Cultes",
-      description: "Testez vos connaissances sur les comédies françaises incontournables",
-      image: "/image-quiz-1.jpg",
-      category: { name: "Comédie" },
-      decade: { name: "Années 90" },
-      time_limit: 300, // en secondes
-      age_range: "TOUS_PUBLICS",
-    },
-    {
-      id: 2,
-      title: "Le Cinéma d'Action des Années 80",
-      description: "Plongez dans l'univers explosif du cinéma d'action",
-      image: "/image-quiz-2.jpg",
-      category: { name: "Action" },
-      decade: { name: "Années 80" },
-      time_limit: 600,
-      age_range: "MOINS_16",
-    },
-  ];
+  const { data, loading, error } = useQuizPublicQuery();
 
   const handleStartQuiz = (quizId: number) => {
     router.push(`/quiz/${quizId}`);
   };
 
-  // Fonction pour convertir les secondes en minutes
   const formatTimeLimit = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     return `${minutes} min`;
   };
 
+  if (loading) {
+    return (
+      <div className="flex w-full items-start justify-center px-6 md:px-10">
+        <div className="w-full max-w-md space-y-4">
+          <p className="text-center text-white">Chargement des quiz...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex w-full items-start justify-center px-6 md:px-10">
+        <div className="w-full max-w-md space-y-4">
+          <p className="text-center text-red-500">
+            Erreur lors du chargement des quiz : {error.message}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Limite à 3 quiz maximum
+  const quizList = data?.getPublicQuizzes?.slice(0, 3) || [];
+
   return (
     <div className="flex w-full items-start justify-center px-6 md:px-10">
       <div className="w-full max-w-md space-y-4">
-        Image de présentation
+        {/* Image de présentation */}
         <div className="flex justify-center relative">
           <div className="w-full rounded-2xl overflow-hidden bg-sky-200">
+            {/** biome-ignore lint/performance/noImgElement: <explanation> */}
             <img
-              src="/forest_gump_assis.png"
+              src="/films/forest_gump_assis.png"
               alt="Personnage"
+              width={400}
+              height={300}
               className="w-full h-full object-cover relative"
-            />
+              />
           </div>
           <Link href={"/signup"}>
-          <button className="absolute text-white bg-red-800 border-3 border-stone-600 px-1 py-1 rounded-lg left-0 bottom-0 text-sm hover:bg-red-600">S'inscrire</button>
+            <button
+              type="button"
+              className="absolute text-white bg-red-800 border-3 border-stone-600 px-1 py-1 rounded-lg left-0 bottom-0 text-sm hover:bg-red-600"
+            >
+              S'inscrire
+            </button>
           </Link>
         </div>
+
         {/* Titre de section */}
         <h2 className="text-2xl font-bold text-center text-white">Bienvenue sur CinéQuizz !</h2>
         <p className="text-center text-gray-500 text-sm">
           Jouez sans inscription à nos quiz cinéma !
         </p>
-        {/* Liste des quiz disponibles */}
+
+        {/* Liste des quiz (maximum 3) */}
         <div className="space-y-3">
           {quizList.map((quiz) => (
             <Card
               key={quiz.id}
-              className="bg-black border-gray-700 hover:border-gray-500 transition-colors"
+              className="bg-black border-gray-700 hover:border-gray-500 transition-colors pt-0 overflow-hidden"
             >
-              {/* Image du quiz (optionnelle) */}
+              {/* Image du quiz */}
               {quiz.image && (
-                <div className="w-full h-32 overflow-hidden rounded-t-lg">
-                  <img src={quiz.image} alt={quiz.title} className="w-full h-full object-cover" />
+                <div className="w-full h-48 overflow-hidden rounded-t-lg relative">
+                  {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+                  <img src={quiz.image} alt={quiz.title} className="object-contain" />
                 </div>
               )}
 
