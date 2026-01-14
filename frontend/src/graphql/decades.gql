@@ -1,0 +1,6 @@
+query Decades {
+  decades {
+    id
+    name
+  }
+}
