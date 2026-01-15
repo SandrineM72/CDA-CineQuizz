@@ -1,0 +1,51 @@
+mutation CreateAttempt($quizId: Float!, $score: Float!, $duration: Float!) {
+  createAttempt(quizId: $quizId, score: $score, duration: $duration) {
+    id
+    score
+    percentage_success
+    duration
+    passed
+    started_at
+    finished_at
+    quiz {
+      id
+      title
+      image
+    }
+  }
+}
+
+query LastAttemptByQuiz($quizId: Float!) {
+  lastAttemptByQuiz(quizId: $quizId) {
+    id
+    score
+    percentage_success
+    duration
+    passed
+    started_at
+    finished_at
+    quiz {
+      id
+      title
+      image
+    }
+  }
+}
+
+query Attempt($id: Float!) {
+  attempt(id: $id) {
+    id
+    score
+    percentage_success
+    duration
+    passed
+    started_at
+    finished_at
+    quiz {
+      id
+      title
+      image
+    }
+  }
+}
+

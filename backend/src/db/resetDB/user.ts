@@ -3,6 +3,16 @@ import { AgeRange } from "../../types";
 import { hash } from "argon2";
 
 export async function createUsers() {
+  // Create dedicated guest user for unauthenticated visitors (no admin rights)
+  const guestUser = await User.create({
+    email: "guest@cinequizz.com",
+    pseudo: "GuestUser",
+    age_range: AgeRange.TOUS_PUBLICS,
+    hashedPassword: await hash("GuestPassword123!"),
+    avatar: "https://i.pravatar.cc/150?img=1",
+    is_admin: false
+  }).save();
+
   const user1 = await User.create({
     email: "marie@example.com",
     pseudo: "MarieCinephile",
@@ -31,6 +41,7 @@ export async function createUsers() {
   }).save();
 
   return {
+    guestUser,
     user1,
     user2,
     admin,
