@@ -65,19 +65,19 @@ export function SignupForm() {
 	};
 
 	return (
-		<div className="max-w-sm mx-auto px-4 py-8 space-y-6">
+		<div className="max-w-sm mx-auto px-4 py-2 space-y-6">
 			{/* Avatar Section */}
 			<div className="flex justify-center">
-				<Avatar className="h-24 w-24 bg-zinc-800 border border-white">
-					<AvatarFallback className="text-white text-lg font-semibold">
+				<Avatar className="h-34 w-34 border-2 border-zinc-700">
+					<AvatarFallback className="text-white font-semibold">
 						AVATAR
 					</AvatarFallback>
 				</Avatar>
 			</div>
 
 			{/* Signup Form */}
-			<Card className="border-white">
-				<CardContent className="p-6">
+			<Card className="border-zinc-700 border-2">
+				<CardContent className="px-8">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<Input
 							type="email"
@@ -85,7 +85,7 @@ export function SignupForm() {
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
-							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-400 w-full"
+							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 w-full"
 						/>
 						<Input
 							type="password"
@@ -93,7 +93,7 @@ export function SignupForm() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							required
-							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-400 w-full"
+							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 w-full"
 						/>
 						<Input
 							type="text"
@@ -101,16 +101,16 @@ export function SignupForm() {
 							value={pseudo}
 							onChange={(e) => setPseudo(e.target.value)}
 							required
-							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-400 w-full"
+							className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-500 w-full"
 						/>
 						<Select
 							value={age_range || undefined}
-							onValueChange={(val) =>
+							onValueChange={ (val) =>
 								setAgeRange(val as "tous publics" | "-12" | "-16")
 							}
 						>
-							<SelectTrigger className="bg-zinc-800 border-zinc-700 text-white w-full">
-								<SelectValue placeholder="Tranche d'âge" />
+							<SelectTrigger className={`bg-zinc-800 border-zinc-700 w-full ${age_range ? "text-white" : "text-zinc-500"}`}>
+								<SelectValue placeholder="Tranche d'âge" color="red"/>
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="tous publics">Tous publics</SelectItem>
@@ -123,10 +123,11 @@ export function SignupForm() {
 								id="terms"
 								checked={acceptedTerms}
 								onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+								className="text-white"
 							/>
 							<Label
 								htmlFor="terms"
-								className="text-white text-sm cursor-pointer"
+								className="text-white text-[0.7em] cursor-pointer"
 							>
 								J'accepte les conditions d'utilisation
 							</Label>
@@ -139,7 +140,7 @@ export function SignupForm() {
 						<Button
 							type="submit"
 							disabled={isSubmitting}
-							className="w-full bg-zinc-800 border border-zinc-700 text-white font-bold hover:bg-zinc-700"
+							className="w-full bg-zinc-800 border border-zinc-700 text-white text-xl hover:bg-zinc-700"
 						>
 							{isSubmitting ? "Inscription..." : "S'inscrire"}
 						</Button>
