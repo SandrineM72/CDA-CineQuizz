@@ -262,7 +262,7 @@ export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: '
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string, pseudo: string, age_range: string, avatar: string, is_admin: boolean, created_at: any }> };
 
 
 export const CreateAttemptDocument = gql`
@@ -797,6 +797,11 @@ export const UsersDocument = gql`
   users {
     id
     email
+    pseudo
+    age_range
+    avatar
+    is_admin
+    created_at
   }
 }
     `;
