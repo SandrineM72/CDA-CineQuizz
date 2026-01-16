@@ -32,7 +32,7 @@ export default function Header() {
 			await logout();
 			await refetch();
 			console.log("déconnexion faite");
-			router.push("/home");
+			router.push("/");
 		} catch(err) {
 			console.log("Logout error", err);
 		} 

@@ -52,7 +52,7 @@ export function SignupForm() {
 			});
 
 			if (result.data && typeof result.data === "object" && "signup" in result.data) {
-				router.push("/");
+				router.push("/login");
 			}
 		} catch (err: any) {
 			const message =

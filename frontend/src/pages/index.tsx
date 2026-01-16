@@ -1,16 +1,14 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import Layout from "@/components/Layout";
-import { useUsersQuery } from "@/graphql/generated/schema";
+import HomePage from "@/components/home/home";
 
 export default function Home() {
-  const { data } = useUsersQuery();
-  const users = data?.users || [];
   return (
-    <Layout pageTitle="Home">
-      <div className="p-4">
-        <h2>Example users from API</h2>
-        {users.map((u) => (
-          <p key={u.id}>{u.email}</p>
-        ))}
+    <Layout pageTitle="Accueil">
+      <div className="flex w-full items-center justify-center p-2 md:p-10">
+        <div className="w-full max-w-sm">
+          <HomePage />
+        </div>
       </div>
     </Layout>
   );
