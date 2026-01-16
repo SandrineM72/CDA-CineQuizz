@@ -100,7 +100,7 @@ export default function QuizScreen() {
 
 			if (result.data?.createAttempt?.id) {
 				// Redirect to results page with attempt ID
-				router.push(`/quiz-result-page?attemptId=${result.data.createAttempt.id}&quizId=${quizId}`);
+				router.push(`/result?attemptId=${result.data.createAttempt.id}&quizId=${quizId}`);
 			} else {
 				setErrorMessage("Error saving attempt");
 			}

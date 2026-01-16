@@ -77,9 +77,9 @@ export default function ResultPage({
         {/* Bloc % + Progress */}
         <div className="w-full h-20 rounded-3xl border-4 border-zinc-600 bg-zinc-950/60 py-6">
           <div className="flex flex-col items-center">
-            <p className="text-2xl font-semibold text-white">{targetScore}%</p>
+            <p className="text-2xl font-semibold text-white">{score}%</p>
             <Progress
-              value={targetScore}
+              value={score}
               className={cn(
                 "h-3",
                 // hack simple: on force la couleur de l'indicateur interne
