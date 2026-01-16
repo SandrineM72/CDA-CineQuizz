@@ -1,0 +1,18 @@
+query Quiz($id: Float!) {
+  quiz(id: $id) {
+    id
+    title
+    description
+    image
+    questions {
+      id
+      title
+      choices {
+        id
+        description
+        is_correct
+      }
+    }
+  }
+}
+

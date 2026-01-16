@@ -9,7 +9,7 @@ export default function HomePage() {
   const { data, loading, error } = useQuizPublicQuery();
 
   const handleStartQuiz = (quizId: number) => {
-    router.push(`/quiz/${quizId}`);
+    router.push(`/quiz-details-page?id=${quizId}`);
   };
 
   const formatTimeLimit = (seconds: number) => {

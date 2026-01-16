@@ -23,7 +23,7 @@ export default function Layout({ children, pageTitle }: LayoutProps) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<div className={"flex flex-col min-h-screen bg-zinc-900 " + limelight.className}>
+			<div className={`flex flex-col min-h-screen bg-zinc-900 ${limelight.className}`}>
 				<Header />
 				<main className="flex-1">{children}</main>
 				<Footer />
