@@ -24,7 +24,7 @@ export default function LoginForm() {
         },
       });
       alert("Connexion réussie !");
-      router.push("/choicepage");
+      router.push("/connected-user-page");
     } catch (err) {
       console.error(err);
     }
