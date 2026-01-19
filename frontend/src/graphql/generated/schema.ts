@@ -20,6 +20,11 @@ export type Scalars = {
   DateTimeISO: { input: any; output: any; }
 };
 
+export type AnswerInput = {
+  choiceId: Scalars['Int']['input'];
+  questionId: Scalars['Int']['input'];
+};
+
 export type Attempt = {
   __typename?: 'Attempt';
   duration: Scalars['Float']['output'];
@@ -70,9 +75,9 @@ export type Mutation = {
 
 
 export type MutationCreateAttemptArgs = {
-  duration: Scalars['Float']['input'];
-  quizId: Scalars['Float']['input'];
-  score: Scalars['Float']['input'];
+  answers: Array<AnswerInput>;
+  duration: Scalars['Int']['input'];
+  quizId: Scalars['Int']['input'];
 };
 
 
@@ -102,7 +107,7 @@ export type Query = {
 
 
 export type QueryAttemptArgs = {
-  id: Scalars['Float']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -182,33 +187,26 @@ export type User = {
   won_rewards?: Maybe<Array<Reward>>;
 };
 
-export type CreateAttemptMutationVariables = Exact<{
-  quizId: Scalars['Float']['input'];
-  score: Scalars['Float']['input'];
-  duration: Scalars['Float']['input'];
-}>;
-
-
-export type CreateAttemptMutation = { __typename?: 'Mutation', createAttempt: { __typename?: 'Attempt', id: number, score: number, percentage_success: number, duration: number, passed: boolean, started_at: any, finished_at: any, quiz: { __typename?: 'Quiz', id: number, title: string, image: string } } };
-
-export type LastAttemptByQuizQueryVariables = Exact<{
-  quizId: Scalars['Float']['input'];
-}>;
-
-
-export type LastAttemptByQuizQuery = { __typename?: 'Query', lastAttemptByQuiz?: { __typename?: 'Attempt', id: number, score: number, percentage_success: number, duration: number, passed: boolean, started_at: any, finished_at: any, quiz: { __typename?: 'Quiz', id: number, title: string, image: string } } | null };
-
 export type AttemptQueryVariables = Exact<{
-  id: Scalars['Float']['input'];
+  id: Scalars['Int']['input'];
 }>;
 
 
-export type AttemptQuery = { __typename?: 'Query', attempt?: { __typename?: 'Attempt', id: number, score: number, percentage_success: number, duration: number, passed: boolean, started_at: any, finished_at: any, quiz: { __typename?: 'Quiz', id: number, title: string, image: string } } | null };
+export type AttemptQuery = { __typename?: 'Query', attempt?: { __typename?: 'Attempt', id: number, score: number, percentage_success: number, passed: boolean, duration: number, quiz: { __typename?: 'Quiz', id: number } } | null };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: number, name: string }> };
+
+export type CreateAttemptMutationVariables = Exact<{
+  quizId: Scalars['Int']['input'];
+  answers: Array<AnswerInput> | AnswerInput;
+  duration: Scalars['Int']['input'];
+}>;
+
+
+export type CreateAttemptMutation = { __typename?: 'Mutation', createAttempt: { __typename?: 'Attempt', id: number } };
 
 export type DecadesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -265,117 +263,16 @@ export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string, pseudo: string, age_range: string, avatar: string, is_admin: boolean, created_at: any }> };
 
 
-export const CreateAttemptDocument = gql`
-    mutation CreateAttempt($quizId: Float!, $score: Float!, $duration: Float!) {
-  createAttempt(quizId: $quizId, score: $score, duration: $duration) {
-    id
-    score
-    percentage_success
-    duration
-    passed
-    started_at
-    finished_at
-    quiz {
-      id
-      title
-      image
-    }
-  }
-}
-    `;
-export type CreateAttemptMutationFn = ApolloReactCommon.MutationFunction<CreateAttemptMutation, CreateAttemptMutationVariables>;
-
-/**
- * __useCreateAttemptMutation__
- *
- * To run a mutation, you first call `useCreateAttemptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateAttemptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createAttemptMutation, { data, loading, error }] = useCreateAttemptMutation({
- *   variables: {
- *      quizId: // value for 'quizId'
- *      score: // value for 'score'
- *      duration: // value for 'duration'
- *   },
- * });
- */
-export function useCreateAttemptMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateAttemptMutation, CreateAttemptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useMutation<CreateAttemptMutation, CreateAttemptMutationVariables>(CreateAttemptDocument, options);
-      }
-export type CreateAttemptMutationHookResult = ReturnType<typeof useCreateAttemptMutation>;
-export type CreateAttemptMutationResult = ApolloReactCommon.MutationResult<CreateAttemptMutation>;
-export type CreateAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateAttemptMutation, CreateAttemptMutationVariables>;
-export const LastAttemptByQuizDocument = gql`
-    query LastAttemptByQuiz($quizId: Float!) {
-  lastAttemptByQuiz(quizId: $quizId) {
-    id
-    score
-    percentage_success
-    duration
-    passed
-    started_at
-    finished_at
-    quiz {
-      id
-      title
-      image
-    }
-  }
-}
-    `;
-
-/**
- * __useLastAttemptByQuizQuery__
- *
- * To run a query within a React component, call `useLastAttemptByQuizQuery` and pass it any options that fit your needs.
- * When your component renders, `useLastAttemptByQuizQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLastAttemptByQuizQuery({
- *   variables: {
- *      quizId: // value for 'quizId'
- *   },
- * });
- */
-export function useLastAttemptByQuizQuery(baseOptions: ApolloReactHooks.QueryHookOptions<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables> & ({ variables: LastAttemptByQuizQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return ApolloReactHooks.useQuery<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>(LastAttemptByQuizDocument, options);
-      }
-export function useLastAttemptByQuizLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useLazyQuery<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>(LastAttemptByQuizDocument, options);
-        }
-export function useLastAttemptByQuizSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>) {
-          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return ApolloReactHooks.useSuspenseQuery<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>(LastAttemptByQuizDocument, options);
-        }
-export type LastAttemptByQuizQueryHookResult = ReturnType<typeof useLastAttemptByQuizQuery>;
-export type LastAttemptByQuizLazyQueryHookResult = ReturnType<typeof useLastAttemptByQuizLazyQuery>;
-export type LastAttemptByQuizSuspenseQueryHookResult = ReturnType<typeof useLastAttemptByQuizSuspenseQuery>;
-export type LastAttemptByQuizQueryResult = ApolloReactCommon.QueryResult<LastAttemptByQuizQuery, LastAttemptByQuizQueryVariables>;
 export const AttemptDocument = gql`
-    query Attempt($id: Float!) {
+    query Attempt($id: Int!) {
   attempt(id: $id) {
     id
     score
     percentage_success
-    duration
     passed
-    started_at
-    finished_at
+    duration
     quiz {
       id
-      title
-      image
     }
   }
 }
@@ -453,6 +350,41 @@ export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesSuspenseQueryHookResult = ReturnType<typeof useCategoriesSuspenseQuery>;
 export type CategoriesQueryResult = ApolloReactCommon.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const CreateAttemptDocument = gql`
+    mutation CreateAttempt($quizId: Int!, $answers: [AnswerInput!]!, $duration: Int!) {
+  createAttempt(quizId: $quizId, answers: $answers, duration: $duration) {
+    id
+  }
+}
+    `;
+export type CreateAttemptMutationFn = ApolloReactCommon.MutationFunction<CreateAttemptMutation, CreateAttemptMutationVariables>;
+
+/**
+ * __useCreateAttemptMutation__
+ *
+ * To run a mutation, you first call `useCreateAttemptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAttemptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAttemptMutation, { data, loading, error }] = useCreateAttemptMutation({
+ *   variables: {
+ *      quizId: // value for 'quizId'
+ *      answers: // value for 'answers'
+ *      duration: // value for 'duration'
+ *   },
+ * });
+ */
+export function useCreateAttemptMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateAttemptMutation, CreateAttemptMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<CreateAttemptMutation, CreateAttemptMutationVariables>(CreateAttemptDocument, options);
+      }
+export type CreateAttemptMutationHookResult = ReturnType<typeof useCreateAttemptMutation>;
+export type CreateAttemptMutationResult = ApolloReactCommon.MutationResult<CreateAttemptMutation>;
+export type CreateAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateAttemptMutation, CreateAttemptMutationVariables>;
 export const DecadesDocument = gql`
     query Decades {
   decades {
