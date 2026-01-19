@@ -89,6 +89,9 @@ export class SignupInput {
   @Field()
   age_range : AgeRange;
 
+  @Field({nullable: true})
+  avatar: string;
+
 }
 
 @InputType()

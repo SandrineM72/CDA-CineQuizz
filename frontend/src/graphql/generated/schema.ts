@@ -162,6 +162,7 @@ export type Reward = {
 
 export type SignupInput = {
   age_range: Scalars['String']['input'];
+  avatar?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
   pseudo: Scalars['String']['input'];

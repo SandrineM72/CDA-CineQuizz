@@ -32,7 +32,7 @@ export default function Header() {
 			await logout();
 			await refetch();
 			console.log("déconnexion faite");
-			router.push("/home");
+			router.push("/");
 		} catch(err) {
 			console.log("Logout error", err);
 		} 
@@ -46,7 +46,7 @@ export default function Header() {
 				</Link>
 
 				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>    {/* on utilise cet attribut pour gérer l'état de l'ouverture/fermeture */}
-					<DropdownMenuTrigger asChild>
+					<DropdownMenuTrigger asChild className="cursor-pointer">
 						<Button variant="ghost" size="icon" aria-label="Menu">
 							<Menu className={`size-6 ${openMenu ? "hidden": ""}`} />
 							<X className={`size-6 ${openMenu ? "": "hidden"}`} />

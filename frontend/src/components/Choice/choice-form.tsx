@@ -67,16 +67,16 @@ export default function ChoicePage() {
 					{/* Instruction button */}
 					<Button
 						onClick={() => {}}
-						className="w-full bg-zinc-800 border border-white text-white font-bold hover:bg-zinc-700"
+						className="w-full bg-zinc-800 border border-white text-white font-bold hover:bg-zinc-700 text-[12px]" 
 						disabled
 					>
-						Choisis une catégorie et/ou une décennie (optionnel) 👇
+						Choisis une catégorie / une décennie 👇
 					</Button>
 
 					{/* Dropdown menues */}
 					<Card className="border-white">
 						<CardContent className="p-6">
-							<div className="flex gap-4">
+							<div className="flex gap-4 flex-col items-center">
 								<Select
 									value={category || undefined}
 									onValueChange={setCategory}

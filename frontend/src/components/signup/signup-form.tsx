@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	Select,
 	SelectContent,
@@ -12,18 +12,34 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { useSignupMutation } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { FieldDescription } from "../ui/field";
 
 export function SignupForm() {
 	const router = useRouter();
 	const [signup, { loading: isSubmitting, error }] = useSignupMutation();
+	const [avatar, setAvatar] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [pseudo, setPseudo] = useState("");
 	const [age_range, setAgeRange] = useState<"tous publics" | "-12" | "-16" | "">("");
 	const [acceptedTerms, setAcceptedTerms] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		try {
@@ -46,13 +62,14 @@ export function SignupForm() {
 						email,
 						pseudo,
 						password,
+						avatar,
 						age_range: age_range as "tous publics" | "-12" | "-16",
 					},
 				},
 			});
 
 			if (result.data && typeof result.data === "object" && "signup" in result.data) {
-				router.push("/");
+				router.push("/login");
 			}
 		} catch (err: any) {
 			const message =
@@ -68,11 +85,40 @@ export function SignupForm() {
 		<div className="max-w-sm mx-auto px-4 py-2 space-y-6">
 			{/* Avatar Section */}
 			<div className="flex justify-center">
-				<Avatar className="h-34 w-34 border-2 border-zinc-700">
-					<AvatarFallback className="text-white font-semibold">
-						AVATAR
-					</AvatarFallback>
-				</Avatar>
+				<Dialog>
+						<DialogTrigger asChild>
+							{/* <Button variant="outline"> */}
+								<Avatar className="h-34 w-34 border-2 border-zinc-700">
+									<AvatarImage src={`${avatar.startsWith("https://") ? avatar : ''}`} />
+									<AvatarFallback className="text-white font-semibold">
+										AVATAR
+									</AvatarFallback>
+								</Avatar>
+							{/* </Button> */}
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-[425px] text-white bg-zinc-600">
+							<DialogHeader>
+								<DialogTitle>Indiquer l'url de votre avatar</DialogTitle>
+								<DialogDescription>
+									Merci de saisir un url valide pour votre avatar.
+								</DialogDescription>
+							</DialogHeader>
+							<div className="grid gap-4">
+								<div className="grid gap-3">
+									<Label htmlFor="avatar">URL</Label>
+									<Input id="avatar" name="avatar" defaultValue={avatar} onChange={(e) => setAvatar(e.currentTarget.value)} />
+								</div>
+							</div>
+							<DialogFooter>
+								<DialogClose asChild>
+									<Button variant="outline" onClick={() => setAvatar("") }>Annuler</Button>
+								</DialogClose>
+								<DialogClose asChild>
+									<Button type="submit" variant="outline" className="cursor-pointer">Enregister</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
+				</Dialog>
 			</div>
 
 			{/* Signup Form */}
@@ -144,6 +190,12 @@ export function SignupForm() {
 						>
 							{isSubmitting ? "Inscription..." : "S'inscrire"}
 						</Button>
+						<FieldDescription className="px-6 text-center text-gray-400">
+							Vous avez déjà un compte ? {" "}
+							<Link href="/login" className="text-white hover:underline">
+								login
+							</Link>
+                    	</FieldDescription>
 					</form>
 				</CardContent>
 			</Card>

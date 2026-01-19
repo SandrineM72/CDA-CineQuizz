@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/graphql/generated/schema";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -90,9 +91,9 @@ export default function LoginForm() {
                     </Button>
                     <FieldDescription className="px-6 text-center text-gray-400">
                       Pas encore de compte ?{" "}
-                      <a href="#" className="text-white hover:underline">
+                      <Link href="/signup" className="text-white hover:underline">
                         S'inscrire
-                      </a>
+                      </Link>
                     </FieldDescription>
                   </Field>
                 </FieldGroup>
