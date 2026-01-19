@@ -176,12 +176,12 @@ export default function QuizScreen() {
 							<Button
 								key={index}
 								onClick={() => handleAnswerClick(index)}
-								variant={selected === index ? "destructive" : "outline"}
+								variant={selected === index ? "default" : "outline"}
 								disabled={selected !== null}
 								className={cn(
 									"py-4 px-2 font-serif font-bold text-center border-gray-700 text-sm wrap-break-word whitespace-normal h-auto min-h-12",
 									selected === index
-										? "bg-red-600 text-white hover:bg-red-700"
+										? "bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
 										: "bg-transparent text-white hover:bg-gray-800",
 									selected !== null && selected !== index && "opacity-50 cursor-not-allowed"
 								)}

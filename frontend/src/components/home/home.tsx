@@ -65,7 +65,8 @@ export default function HomePage() {
                 S'inscrire
               </button>
             </Link>
-            <Link href={"/choice-form"}>
+            
+            <Link href={"/login"}>
               <button
                 type="button"
                 className="absolute text-white bg-yellow-500 border-3 border-stone-600 px-1 py-1 rounded-lg right-0 bottom-0 text-sm hover:bg-yellow-400"
