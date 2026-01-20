@@ -33,6 +33,14 @@ export type Attempt = {
   user: User;
 };
 
+export type AttemptsSuccessRate = {
+  __typename?: 'AttemptsSuccessRate';
+  failed: Scalars['Int']['output'];
+  passed: Scalars['Int']['output'];
+  successRate: Scalars['Float']['output'];
+  total: Scalars['Int']['output'];
+};
+
 export type Category = {
   __typename?: 'Category';
   id: Scalars['Int']['output'];
@@ -53,6 +61,15 @@ export type Decade = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   quizzes: Array<Quiz>;
+};
+
+export type GlobalStats = {
+  __typename?: 'GlobalStats';
+  ageDistribution: Array<UserAgeDistribution>;
+  attemptsSuccessRate: AttemptsSuccessRate;
+  averageScore: Scalars['Float']['output'];
+  newUsers: NewUsersStats;
+  userGrowth: Array<UserGrowthData>;
 };
 
 export type LoginInput = {
@@ -85,6 +102,13 @@ export type MutationSignupArgs = {
   data: SignupInput;
 };
 
+export type NewUsersStats = {
+  __typename?: 'NewUsersStats';
+  month: Scalars['Int']['output'];
+  week: Scalars['Int']['output'];
+  year: Scalars['Int']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   attempt?: Maybe<Attempt>;
@@ -92,6 +116,7 @@ export type Query = {
   categories: Array<Category>;
   decades: Array<Decade>;
   getPublicQuizzes: Array<Quiz>;
+  globalStats: GlobalStats;
   lastAttemptByQuiz?: Maybe<Attempt>;
   me?: Maybe<User>;
   privateQuizzes: Array<Quiz>;
@@ -182,6 +207,20 @@ export type User = {
   won_rewards?: Maybe<Array<Reward>>;
 };
 
+export type UserAgeDistribution = {
+  __typename?: 'UserAgeDistribution';
+  age_range: Scalars['String']['output'];
+  count: Scalars['Int']['output'];
+  formattedLabel: Scalars['String']['output'];
+  percentage: Scalars['Float']['output'];
+};
+
+export type UserGrowthData = {
+  __typename?: 'UserGrowthData';
+  count: Scalars['Int']['output'];
+  period: Scalars['String']['output'];
+};
+
 export type CreateAttemptMutationVariables = Exact<{
   quizId: Scalars['Float']['input'];
   score: Scalars['Float']['input'];
@@ -258,6 +297,11 @@ export type SignupMutationVariables = Exact<{
 
 
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'User', id: number } };
+
+export type GlobalStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GlobalStatsQuery = { __typename?: 'Query', globalStats: { __typename?: 'GlobalStats', averageScore: number, newUsers: { __typename?: 'NewUsersStats', week: number, month: number, year: number }, ageDistribution: Array<{ __typename?: 'UserAgeDistribution', age_range: string, count: number, percentage: number, formattedLabel: string }>, userGrowth: Array<{ __typename?: 'UserGrowthData', period: string, count: number }>, attemptsSuccessRate: { __typename?: 'AttemptsSuccessRate', passed: number, failed: number, successRate: number, total: number } } };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -792,6 +836,66 @@ export function useSignupMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = ApolloReactCommon.MutationResult<SignupMutation>;
 export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const GlobalStatsDocument = gql`
+    query GlobalStats {
+  globalStats {
+    newUsers {
+      week
+      month
+      year
+    }
+    ageDistribution {
+      age_range
+      count
+      percentage
+      formattedLabel
+    }
+    userGrowth {
+      period
+      count
+    }
+    attemptsSuccessRate {
+      passed
+      failed
+      successRate
+      total
+    }
+    averageScore
+  }
+}
+    `;
+
+/**
+ * __useGlobalStatsQuery__
+ *
+ * To run a query within a React component, call `useGlobalStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGlobalStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGlobalStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGlobalStatsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GlobalStatsQuery, GlobalStatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<GlobalStatsQuery, GlobalStatsQueryVariables>(GlobalStatsDocument, options);
+      }
+export function useGlobalStatsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GlobalStatsQuery, GlobalStatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<GlobalStatsQuery, GlobalStatsQueryVariables>(GlobalStatsDocument, options);
+        }
+export function useGlobalStatsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<GlobalStatsQuery, GlobalStatsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<GlobalStatsQuery, GlobalStatsQueryVariables>(GlobalStatsDocument, options);
+        }
+export type GlobalStatsQueryHookResult = ReturnType<typeof useGlobalStatsQuery>;
+export type GlobalStatsLazyQueryHookResult = ReturnType<typeof useGlobalStatsLazyQuery>;
+export type GlobalStatsSuspenseQueryHookResult = ReturnType<typeof useGlobalStatsSuspenseQuery>;
+export type GlobalStatsQueryResult = ApolloReactCommon.QueryResult<GlobalStatsQuery, GlobalStatsQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
