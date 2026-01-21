@@ -13,7 +13,7 @@ import {
 import { Reward } from "./Reward";
 import { Quiz } from "./Quiz";
 import { Attempt } from "./Attempt";
-import type { AgeRange } from "../types";
+import { AgeRange } from "../types";
 import { IsEmail, IsStrongPassword } from "class-validator";
 
 @ObjectType()
@@ -24,18 +24,18 @@ export class User extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column({ unique: true })
+	@Column({type: "text", unique: true })
 	email: string;
 
 	@Field()
-	@Column({ unique: true })
+	@Column({ type: "text", unique: true })
 	pseudo: string;
 
 	@Field()
-	@Column()
-	age_range: AgeRange ;
+	@Column({ type:"enum", enum: AgeRange})
+	age_range: AgeRange;
 
-	@Column()
+	@Column("text")
 	hashedPassword: string;
 
 	@Field()
@@ -69,7 +69,7 @@ export class User extends BaseEntity {
 
 	@Field(() => [Quiz])
 	@JoinTable()
-	@ManyToMany(() => Quiz)
+	@ManyToMany(() => Quiz, quiz => quiz.liked_by, {onDelete: "CASCADE"})
 	liked_quizzes: Quiz[];
 }
 

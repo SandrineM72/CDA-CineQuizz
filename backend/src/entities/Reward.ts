@@ -17,7 +17,7 @@ export class Reward extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column()
+	@Column({type: "text"})
 	name: string;
 
 	@Field()

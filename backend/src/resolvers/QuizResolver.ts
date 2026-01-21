@@ -1,7 +1,8 @@
-import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Quiz } from "../entities/Quiz";
 import { getCurrentUser } from "../auth";
 import { GraphQLContext, AgeRange } from "../types";
+import { GraphQLError } from "graphql/error";
 
 @Resolver(() => Quiz)
 export default class QuizResolver {
@@ -19,6 +20,10 @@ export default class QuizResolver {
 				"decade",
 				"liked_by",
 			],
+			order: {
+				id: "ASC",
+				questions: {id: "ASC"} // pour un ordre affiché cohérent dans admin/games/1 par ex
+			}
 		});
 	}
 
@@ -100,5 +105,25 @@ export default class QuizResolver {
 		}
 
 		return queryBuilder.getMany();
+	}
+
+	@Query(() => [Quiz])
+	async allQuizzes() {
+		return Quiz.find({
+			relations: ["category", "decade", "questions", "liked_by"],
+			order: {
+				id: "ASC"
+			},
+		});
+	}
+
+	@Mutation(() => String)
+	async deleteQuizz(@Arg("id", () => Int) id: number) {
+		const quizToDelete = await Quiz.findOneBy({id});
+		if(!quizToDelete) {
+			throw new GraphQLError("Quiz not found", {extensions : { code: "NOT_FOUND", http: { status: 404 } } }); 
+		}
+		await quizToDelete.remove();
+		return "Quiz supprimé";
 	}
 }

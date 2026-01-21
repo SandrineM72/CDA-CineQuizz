@@ -63,6 +63,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAttempt: Attempt;
+  deleteQuizz: Scalars['String']['output'];
   login: Scalars['String']['output'];
   logout: Scalars['Boolean']['output'];
   signup: User;
@@ -73,6 +74,11 @@ export type MutationCreateAttemptArgs = {
   duration: Scalars['Float']['input'];
   quizId: Scalars['Float']['input'];
   score: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteQuizzArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -87,6 +93,7 @@ export type MutationSignupArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  allQuizzes: Array<Quiz>;
   attempt?: Maybe<Attempt>;
   attemptsByQuiz: Array<Attempt>;
   categories: Array<Category>;
@@ -183,6 +190,11 @@ export type User = {
   won_rewards?: Maybe<Array<Reward>>;
 };
 
+export type AllQuizzesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllQuizzesQuery = { __typename?: 'Query', allQuizzes: Array<{ __typename?: 'Quiz', id: number, title: string, description: string, age_range: string, time_limit: number, is_public: boolean, is_draft: boolean, category: { __typename?: 'Category', id: number, name: string }, decade: { __typename?: 'Decade', id: number, name: string }, liked_by: Array<{ __typename?: 'User', id: number }>, questions: Array<{ __typename?: 'Question', id: number }> }> };
+
 export type CreateAttemptMutationVariables = Exact<{
   quizId: Scalars['Float']['input'];
   score: Scalars['Float']['input'];
@@ -216,6 +228,13 @@ export type DecadesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type DecadesQuery = { __typename?: 'Query', decades: Array<{ __typename?: 'Decade', id: number, name: string }> };
 
+export type DeleteQuizzMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteQuizzMutation = { __typename?: 'Mutation', deleteQuizz: string };
+
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
 }>;
@@ -243,7 +262,7 @@ export type QuizQueryVariables = Exact<{
 }>;
 
 
-export type QuizQuery = { __typename?: 'Query', quiz?: { __typename?: 'Quiz', id: number, title: string, description: string, image: string, questions: Array<{ __typename?: 'Question', id: number, title: string, choices: Array<{ __typename?: 'Choice', id: number, description: string, is_correct: boolean }> }> } | null };
+export type QuizQuery = { __typename?: 'Query', quiz?: { __typename?: 'Quiz', id: number, title: string, description: string, image: string, time_limit: number, is_public: boolean, is_draft: boolean, age_range: string, category: { __typename?: 'Category', id: number, name: string }, decade: { __typename?: 'Decade', id: number, name: string }, questions: Array<{ __typename?: 'Question', id: number, title: string, choices: Array<{ __typename?: 'Choice', id: number, description: string, is_correct: boolean }> }> } | null };
 
 export type PrivateQuizzesQueryVariables = Exact<{
   categoryId?: InputMaybe<Scalars['Float']['input']>;
@@ -266,6 +285,65 @@ export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string, pseudo: string, age_range: string, avatar: string, is_admin: boolean, created_at: any }> };
 
 
+export const AllQuizzesDocument = gql`
+    query allQuizzes {
+  allQuizzes {
+    id
+    title
+    description
+    age_range
+    time_limit
+    is_public
+    is_draft
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+    liked_by {
+      id
+    }
+    questions {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllQuizzesQuery__
+ *
+ * To run a query within a React component, call `useAllQuizzesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllQuizzesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllQuizzesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllQuizzesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+      }
+export function useAllQuizzesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+        }
+export function useAllQuizzesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+        }
+export type AllQuizzesQueryHookResult = ReturnType<typeof useAllQuizzesQuery>;
+export type AllQuizzesLazyQueryHookResult = ReturnType<typeof useAllQuizzesLazyQuery>;
+export type AllQuizzesSuspenseQueryHookResult = ReturnType<typeof useAllQuizzesSuspenseQuery>;
+export type AllQuizzesQueryResult = ApolloReactCommon.QueryResult<AllQuizzesQuery, AllQuizzesQueryVariables>;
 export const CreateAttemptDocument = gql`
     mutation CreateAttempt($quizId: Float!, $score: Float!, $duration: Float!) {
   createAttempt(quizId: $quizId, score: $score, duration: $duration) {
@@ -494,6 +572,37 @@ export type DecadesQueryHookResult = ReturnType<typeof useDecadesQuery>;
 export type DecadesLazyQueryHookResult = ReturnType<typeof useDecadesLazyQuery>;
 export type DecadesSuspenseQueryHookResult = ReturnType<typeof useDecadesSuspenseQuery>;
 export type DecadesQueryResult = ApolloReactCommon.QueryResult<DecadesQuery, DecadesQueryVariables>;
+export const DeleteQuizzDocument = gql`
+    mutation DeleteQuizz($id: Int!) {
+  deleteQuizz(id: $id)
+}
+    `;
+export type DeleteQuizzMutationFn = ApolloReactCommon.MutationFunction<DeleteQuizzMutation, DeleteQuizzMutationVariables>;
+
+/**
+ * __useDeleteQuizzMutation__
+ *
+ * To run a mutation, you first call `useDeleteQuizzMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteQuizzMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteQuizzMutation, { data, loading, error }] = useDeleteQuizzMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteQuizzMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteQuizzMutation, DeleteQuizzMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<DeleteQuizzMutation, DeleteQuizzMutationVariables>(DeleteQuizzDocument, options);
+      }
+export type DeleteQuizzMutationHookResult = ReturnType<typeof useDeleteQuizzMutation>;
+export type DeleteQuizzMutationResult = ApolloReactCommon.MutationResult<DeleteQuizzMutation>;
+export type DeleteQuizzMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteQuizzMutation, DeleteQuizzMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data)
@@ -662,6 +771,18 @@ export const QuizDocument = gql`
     title
     description
     image
+    time_limit
+    is_public
+    is_draft
+    age_range
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
     questions {
       id
       title

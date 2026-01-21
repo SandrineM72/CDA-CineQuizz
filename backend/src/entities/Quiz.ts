@@ -16,7 +16,7 @@ import { Decade } from "./Decade";
 import { Question } from "./Question";
 import { User } from "./User";
 import { Attempt } from "./Attempt";
-import type { AgeRange } from "../types";
+import { AgeRange } from "../types";
 
 @ObjectType()
 @Entity()
@@ -26,26 +26,25 @@ export class Quiz extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column({ nullable: false })
+	@Column({type: "text"})
 	title: string;
 
 	@Field()
-	@Column()
-	description?: string;
+	@Column({type: "text"})
+	description: string;
 
 	@Field()
 	@Column({ type: "text" })
 	image: string;
 
 	@Field()
-	@Column()
+	@Column({ type:"enum", enum: AgeRange})
 	age_range: AgeRange;
 
 	@Field()
 	@Column()
 	time_limit: number;
-	// second
-
+	
 	@Field()
 	@Column()
 	is_public: boolean;
@@ -80,18 +79,19 @@ export class Quiz extends BaseEntity {
 	@OneToMany(
 		() => Question,
 		(question) => question.quiz,
+		{cascade: true, onDelete: "CASCADE"} 
 	)
 	questions: Question[];
 
 	@OneToMany(
 		() => Attempt,
 		(attempt) => attempt.quiz,
+		{cascade: true, onDelete: "CASCADE"}
 	)
 	attempts: Attempt[];
 
 	// one to many to keep history of the number of likes carried by the association
 	@Field(() => [User])
-	@JoinTable()
-	@ManyToMany(() => User)
+	@ManyToMany(() => User, user => user.liked_quizzes, {cascade: true, onDelete: "CASCADE"})
 	liked_by: User[];
 }

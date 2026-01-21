@@ -28,7 +28,9 @@ export default class UserResolver {
         });
       }
       const hashedPassword = await hash(data.password);
-      const newUser = User.create({ ...data, hashedPassword});
+      const{ password, ...dataWithoutPassword } = data; // pour enlever une propriété (ici password)
+      //console.log(dataWithoutPassword);
+      const newUser = User.create({ ...dataWithoutPassword, hashedPassword});
       return await newUser.save();
     }
   
@@ -50,8 +52,7 @@ export default class UserResolver {
         extensions: {code: "INVALID_CREDENTIALS", http: { status: 401}},
       });
     }
-
-    return startSession(context, user);
+    return startSession(context, user); // créé le cookie avec le token du user coté client après login
   }
 
   @Query(() => User, {nullable:true})

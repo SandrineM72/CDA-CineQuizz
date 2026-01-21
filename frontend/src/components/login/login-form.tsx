@@ -37,7 +37,7 @@ export default function LoginForm() {
         <div className="flex justify-center">
           <div className="relative w-full rounded-2xl overflow-hidden bg-sky-200">
             <img
-              src="/forest_gump_assis.png"
+              src="/films/forest_gump_assis.png"
               alt="Personnage"
               className="w-full h-full object-cover"
             />

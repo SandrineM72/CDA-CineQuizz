@@ -25,13 +25,14 @@ export class Question extends BaseEntity {
 	@OneToMany(
 		() => Choice,
 		(choice) => choice.question,
+		{cascade:true, onDelete:"CASCADE"}
 	)
 	choices: Choice[];
 
 	@Field(() => Quiz)
 	@ManyToOne(
 		() => Quiz,
-		(quiz) => quiz.questions,
+		(quiz) => quiz.questions, { onDelete: "CASCADE"}
 	)
 	quiz: Quiz;
 }

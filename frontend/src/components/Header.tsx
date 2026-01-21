@@ -21,10 +21,10 @@ export default function Header() {
 	});
 
 	const [logout] = useLogoutMutation();
-	console.log(data);
+	data?.me && console.log("data  depuis header : ", data);
 
 	const user = data?.me || null;
-	console.log(user);
+	user && console.log("user depuis header : ", user);
 
 	const handleLogout = async (e: FormEvent) => {
 		try {

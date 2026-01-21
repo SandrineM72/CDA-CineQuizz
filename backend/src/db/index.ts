@@ -9,6 +9,6 @@ export default new DataSource({
   username: env.DB_USER,
   password: env.DB_PASS,
   entities: ["src/entities/*.ts"],
-  synchronize: true,
+  synchronize: false,
   //logging: true
 });

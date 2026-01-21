@@ -60,7 +60,7 @@ export default function HomePage() {
           <Link href={"/signup"}>
             <button
               type="button"
-              className="absolute text-white bg-red-800 border-3 border-stone-600 px-1 py-1 rounded-lg left-0 bottom-0 text-sm hover:bg-red-600"
+              className="absolute text-white bg-red-800 border-3 border-stone-600 px-1 py-1 rounded-lg left-0 bottom-0 text-sm cursor-pointer hover:bg-red-600"
             >
               S'inscrire
             </button>

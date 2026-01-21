@@ -27,6 +27,7 @@ export class Choice extends BaseEntity {
 	@ManyToOne(
 		() => Question,
 		(question) => question.choices,
+		{onDelete:"CASCADE"}
 	)
 	question: Question;
 }

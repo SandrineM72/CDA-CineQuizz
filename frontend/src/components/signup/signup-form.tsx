@@ -89,10 +89,8 @@ export function SignupForm() {
 						<DialogTrigger asChild>
 							{/* <Button variant="outline"> */}
 								<Avatar className="h-34 w-34 border-2 border-zinc-700">
-									<AvatarImage src={`${avatar.startsWith("https://") ? avatar : ''}`} />
-									<AvatarFallback className="text-white font-semibold">
-										AVATAR
-									</AvatarFallback>
+									<AvatarImage src={avatar && avatar.startsWith("https://") ? avatar : undefined} /> 
+									<AvatarFallback className="text-white font-semibold">AVATAR</AvatarFallback>
 								</Avatar>
 							{/* </Button> */}
 						</DialogTrigger>
@@ -190,7 +188,7 @@ export function SignupForm() {
 						>
 							{isSubmitting ? "Inscription..." : "S'inscrire"}
 						</Button>
-						<FieldDescription className="px-6 text-center text-gray-400">
+						<FieldDescription className="px-5 text-center text-gray-400">
 							Vous avez déjà un compte ? {" "}
 							<Link href="/login" className="text-white hover:underline">
 								login
