@@ -1,0 +1,13 @@
+mutation CreateAttempt(
+  $quizId: Int!
+  $answers: [AnswerInput!]!
+  $duration: Int!
+) {
+  createAttempt(
+    quizId: $quizId
+    answers: $answers
+    duration: $duration
+  ) {
+    id
+  }
+}

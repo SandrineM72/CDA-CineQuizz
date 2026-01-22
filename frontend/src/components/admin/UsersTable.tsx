@@ -9,11 +9,30 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useUsersQuery } from "@/graphql/generated/schema";
-import { Image } from "lucide-react";
+import { useUsersQuery, useDeleteUserMutation } from "@/graphql/generated/schema";
+import { useState } from "react";
 
 export default function UsersTable() {
-  const { data, loading, error } = useUsersQuery();
+  const { data, loading, error, refetch } = useUsersQuery();
+  const [deleteUser] = useDeleteUserMutation();
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const handleDelete = async (id: number, pseudo: string) => {
+    if (!window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur "${pseudo}" ?`)) {
+      return;
+    }
+
+    setDeletingId(id);
+    try {
+      await deleteUser({ variables: { id } });
+      await refetch(); // Recharge la liste des utilisateurs
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Erreur inconnue lors de la suppression";
+      alert(`Erreur lors de la suppression : ${errorMessage}`);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -66,13 +85,13 @@ export default function UsersTable() {
             {users.map((user) => (
               <TableRow key={user.id} className="border-gray-700 hover:bg-gray-800">
                 <TableCell>
-                {user.avatar ? (
-                // biome-ignore lint/performance/noImgElement: <explanation>
+                  {user.avatar ? (
+                    // biome-ignore lint/performance/noImgElement: <explanation>
                     <img
-                    src={user.avatar}
-                    alt={user.pseudo}
-                    className="w-10 h-10 rounded-full object-cover"
-                />
+                      src={user.avatar}
+                      alt={user.pseudo}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white">
                       {user.pseudo[0]?.toUpperCase()}
@@ -99,8 +118,13 @@ export default function UsersTable() {
                   <Button variant="outline" size="sm" className="text-white">
                     Modifier
                   </Button>
-                  <Button variant="destructive" size="sm">
-                    Supprimer
+                  <Button 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => handleDelete(user.id, user.pseudo)}
+                    disabled={deletingId === user.id}
+                  >
+                    {deletingId === user.id ? "Suppression..." : "Supprimer"}
                   </Button>
                 </TableCell>
               </TableRow>
