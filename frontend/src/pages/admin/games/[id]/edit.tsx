@@ -11,6 +11,12 @@ import { useCategoriesQuery, useDecadesQuery, useQuizQuery, useUpdateChoiceMutat
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
+export enum AgeRange {
+  TOUS_PUBLICS = "tous publics",
+  MOINS_12 = "-12",
+  MOINS_16 = "-16"
+}
+
 const EditQuizPage = () => {
     const router= useRouter();
     const id = Number(router.query.id);
@@ -22,6 +28,20 @@ const EditQuizPage = () => {
     const {data: quizData, loading, error, refetch} = useQuizQuery({variables : {id: id}}); // récupération quiz
     const quiz = quizData?.quiz || null;
 
+    // test quiz
+    if(isNaN(id) || !quiz) {
+        return (
+            <Layout pageTitle={`Quiz n °${router.query.id} - Admin`}>
+                <div className="flex">
+                <AdminSidebar />
+                    <main className="flex-1 p-8 bg-black text-white">
+                        Quiz inexistant           
+                    </main>
+                </div>
+            </Layout>
+        );
+    }
+
     const {data: categoriesData} = useCategoriesQuery(); // récup catégories
     const categories = categoriesData?.categories || null;
 
@@ -29,34 +49,22 @@ const EditQuizPage = () => {
     const decades = decadeData?.decades || null;
 
     // state des champs formulaire
-    const [title, setTitle] = useState(quiz?.title);
-    const [description, setDescription] = useState(quiz?.description);
-    const [ageRange, setAgeRange] = useState(quiz?.age_range);
-    const [timeLimit, setTimeLimit] = useState(quiz?.time_limit);
-    const [categoryId, setCategoryId] = useState(quiz?.category.id);
-    const [decadeId, setDecadeId] = useState(quiz?.decade.id);
-    const [isDraft, setIsDraft] = useState(quiz?.is_draft);
-    const [isPublic, setIsPublic] = useState(quiz?.is_public);
-    const [image, setImage] = useState(quiz?.image);
+    const [title, setTitle] = useState(quiz.title);
+    const [description, setDescription] = useState(quiz.description);
+    const [ageRange, setAgeRange] = useState(quiz.age_range);
+    const [timeLimit, setTimeLimit] = useState(quiz.time_limit);
+    const [categoryId, setCategoryId] = useState(quiz.category.id);
+    const [decadeId, setDecadeId] = useState(quiz.decade.id);
+    const [isDraft, setIsDraft] = useState(quiz.is_draft);
+    const [isPublic, setIsPublic] = useState(quiz.is_public);
+    const [image, setImage] = useState(quiz.image);
 
-    const [questionsToMake, setQuestionsToMake] = useState<null|any>(quiz?.questions.map(item => ({id: item.id, title: item.title, choices: item.choices.map(choice => ({id: choice.id, description: choice.description, is_correct: choice.is_correct}))})));
+    const [questionsToMake, setQuestionsToMake] = useState<null|any>(quiz.questions.map(item => ({id: item.id, title: item.title, choices: item.choices.map(choice => ({id: choice.id, description: choice.description, is_correct: choice.is_correct}))})));
 
     // soumission formulaire
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         console.log("formulaire soumis");
-        console.log({
-            title,
-            description,
-            age_range: ageRange,
-            time_limit: timeLimit,
-            is_draft: isDraft,
-            is_public: isPublic,
-            image,
-            category : {id: categoryId},
-            decade: {id: decadeId},
-            questions: questionsToMake
-        });
         
         const data = {
             title,
@@ -91,7 +99,7 @@ const EditQuizPage = () => {
         });
 
         await updateQuiz({variables: {
-            id: quiz!.id,
+            id: quiz.id,
             data: data, 
          }});
          
@@ -114,40 +122,28 @@ const EditQuizPage = () => {
         );
     }
 
-    // test quiz
-    if(isNaN(id) || !quiz) {
-        return (
-            <Layout pageTitle={`Quiz n °${router.query.id} - Admin`}>
-                <div className="flex">
-                <AdminSidebar />
-                    <main className="flex-1 p-8 bg-black text-white">
-                        Quiz inexistant           
-                    </main>
-                </div>
-            </Layout>
-        );
-    }
+    
 
     const handleQuestionChange = (question: any, e: React.ChangeEvent<HTMLInputElement>) => {
-        const questionToChange = questionsToMake?.find((item: { title: any; }) => item.title === question.title);
-        const questionsLeft = questionsToMake?.filter((item: { title: any; }) => item.title !==question.title);
+        const questionToChange = questionsToMake.find((item: { title: any; }) => item.title === question.title);
+        const questionsLeft = questionsToMake.filter((item: { title: any; }) => item.title !==question.title);
         console.log(e.target.value);
-        questionToChange!.title = e.target.value;
+        questionToChange.title = e.target.value;
         const newArr = [...questionsLeft, questionToChange];
         newArr.sort((a,b) => a.id - b.id); // tri pour avoir les questions dans le bon ordre d'affichage conservé
         setQuestionsToMake(newArr);
     }
 
     const handleChoiceChange = (question: any, choice: any, e: React.ChangeEvent<HTMLInputElement>) => {
-        const questionToChange = questionsToMake?.find((item: { title: any; }) => item.title === question.title)
-        const questionsLeft = questionsToMake?.filter((item: { title: any; }) => item.title !== question.title)
+        const questionToChange = questionsToMake.find((item: { title: any; }) => item.title === question.title)
+        const questionsLeft = questionsToMake.filter((item: { title: any; }) => item.title !== question.title)
 
-        const choiceToChange = questionToChange?.choices.find((elem: { id: any; }) => elem.id === choice.id);
-        const choicesLeft = questionToChange?.choices.filter((elem: { id: any; }) => elem.id !== choice.id);
+        const choiceToChange = questionToChange.choices.find((elem: { id: any; }) => elem.id === choice.id);
+        const choicesLeft = questionToChange.choices.filter((elem: { id: any; }) => elem.id !== choice.id);
         console.log(choiceToChange);
         
-        questionToChange!.choices = [...choicesLeft, {...choiceToChange, description: e.currentTarget.value}];  //  on passe un nouvel objet modifié
-        questionToChange!.choices.sort((a: { id: number; },b: { id: number; }) => a.id - b.id); // tri pour avoir le bon ordre d'affichage des choix conservé
+        questionToChange.choices = [...choicesLeft, {...choiceToChange, description: e.currentTarget.value}];  //  on passe un nouvel objet modifié
+        questionToChange.choices.sort((a: { id: number; },b: { id: number; }) => a.id - b.id); // tri pour avoir le bon ordre d'affichage des choix conservé
 
         const newArr = [...questionsLeft, questionToChange];
         newArr.sort((a,b) => a.id - b.id); // tri pour avoir le bon ordre d'affichage des questions conservé
@@ -155,11 +151,11 @@ const EditQuizPage = () => {
     }
 
     const handleCorrectChoiceChange =(question: any, choice: any, e: React.ChangeEvent<HTMLInputElement>) => {
-        const questionToChange = questionsToMake?.find((item: { title: any; }) => item.title === question.title)
-        const questionsLeft = questionsToMake?.filter((item: { title: any; }) => item.title !== question.title)
+        const questionToChange = questionsToMake.find((item: { title: any; }) => item.title === question.title)
+        const questionsLeft = questionsToMake.filter((item: { title: any; }) => item.title !== question.title)
 
-        const choiceToChange = questionToChange?.choices.find((elem: { id: any; }) => elem.id === choice.id);
-        const choicesLeft = questionToChange?.choices.filter((elem: { id: any; }) => elem.id !== choice.id);
+        const choiceToChange = questionToChange.choices.find((elem: { id: any; }) => elem.id === choice.id);
+        const choicesLeft = questionToChange.choices.filter((elem: { id: any; }) => elem.id !== choice.id);
 
         const updatedFalseChoices = choicesLeft.map((item: any) => ({...item, is_correct : false}));
         choiceToChange.is_correct = true;
@@ -216,7 +212,7 @@ const EditQuizPage = () => {
                                 <Label className="my-3">Tranche d'âge</Label>
                                 <Select
                                     value={ageRange}
-                                    onValueChange={(val)=> setAgeRange(val)}
+                                    onValueChange={(val:AgeRange)=> setAgeRange(val)}
                                 >
                                     <SelectTrigger className={`bg-zinc-800 border-zinc-700 w-full ${true ? "text-white" : "text-zinc-500"}`}>
                                         <SelectValue placeholder="Tranche d'âge" />
@@ -260,7 +256,7 @@ const EditQuizPage = () => {
                                     <Checkbox
                                         id="draft"
                                         checked={isDraft}
-                                        onCheckedChange={(checked) => setIsDraft(checked === true)}
+                                        onCheckedChange={checked => setIsDraft(checked === true)}
                                         className="text-white"
                                     />
                                     <Label htmlFor="draft" className="text-white cursor-pointer">
@@ -271,7 +267,7 @@ const EditQuizPage = () => {
                                     <Checkbox
                                         id="public"
                                         checked={isPublic}
-                                        onCheckedChange={(checked) => setIsPublic(checked === true)}
+                                        onCheckedChange={checked => setIsPublic(checked === true)}
                                         className="text-white"
                                     />
                                     <Label

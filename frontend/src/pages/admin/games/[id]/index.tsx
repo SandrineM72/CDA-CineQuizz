@@ -16,7 +16,6 @@ export default function GamePage() {
 
     const {data, loading} = useQuizQuery({ variables: { id: id }, skip: !id });
     const quiz = data?.quiz || undefined;
-    //console.log(quiz);
 
     if(isNaN(id) || !quiz) {
         return (
@@ -63,21 +62,20 @@ export default function GamePage() {
                                 <li className="m-3">Brouillon : {quiz.is_draft ? "oui" : "non" }</li>
                                 <li className="m-3">Public : {quiz.is_public ? "oui" : "non" }</li>
                                 <li className="m-3">
-                                    Image : <img src={quiz.image} className="w-[400px]" />
+                                    <img src={quiz.image} className="w-[400px] h-[300px]" />
                                 </li>
                             </ul>
 
                             <h2 className="text-2xl bg-red-800 px-1 py-2 rounded-md text-center">Questions</h2>
                             {quiz.questions.map((question,index) =>
                                 <Card key={index}>
-                                    <CardTitle className="p-3 bg-gray-500 text-white">Question {question.id} : {question.title}</CardTitle>
+                                    <CardTitle className="p-3 bg-gray-500 text-white">Question {index + 1} : {question.title}</CardTitle>
                                     <CardContent className="m-5">
                                         <ul className="list-decimal">  {/* attention ce n'est pas l'id du choice */}
                                         {question.choices.map(choice => 
-                                            <li key={choice.id}>
+                                            <li key={choice.id} className="p-2">
                                                 <span className={choice.is_correct ? "bg-green-400 p-1 rounded-md" : ""}>{choice.description}</span>
                                             </li>
-                                            
                                         )}
                                         </ul>
                                     </CardContent> 

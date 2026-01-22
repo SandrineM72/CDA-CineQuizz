@@ -3,8 +3,6 @@ import GamesTable from "@/components/admin/GamesTable";
 import { AdminSidebar } from "@/components/admin/admin";
 import { useRouter } from "next/router";
 
-
-
 export default function GamesPage() {
   const router = useRouter();
 
