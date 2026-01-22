@@ -1,0 +1,5 @@
+query NextQuiz($currentQuizId: Int!) {
+  nextQuiz(currentQuizId: $currentQuizId) {
+    id
+  }
+}
