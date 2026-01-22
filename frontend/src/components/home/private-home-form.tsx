@@ -1,10 +1,18 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { ArrowRight, Clock, Target } from "lucide-react";
-import { usePrivateQuizzesQuery, PrivateQuizzesQuery } from "@/graphql/generated/schema";
+import { usePrivateQuizzesQuery, PrivateQuizzesQuery, useCategoriesQuery, useDecadesQuery } from "@/graphql/generated/schema";
 
 function formatDuration(seconds: number): string {
 	const minutes = Math.floor(seconds / 60);
@@ -14,22 +22,36 @@ function formatDuration(seconds: number): string {
 export default function PrivateHomeForm() {
 	const router = useRouter();
 	
-	// Get filtering parameters from URL
-	// Parameters come from URL as strings, convert them to numbers
-	// Wait for router to be ready to avoid hydration errors
-	const categoryIdParam = router.isReady ? router.query.categoryId : undefined;
-	const decadeIdParam = router.isReady ? router.query.decadeId : undefined;
-	
-	const categoryId = categoryIdParam && typeof categoryIdParam === 'string'
-		? Number(categoryIdParam)
-		: undefined;
-	const decadeId = decadeIdParam && typeof decadeIdParam === 'string'
-		? Number(decadeIdParam)
-		: undefined;
+	// Local state for category and decade selections
+	// Initialize as empty strings to show placeholders by default
+	const [selectedCategory, setSelectedCategory] = useState<string>("");
+	const [selectedDecade, setSelectedDecade] = useState<string>("");
+
+	// Fetch categories and decades for the dropdowns
+	const { data: categoriesData, loading: categoriesLoading, error: categoriesError } = useCategoriesQuery();
+	const { data: decadesData, loading: decadesLoading, error: decadesError } = useDecadesQuery();
+
+	const categories = categoriesData?.categories || [];
+	const decades = decadesData?.decades || [];
+
+	// Initialize selections from URL parameters when router is ready
+	// Only set values if they exist in URL, otherwise keep empty to show placeholders
+	useEffect(() => {
+		if (router.isReady) {
+			const categoryIdParam = router.query.categoryId;
+			const decadeIdParam = router.query.decadeId;
+			
+			// Only set if parameter exists, otherwise keep empty string to show placeholder
+			setSelectedCategory(typeof categoryIdParam === "string" ? categoryIdParam : "");
+			setSelectedDecade(typeof decadeIdParam === "string" ? decadeIdParam : "");
+		}
+	}, [router.isReady, router.query]);
+
+	// Convert string selections to numbers for GraphQL query
+	const categoryId = selectedCategory ? Number(selectedCategory) : undefined;
+	const decadeId = selectedDecade ? Number(selectedDecade) : undefined;
 
 	// Pass parameters to GraphQL query
-	// Always make the request to avoid hydration errors
-	// Parameters will be undefined if router is not ready
 	const { data, loading, error } = usePrivateQuizzesQuery({
 		variables: {
 			categoryId: categoryId || undefined,
@@ -37,6 +59,38 @@ export default function PrivateHomeForm() {
 		},
 		fetchPolicy: 'network-only', // Always fetch from server to respect filters
 	});
+
+	// Update URL when selections change
+	const updateURL = (category: string, decade: string) => {
+		const params = new URLSearchParams();
+		
+		if (category) {
+			params.append("categoryId", category);
+		}
+		
+		if (decade) {
+			params.append("decadeId", decade);
+		}
+		
+		const queryString = params.toString();
+		const url = queryString 
+			? `/connected-user-page?${queryString}`
+			: `/connected-user-page`;
+		
+		router.push(url, undefined, { shallow: true });
+	};
+
+	// Handle category change
+	const handleCategoryChange = (value: string) => {
+		setSelectedCategory(value);
+		updateURL(value, selectedDecade);
+	};
+
+	// Handle decade change
+	const handleDecadeChange = (value: string) => {
+		setSelectedDecade(value);
+		updateURL(selectedCategory, value);
+	};
 
 	const handleStartQuiz = (quizId: number) => {
 		router.push(`/quiz-details-page?id=${quizId}`);
@@ -46,17 +100,76 @@ export default function PrivateHomeForm() {
 
 	return (
 		<div className="max-w-sm mx-auto w-full">
-			{/* Image Section - Fixed at top (without signup button) */}
-			<div className="px-4 pt-8 sticky top-0 z-10 bg-zinc-900">
+			{/* Image Section */}
+			<div className="px-4 pt-8">
 				<Card className="overflow-hidden p-0 border-white">
-				<div className="relative w-full aspect-4/3 bg-zinc-800">
-					<img
-						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyyy9gKjkNfYftUtfaFr0aKh6BsCSsNQxAjw&s"
-						alt="Cinéma"
-						className="absolute inset-0 w-full h-full object-cover"
-					/>
+					<div className="relative w-full aspect-4/3 bg-zinc-800">
+						<img
+							src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyyy9gKjkNfYftUtfaFr0aKh6BsCSsNQxAjw&s"
+							alt="Cinéma"
+							className="absolute inset-0 w-full h-full object-cover"
+						/>
+					</div>
+				</Card>
+
+				{/* Filter Dropdowns Section - Under the image */}
+				<div className="px-0 pt-2 pb-2">
+					<div className="flex gap-2">
+						<Select
+							value={selectedCategory || undefined}
+							onValueChange={handleCategoryChange}
+							disabled={categoriesLoading}
+						>
+							<SelectTrigger className="bg-zinc-800 border-zinc-700 text-white flex-1 min-w-0">
+								<SelectValue placeholder={categoriesLoading ? "Chargement..." : "Catégorie"} />
+							</SelectTrigger>
+							<SelectContent className="min-w-[calc(var(--radix-select-trigger-width)+15px)]!">
+								{categoriesError ? (
+									<SelectItem value="error" disabled>
+										Erreur de chargement
+									</SelectItem>
+								) : (
+									categories.map((category) => (
+										<SelectItem key={category.id} value={category.id.toString()}>
+											{category.name}
+										</SelectItem>
+									))
+								)}
+							</SelectContent>
+						</Select>
+
+						<Select
+							value={selectedDecade || undefined}
+							onValueChange={handleDecadeChange}
+							disabled={decadesLoading}
+						>
+							<SelectTrigger className="bg-zinc-800 border-zinc-700 text-white flex-1 min-w-0">
+								<SelectValue placeholder={decadesLoading ? "Chargement..." : "Décennie"} />
+							</SelectTrigger>
+							<SelectContent 
+								position="item-aligned"
+								side="bottom"
+								align="start" 
+								sideOffset={4} 
+								collisionPadding={16}
+								avoidCollisions={true}
+								className="min-w-[calc(var(--radix-select-trigger-width)+15px)]!"
+							>
+								{decadesError ? (
+									<SelectItem value="error" disabled>
+										Erreur de chargement
+									</SelectItem>
+								) : (
+									decades.map((decade) => (
+										<SelectItem key={decade.id} value={decade.id.toString()}>
+											{decade.name}
+										</SelectItem>
+									))
+								)}
+							</SelectContent>
+						</Select>
+					</div>
 				</div>
-			</Card>
 			</div>
 
 			{/* Quizzes List */}

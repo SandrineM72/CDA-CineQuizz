@@ -6,11 +6,8 @@ import { GraphQLError } from "graphql/error";
 
 @Resolver(() => Quiz)
 export default class QuizResolver {
-	/* =======================
-	   Single quiz by ID
-	   ======================= */
 	@Query(() => Quiz, { nullable: true })
-	async quiz(@Arg("id", () => Number) id: number) {
+	async quiz(@Arg("id", () => Int) id: number) {
 		return Quiz.findOne({
 			where: { id },
 			relations: [
@@ -27,9 +24,6 @@ export default class QuizResolver {
 		});
 	}
 
-	/* =======================
-	   All public quizzes (simple)
-	   ======================= */
 	@Query(() => [Quiz])
 	async quizzes() {
 		return Quiz.find({
@@ -38,9 +32,6 @@ export default class QuizResolver {
 		});
 	}
 
-	/* =======================
-	   Public quizzes (ordered)
-	   ======================= */
 	@Query(() => [Quiz])
 	async getPublicQuizzes() {
 		return Quiz.find({
@@ -49,20 +40,40 @@ export default class QuizResolver {
 				is_draft: false,
 			},
 			relations: ["category", "decade"],
-			order: {
-				created_at: "DESC",
-			},
+			order: { created_at: "DESC" },
 		});
 	}
 
-	/* =======================
-	   Private quizzes (filtered)
-	   ======================= */
+	//  NON CONNECTED USER
+	@Query(() => Quiz, { nullable: true })
+	async nextPublicQuiz(
+		@Arg("currentQuizId", () => Int) currentQuizId: number
+	): Promise<Quiz | null> {
+		return Quiz.createQueryBuilder("quiz")
+			.where("quiz.id > :currentQuizId", { currentQuizId })
+			.andWhere("quiz.is_public = true")
+			.andWhere("quiz.is_draft = false")
+			.orderBy("quiz.id", "ASC")
+			.getOne();
+	}
+
+	// CONNECTED USER	
+	@Query(() => Quiz, { nullable: true })
+	async nextQuiz(
+		@Arg("currentQuizId", () => Int) currentQuizId: number
+	): Promise<Quiz | null> {
+		return Quiz.createQueryBuilder("quiz")
+			.where("quiz.id > :currentQuizId", { currentQuizId })
+			.andWhere("quiz.is_draft = false")
+			.orderBy("quiz.id", "ASC")
+			.getOne();
+	}
+
 	@Query(() => [Quiz])
 	async privateQuizzes(
 		@Ctx() context: GraphQLContext,
-		@Arg("categoryId", () => Number, { nullable: true }) categoryId?: number,
-		@Arg("decadeId", () => Number, { nullable: true }) decadeId?: number
+		@Arg("categoryId", () => Int, { nullable: true }) categoryId?: number,
+		@Arg("decadeId", () => Int, { nullable: true }) decadeId?: number
 	) {
 		const currentUser = await getCurrentUser(context);
 		const userAgeRange = currentUser.age_range;
@@ -82,7 +93,6 @@ export default class QuizResolver {
 			queryBuilder.andWhere("decade.id = :decadeId", { decadeId });
 		}
 
-		// Age range filtering
 		if (userAgeRange === AgeRange.MOINS_12) {
 			queryBuilder.andWhere(
 				"(quiz.age_range = :tous OR quiz.age_range = :moins12)",

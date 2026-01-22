@@ -1,4 +1,4 @@
-query Quiz($id: Float!) {
+query Quiz($id: Int!) {
   quiz(id: $id) {
     id
     title

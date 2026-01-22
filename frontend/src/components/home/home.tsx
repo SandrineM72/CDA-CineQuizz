@@ -46,16 +46,34 @@ export default function HomePage() {
     <div className="flex w-full items-start justify-center px-6 md:px-10">
       <div className="w-full max-w-md space-y-4">
         {/* Image de présentation */}
-        <div className="flex justify-center relative">
-          <div className="w-full rounded-2xl overflow-hidden bg-sky-200">
-            {/** biome-ignore lint/performance/noImgElement: <explanation> */}
-            <img
-              src="/films/forest_gump_assis.png"
-              alt="Personnage"
-              width={400}
-              height={300}
-              className="w-full h-full object-cover relative"
+          <div className="flex justify-center relative">
+            <div className="w-full rounded-2xl overflow-hidden bg-sky-200">
+              {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+              <img
+                src="/films/forest_gump_assis.png"
+                alt="Personnage"
+                width={400}
+                height={300}
+                className="w-full h-full object-cover relative"
               />
+            </div>
+            <Link href={"/signup"}>
+              <button
+                type="button"
+                className="absolute text-white bg-red-800 border-3 border-stone-600 px-1 py-1 rounded-lg left-0 bottom-0 text-sm hover:bg-red-600"
+              >
+                S'inscrire
+              </button>
+            </Link>
+            
+            <Link href={"/login"}>
+              <button
+                type="button"
+                className="absolute text-white bg-yellow-500 border-3 border-stone-600 px-1 py-1 rounded-lg right-0 bottom-0 text-sm hover:bg-yellow-400"
+              >
+                Se connecter
+              </button>
+            </Link>
           </div>
           <Link href={"/signup"}>
             <button
@@ -125,6 +143,5 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-    </div>
   );
 }

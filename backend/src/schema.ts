@@ -6,10 +6,11 @@ import QuizResolver from "./resolvers/QuizResolver";
 import AttemptResolver from "./resolvers/AttemptResolver";
 import QuestionResolver from "./resolvers/QuestionResolver";
 import ChoiceResolver from "./resolvers/ChoiceResolver";
+import StatsResolver from "./resolvers/StatsResolver";
 
 
 export async function getSchema() {
 return buildSchema({
-    resolvers: [UserResolver, QuizResolver, DecadeResolver, CategoryResolver, AttemptResolver, QuestionResolver, ChoiceResolver],
+    resolvers: [UserResolver, QuizResolver, DecadeResolver, CategoryResolver, AttemptResolver, QuestionResolver, ChoiceResolver, StatsResolver],
 });
 }

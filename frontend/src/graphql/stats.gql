@@ -1,0 +1,26 @@
+query GlobalStats {
+  globalStats {
+    newUsers {
+      week
+      month
+      year
+    }
+    ageDistribution {
+      age_range
+      count
+      percentage
+      formattedLabel
+    }
+    userGrowth {
+      period
+      count
+    }
+    attemptsSuccessRate {
+      passed
+      failed
+      successRate
+      total
+    }
+    averageScore
+  }
+}
