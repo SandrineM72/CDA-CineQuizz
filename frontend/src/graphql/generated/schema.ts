@@ -244,10 +244,8 @@ export type UserGrowthData = {
   period: Scalars['String']['output'];
 };
 
-export type CreateAttemptMutationVariables = Exact<{
-  quizId: Scalars['Float']['input'];
-  score: Scalars['Float']['input'];
-  duration: Scalars['Float']['input'];
+export type AttemptQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
 }>;
 
 
