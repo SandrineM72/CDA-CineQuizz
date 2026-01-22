@@ -1,16 +1,14 @@
 import Layout from "@/components/Layout";
-import QuizResultForm from "@/components/resultQuizz/resultQuizz-form";
+import ResultContainer from "@/components/result/result-container";
 
-
-
-export default function resultPage(){
+export default function ResultPage() {
   return (
-    <Layout pageTitle="Resultat">
+    <Layout pageTitle="Résultat">
       <div className="flex w-full items-center justify-center p-2 md:p-10">
         <div className="w-full max-w-sm">
-                <QuizResultForm />
-            </div>
+          <ResultContainer />
         </div>
+      </div>
     </Layout>
-  )
+  );
 }

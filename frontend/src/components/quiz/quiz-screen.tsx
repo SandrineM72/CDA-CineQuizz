@@ -6,7 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useQuizQuery, useCreateAttemptMutation } from "@/graphql/generated/schema";
+import {
+  useQuizQuery,
+  useCreateAttemptMutation,
+} from "@/graphql/generated/schema";
 
 export default function QuizScreen() {
 	const router = useRouter();
@@ -201,3 +204,4 @@ export default function QuizScreen() {
 		</div>
 	);
 }
+

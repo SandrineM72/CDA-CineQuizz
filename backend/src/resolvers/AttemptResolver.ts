@@ -1,5 +1,5 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Attempt } from "../entities/Attempt";
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
+import { AnswerInput, Attempt } from "../entities/Attempt";
 import { Quiz } from "../entities/Quiz";
 import { User } from "../entities/User";
 import { GraphQLError } from "graphql/error";
@@ -33,10 +33,12 @@ async function getUserOrDefault(context: GraphQLContext): Promise<User> {
 @Resolver()
 export default class AttemptResolver {
 	@Query(() => Attempt, { nullable: true })
-	async attempt(@Arg("id") id: number): Promise<Attempt | null> {
-		return await Attempt.findOne({
-			where: { id },
-			relations: ["user", "quiz", "quiz.questions"],
+	async attempt(
+		@Arg("id", () => Int) id: number
+	): Promise<Attempt | null> {
+		return Attempt.findOne({
+		where: { id },
+		relations: ["user", "quiz", "quiz.questions"],
 		});
 	}
 
@@ -58,40 +60,69 @@ export default class AttemptResolver {
 
 	@Mutation(() => Attempt)
 	async createAttempt(
-		@Arg("quizId") quizId: number,
-		@Arg("score") score: number,
-		@Arg("duration") duration: number,
+		@Arg("quizId", () => Int) quizId: number,
+		@Arg("answers", () => [AnswerInput]) answers: AnswerInput[],
+		@Arg("duration", () => Int) duration: number,
 		@Ctx() context: GraphQLContext
 	): Promise<Attempt> {
-		const user = await getUserOrDefault(context);
-		const quiz = await Quiz.findOne({ 
-			where: { id: quizId },
-			relations: ["questions"],
+	const user = await getUserOrDefault(context);
+
+	const quiz = await Quiz.findOne({
+		where: { id: quizId },
+		relations: ["questions", "questions.choices"],
+	});
+
+	if (!quiz) {
+		throw new GraphQLError("Quiz not found", {
+		extensions: { code: "NOT_FOUND", http: { status: 404 } },
 		});
-
-		if (!quiz) {
-			throw new GraphQLError("Quiz not found", {
-				extensions: { code: "NOT_FOUND", http: { status: 404 } },
-			});
-		}
-
-		const totalQuestions = quiz.questions?.length || 0;
-		const percentageSuccess = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
-		const passed = percentageSuccess >= 70; // Success threshold at 70%
-
-		const attempt = await Attempt.create({
-			user,
-			quiz,
-			started_at: new Date(Date.now() - duration * 1000), // Calculate start time from duration
-			finished_at: new Date(),
-			score,
-			percentage_success: Math.round(percentageSuccess * 100) / 100, // Round to 2 decimal places
-			duration,
-			passed,
-		}).save();
-
-		return attempt;
 	}
+
+	if (!quiz.questions.length) {
+		throw new GraphQLError("Quiz has no questions");
+	}
+
+	let score = 0;
+
+	for (const question of quiz.questions) {
+		const userAnswer = answers.find(
+		(a) => a.questionId === question.id
+		);
+
+		const correctChoice = question.choices.find(
+		(c) => c.is_correct
+		);
+
+		if (
+		userAnswer &&
+		correctChoice &&
+		userAnswer.choiceId === correctChoice.id
+		) {
+		score++;
+		}
+	}
+
+	const percentageSuccess =
+		(score / quiz.questions.length) * 100;
+
+	const passed = percentageSuccess >= 70;
+
+	const attempt = await Attempt.create({
+		user,
+		quiz,
+		score,
+		percentage_success:
+		Math.round(percentageSuccess * 100) / 100, // 2 décimales
+		passed,
+		duration,
+		started_at: new Date(Date.now() - duration * 1000),
+		finished_at: new Date(),
+	}).save();
+
+	return attempt;
+}
+
+
 
 	@Query(() => Attempt, { nullable: true })
 	async lastAttemptByQuiz(
