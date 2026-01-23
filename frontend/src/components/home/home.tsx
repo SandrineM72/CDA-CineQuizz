@@ -74,9 +74,6 @@ export default function HomePage() {
                 Se connecter
               </button>
             </Link>
-         
-          
-          
         </div>
 
         {/* Titre de section */}
