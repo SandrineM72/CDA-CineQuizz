@@ -1,0 +1,3 @@
+mutation UpdateChoice($updateChoiceId: Int!, $data: UpdateChoiceInput!) {
+  updateChoice(id: $updateChoiceId, data: $data)
+}

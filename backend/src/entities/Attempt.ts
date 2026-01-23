@@ -45,7 +45,7 @@ export class Attempt extends BaseEntity {
 	user: User;
 
 	@Field(() => Quiz)
-	@ManyToOne(() => Quiz)
+	@ManyToOne(() => Quiz, {onDelete:"CASCADE"})
 	quiz: Quiz;
 }
 

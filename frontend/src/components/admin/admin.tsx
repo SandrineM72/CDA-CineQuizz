@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CircleUserRound, GamepadDirectional, Heart, ChartArea } from "lucide-react";
 import { useRouter } from "next/router";
+import { useProfileQuery } from "@/graphql/generated/schema";
 
 const items = [
   {

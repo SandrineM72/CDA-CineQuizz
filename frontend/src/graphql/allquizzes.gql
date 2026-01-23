@@ -1,13 +1,12 @@
-query Quiz($id: Int!) {
-  quiz(id: $id) {
+query allQuizzes {
+  allQuizzes {
     id
     title
     description
-    image
+    age_range
     time_limit
     is_public
     is_draft
-    age_range
     category {
       id
       name
@@ -16,15 +15,11 @@ query Quiz($id: Int!) {
       id
       name
     }
+    liked_by {
+      id
+    }
     questions {
       id
-      title
-      choices {
-        id
-        description
-        is_correct
-      }
     }
   }
 }
-

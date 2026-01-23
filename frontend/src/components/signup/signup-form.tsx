@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye, EyeOff } from "lucide-react";
 import {
 	Select,
@@ -13,12 +13,27 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { useSignupMutation } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { FieldDescription } from "../ui/field";
 
 export function SignupForm() {
 	const router = useRouter();
 	const [signup, { loading: isSubmitting, error }] = useSignupMutation();
+	const [avatar, setAvatar] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [pseudo, setPseudo] = useState("");
@@ -26,6 +41,7 @@ export function SignupForm() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [acceptedTerms, setAcceptedTerms] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		try {
@@ -48,6 +64,7 @@ export function SignupForm() {
 						email,
 						pseudo,
 						password,
+						avatar,
 						age_range: age_range as "tous publics" | "-12" | "-16",
 					},
 				},
@@ -57,9 +74,13 @@ export function SignupForm() {
 				router.push("/login");
 			}
 		} catch (err: any) {
-			const message =
+
+			
+			
+			const message = 
 				err.graphQLErrors?.[0]?.message ||
 				err.networkError?.message ||
+				err.errors?.[0]?.extensions.validationErrors?.[0]?.constraints.isStrongPassword ||
 				err.message ||
 				"Une erreur est survenue lors de l'inscription";
 			setErrorMessage(message);
@@ -70,11 +91,38 @@ export function SignupForm() {
 		<div className="w-full max-w-sm mx-auto px-4 py-8 space-y-6">
 			{/* Avatar Section */}
 			<div className="flex justify-center">
-				<Avatar className="h-32 w-32 bg-zinc-800 border border-white">
-					<AvatarFallback className="text-white text-xl font-semibold">
-						AVATAR
-					</AvatarFallback>
-				</Avatar>
+				<Dialog>
+						<DialogTrigger asChild>
+							{/* <Button variant="outline"> */}
+								<Avatar className="h-34 w-34 border-2 border-zinc-700 hover:border-zinc-400 hover:bg-gray-800">
+									<AvatarImage src={avatar && avatar.startsWith("https://") ? avatar : undefined} /> 
+									<AvatarFallback className="text-white font-semibold">AVATAR</AvatarFallback>
+								</Avatar>
+							{/* </Button> */}
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-[425px] text-white bg-zinc-600">
+							<DialogHeader>
+								<DialogTitle>Indiquer l'url de votre avatar</DialogTitle>
+								<DialogDescription>
+									Merci de saisir un url valide pour votre avatar.
+								</DialogDescription>
+							</DialogHeader>
+							<div className="grid gap-4">
+								<div className="grid gap-3">
+									<Label htmlFor="avatar">URL</Label>
+									<Input id="avatar" name="avatar" defaultValue={avatar} onChange={(e) => setAvatar(e.currentTarget.value.startsWith("https://") ? e.currentTarget.value : "")} />
+								</div>
+							</div>
+							<DialogFooter>
+								<DialogClose asChild>
+									<Button variant="outline" onClick={() => setAvatar(prev => prev) }>Annuler</Button>
+								</DialogClose>
+								<DialogClose asChild>
+									<Button type="submit" variant="outline" className="cursor-pointer">Enregister</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
+				</Dialog>
 			</div>
 
 			{/* Signup Form */}
@@ -134,7 +182,7 @@ export function SignupForm() {
 								<SelectItem value="-16">Entre 12 et 16 ans</SelectItem>
 							</SelectContent>
 						</Select>
-						<div className="flex items-center space-x-2">
+						<div className="flex items-center space-x-2 text-white">
 							<Checkbox
 								id="terms"
 								checked={acceptedTerms}
@@ -142,7 +190,7 @@ export function SignupForm() {
 							/>
 							<Label
 								htmlFor="terms"
-								className="text-white text-sm cursor-pointer"
+								className="text-sm cursor-pointer"
 							>
 								J'accepte les conditions d'utilisation
 							</Label>
@@ -159,6 +207,12 @@ export function SignupForm() {
 						>
 							{isSubmitting ? "Inscription..." : "S'inscrire"}
 						</Button>
+						<FieldDescription className="px-6 text-center text-gray-400">
+							Déjà un compte ? {" "}
+							<Link href="/login" className="text-white hover:underline">
+								login
+							</Link>
+                    	</FieldDescription>
 					</form>
 				</CardContent>
 			</Card>

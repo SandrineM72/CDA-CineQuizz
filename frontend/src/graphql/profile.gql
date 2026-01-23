@@ -3,6 +3,7 @@ query Profile {
     id
     avatar
     pseudo
+    is_admin
     age_range
     attempts {
       id

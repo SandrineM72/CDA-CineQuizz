@@ -22,10 +22,10 @@ const About = () => {
                                 <p className="p-3 mb-7">
                                     Nous proposons différentes catégories et décennies, afin de pouvoir élargir au maximum vos connaissances cinématographiques.
                                 </p>
-                                <p className="flex align-bottom justify-end">
-                                    <Trophy className="mr-2"/> Envie de jouer ? 
+                                <p className="flex justify-end items-baseline">
+                                    <Trophy size={30} className="mr-1"/> Envie de jouer ? 
                                     <Link href={"/signup"}>
-                                        <button type="button" className="text-white bg-red-800 border-3 border-stone-600 ml-3 mb-5 px-1 py-1 rounded-lg left-0 bottom-0 text-sm hover:bg-red-600">
+                                        <button type="button" className="text-white bg-red-800 border-3 border-stone-600 ml-3 mb-5 px-1 py-1 rounded-lg left-0 bottom-0 text-sm cursor-pointer hover:bg-red-600">
                                             S'inscrire
                                         </button>
                                     </Link>

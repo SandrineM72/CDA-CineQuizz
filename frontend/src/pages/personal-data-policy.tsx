@@ -12,18 +12,18 @@ const PersonalDataPolicy = () => {
                                 <h1 className="text-2xl text-center rounded-t-md">Protection données</h1>
                             </CardHeader>
                             <CardContent className="p-0 m-0">
-                                <h2 className="text-xl bg-red-700 p-3 mb-5">Données personnelles (RGPD)</h2>
-                                <p className="px-4">Aucune donnée sensible n’est conservée ni exploitée; les informations saisies sont uniquement simulées pour démonstration.
+                                <h2 className="text-xl bg-red-700 p-3 my-5">Données personnelles (RGPD)</h2>
+                                <p className="px-4 font-[arial]">Aucune donnée sensible n’est conservée ni exploitée; les informations saisies sont uniquement simulées pour démonstration.
                                 Vous pouvez néanmoins demander la suppression de toute donnée test à l’adresse : cinequizz@gmail.com.</p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Cookies</h2>
-                                <p className="px-4"> Cookies techniques uniquement, utilisés pour la navigation et la démonstration. Vous pouvez les refuser via votre navigateur.</p>
+                                <p className="px-4 font-[arial]"> Cookies techniques uniquement, utilisés pour la navigation et la démonstration. Vous pouvez les refuser via votre navigateur.</p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Liens hypertextes</h2>
-                                <p className="px-4">Les liens externes sont fournis à titre d’exemple ; les auteurs n’exercent aucun contrôle sur leur contenu.</p>
+                                <p className="px-4 font-[arial]">Les liens externes sont fournis à titre d’exemple ; les auteurs n’exercent aucun contrôle sur leur contenu.</p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Politique de confidentialité</h2>
-                                <p className="px-4">
+                                <p className="px-4 font-[arial]">
                                     FetchMeHome respecte la vie privée de ses utilisateurs. Aucune donnée personnelle n’est collectée à des fins commerciales ou publicitaires.
                                     Les seules informations susceptibles d’être enregistrées sont celles saisies volontairement dans le cadre de la démonstration pédagogique du site.
                                     Ces données ne sont ni transmises à des tiers, ni utilisées à d’autres fins que la simulation de fonctionnalités.
@@ -32,7 +32,7 @@ const PersonalDataPolicy = () => {
                                 </p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Médiation et litiges</h2>
-                                <p className="px-4 mb-3">En cas de question ou de réclamation, écrivez-nous à cinequizz@gmail.com.</p>
+                                <p className="px-4 mb-3 font-[arial]">En cas de question ou de réclamation, écrivez-nous à cinequizz@gmail.com.</p>
                             </CardContent>
                         </Card>                                  
                 </div>

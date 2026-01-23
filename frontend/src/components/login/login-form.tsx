@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useLoginMutation } from "@/graphql/generated/schema";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -25,6 +26,8 @@ export default function LoginForm() {
 
   // UI state for password visibility
   const [showPassword, setShowPassword] = useState(false);
+  
+  const [errorMessage, setErrorMessage] = useState(null);
 
   /**
    * Handle form submission
@@ -53,9 +56,14 @@ export default function LoginForm() {
         alert("Connexion réussie en tant que joueur !");
         router.push("/connected-user-page");
       }
-    } catch (err) {
- 
+    } catch (err:any) {
       console.error(err);
+      const message =
+        err.graphQLErrors?.[0]?.message ||
+        err.networkError?.message  ||
+        err.errors?.[0]?.extensions.validationErrors?.[0]?.constraints.isStrongPassword ||
+        err.message || "Une erreur est survenue lors de l'inscription";
+			setErrorMessage(message);
     }
   };
 
@@ -94,9 +102,6 @@ export default function LoginForm() {
                     onChange={(e) => setPseudo(e.target.value)}
                     className="bg-transparent border-white text-white placeholder:text-gray-400"
                   />
-                  <FieldDescription className="text-xs text-gray-400">
-                    Your username will be displayed on screen.
-                  </FieldDescription>
                 </Field>
 
                 {/* Password field with visibility toggle */}
@@ -145,21 +150,18 @@ export default function LoginForm() {
                     </Button>
                     <FieldDescription className="px-6 text-center text-gray-400">
                       Pas encore de compte ?{" "}
-                      <a href={"/signup"} className="text-white hover:underline">
+                      <Link href="/signup" className="text-white hover:underline">
                         S'inscrire
-                      </a>
+                      </Link>
                     </FieldDescription>
                   </Field>
                 </FieldGroup>
                 {/* Error message */}
                 {error && (
                   <p className="text-sm text-red-400 text-center">
-                    {error.message}
+                    {errorMessage || error?.message}
                   </p>
                 )}
-
-
-
               </FieldGroup>
             </form>
           </CardContent>

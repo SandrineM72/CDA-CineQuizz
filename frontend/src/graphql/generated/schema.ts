@@ -85,10 +85,14 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAttempt: Attempt;
+  deleteQuiz: Scalars['String']['output'];
   deleteUser: Scalars['String']['output'];
   login: User;
   logout: Scalars['Boolean']['output'];
   signup: User;
+  updateChoice: Scalars['String']['output'];
+  updateQuestion: Scalars['String']['output'];
+  updateQuiz: Scalars['String']['output'];
 };
 
 
@@ -96,6 +100,11 @@ export type MutationCreateAttemptArgs = {
   answers: Array<AnswerInput>;
   duration: Scalars['Int']['input'];
   quizId: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteQuizArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -113,6 +122,24 @@ export type MutationSignupArgs = {
   data: SignupInput;
 };
 
+
+export type MutationUpdateChoiceArgs = {
+  data: UpdateChoiceInput;
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateQuestionArgs = {
+  data: UpdateQuestionInput;
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateQuizArgs = {
+  data: UpdateQuizInput;
+  id: Scalars['Int']['input'];
+};
+
 export type NewUsersStats = {
   __typename?: 'NewUsersStats';
   month: Scalars['Int']['output'];
@@ -120,8 +147,13 @@ export type NewUsersStats = {
   year: Scalars['Int']['output'];
 };
 
+export type ObjectId = {
+  id: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  allQuizzes: Array<Quiz>;
   attempt?: Maybe<Attempt>;
   attemptsByQuiz: Array<Attempt>;
   categories: Array<Category>;
@@ -210,9 +242,31 @@ export type Reward = {
 
 export type SignupInput = {
   age_range: Scalars['String']['input'];
+  avatar?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
   pseudo: Scalars['String']['input'];
+};
+
+export type UpdateChoiceInput = {
+  description: Scalars['String']['input'];
+  is_correct: Scalars['Boolean']['input'];
+};
+
+export type UpdateQuestionInput = {
+  title: Scalars['String']['input'];
+};
+
+export type UpdateQuizInput = {
+  age_range: Scalars['String']['input'];
+  category: ObjectId;
+  decade: ObjectId;
+  description: Scalars['String']['input'];
+  image: Scalars['String']['input'];
+  is_draft: Scalars['Boolean']['input'];
+  is_public: Scalars['Boolean']['input'];
+  time_limit: Scalars['Float']['input'];
+  title: Scalars['String']['input'];
 };
 
 export type User = {
@@ -243,6 +297,11 @@ export type UserGrowthData = {
   count: Scalars['Int']['output'];
   period: Scalars['String']['output'];
 };
+
+export type AllQuizzesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllQuizzesQuery = { __typename?: 'Query', allQuizzes: Array<{ __typename?: 'Quiz', id: number, title: string, description: string, age_range: string, time_limit: number, is_public: boolean, is_draft: boolean, category: { __typename?: 'Category', id: number, name: string }, decade: { __typename?: 'Decade', id: number, name: string }, liked_by: Array<{ __typename?: 'User', id: number }>, questions: Array<{ __typename?: 'Question', id: number }> }> };
 
 export type AttemptQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -276,6 +335,13 @@ export type DeleteUserMutationVariables = Exact<{
 
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string };
+
+export type DeleteQuizMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteQuizMutation = { __typename?: 'Mutation', deleteQuiz: string };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
@@ -311,7 +377,7 @@ export type NextQuizQuery = { __typename?: 'Query', nextQuiz?: { __typename?: 'Q
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, avatar: string, pseudo: string, age_range: string, attempts?: Array<{ __typename?: 'Attempt', id: number }> | null, won_rewards?: Array<{ __typename?: 'Reward', id: number }> | null } | null };
+export type ProfileQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, avatar: string, pseudo: string, is_admin: boolean, age_range: string, attempts?: Array<{ __typename?: 'Attempt', id: number }> | null, won_rewards?: Array<{ __typename?: 'Reward', id: number }> | null } | null };
 
 export type QuizPublicQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -323,7 +389,7 @@ export type QuizQueryVariables = Exact<{
 }>;
 
 
-export type QuizQuery = { __typename?: 'Query', quiz?: { __typename?: 'Quiz', id: number, title: string, description: string, image: string, questions: Array<{ __typename?: 'Question', id: number, title: string, choices: Array<{ __typename?: 'Choice', id: number, description: string, is_correct: boolean }> }> } | null };
+export type QuizQuery = { __typename?: 'Query', quiz?: { __typename?: 'Quiz', id: number, title: string, description: string, image: string, time_limit: number, is_public: boolean, is_draft: boolean, age_range: string, category: { __typename?: 'Category', id: number, name: string }, decade: { __typename?: 'Decade', id: number, name: string }, questions: Array<{ __typename?: 'Question', id: number, title: string, choices: Array<{ __typename?: 'Choice', id: number, description: string, is_correct: boolean }> }> } | null };
 
 export type PrivateQuizzesQueryVariables = Exact<{
   categoryId?: InputMaybe<Scalars['Int']['input']>;
@@ -345,12 +411,95 @@ export type GlobalStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GlobalStatsQuery = { __typename?: 'Query', globalStats: { __typename?: 'GlobalStats', averageScore: number, newUsers: { __typename?: 'NewUsersStats', week: number, month: number, year: number }, ageDistribution: Array<{ __typename?: 'UserAgeDistribution', age_range: string, count: number, percentage: number, formattedLabel: string }>, userGrowth: Array<{ __typename?: 'UserGrowthData', period: string, count: number }>, attemptsSuccessRate: { __typename?: 'AttemptsSuccessRate', passed: number, failed: number, successRate: number, total: number } } };
 
+export type UpdateChoiceMutationVariables = Exact<{
+  updateChoiceId: Scalars['Int']['input'];
+  data: UpdateChoiceInput;
+}>;
+
+
+export type UpdateChoiceMutation = { __typename?: 'Mutation', updateChoice: string };
+
+export type UpdateQuestionMutationVariables = Exact<{
+  data: UpdateQuestionInput;
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type UpdateQuestionMutation = { __typename?: 'Mutation', updateQuestion: string };
+
+export type UpdateQuizMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  data: UpdateQuizInput;
+}>;
+
+
+export type UpdateQuizMutation = { __typename?: 'Mutation', updateQuiz: string };
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string, pseudo: string, age_range: string, avatar: string, is_admin: boolean, created_at: any }> };
 
 
+export const AllQuizzesDocument = gql`
+    query allQuizzes {
+  allQuizzes {
+    id
+    title
+    description
+    age_range
+    time_limit
+    is_public
+    is_draft
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+    liked_by {
+      id
+    }
+    questions {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllQuizzesQuery__
+ *
+ * To run a query within a React component, call `useAllQuizzesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllQuizzesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllQuizzesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllQuizzesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+      }
+export function useAllQuizzesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+        }
+export function useAllQuizzesSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<AllQuizzesQuery, AllQuizzesQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<AllQuizzesQuery, AllQuizzesQueryVariables>(AllQuizzesDocument, options);
+        }
+export type AllQuizzesQueryHookResult = ReturnType<typeof useAllQuizzesQuery>;
+export type AllQuizzesLazyQueryHookResult = ReturnType<typeof useAllQuizzesLazyQuery>;
+export type AllQuizzesSuspenseQueryHookResult = ReturnType<typeof useAllQuizzesSuspenseQuery>;
+export type AllQuizzesQueryResult = ApolloReactCommon.QueryResult<AllQuizzesQuery, AllQuizzesQueryVariables>;
 export const AttemptDocument = gql`
     query Attempt($id: Int!) {
   attempt(id: $id) {
@@ -544,6 +693,37 @@ export function useDeleteUserMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = ApolloReactCommon.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const DeleteQuizDocument = gql`
+    mutation DeleteQuiz($id: Int!) {
+  deleteQuiz(id: $id)
+}
+    `;
+export type DeleteQuizMutationFn = ApolloReactCommon.MutationFunction<DeleteQuizMutation, DeleteQuizMutationVariables>;
+
+/**
+ * __useDeleteQuizMutation__
+ *
+ * To run a mutation, you first call `useDeleteQuizMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteQuizMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteQuizMutation, { data, loading, error }] = useDeleteQuizMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteQuizMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteQuizMutation, DeleteQuizMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<DeleteQuizMutation, DeleteQuizMutationVariables>(DeleteQuizDocument, options);
+      }
+export type DeleteQuizMutationHookResult = ReturnType<typeof useDeleteQuizMutation>;
+export type DeleteQuizMutationResult = ApolloReactCommon.MutationResult<DeleteQuizMutation>;
+export type DeleteQuizMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteQuizMutation, DeleteQuizMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data) {
@@ -739,6 +919,7 @@ export const ProfileDocument = gql`
     id
     avatar
     pseudo
+    is_admin
     age_range
     attempts {
       id
@@ -840,6 +1021,18 @@ export const QuizDocument = gql`
     title
     description
     image
+    time_limit
+    is_public
+    is_draft
+    age_range
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
     questions {
       id
       title
@@ -1031,6 +1224,102 @@ export type GlobalStatsQueryHookResult = ReturnType<typeof useGlobalStatsQuery>;
 export type GlobalStatsLazyQueryHookResult = ReturnType<typeof useGlobalStatsLazyQuery>;
 export type GlobalStatsSuspenseQueryHookResult = ReturnType<typeof useGlobalStatsSuspenseQuery>;
 export type GlobalStatsQueryResult = ApolloReactCommon.QueryResult<GlobalStatsQuery, GlobalStatsQueryVariables>;
+export const UpdateChoiceDocument = gql`
+    mutation UpdateChoice($updateChoiceId: Int!, $data: UpdateChoiceInput!) {
+  updateChoice(id: $updateChoiceId, data: $data)
+}
+    `;
+export type UpdateChoiceMutationFn = ApolloReactCommon.MutationFunction<UpdateChoiceMutation, UpdateChoiceMutationVariables>;
+
+/**
+ * __useUpdateChoiceMutation__
+ *
+ * To run a mutation, you first call `useUpdateChoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateChoiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateChoiceMutation, { data, loading, error }] = useUpdateChoiceMutation({
+ *   variables: {
+ *      updateChoiceId: // value for 'updateChoiceId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateChoiceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateChoiceMutation, UpdateChoiceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<UpdateChoiceMutation, UpdateChoiceMutationVariables>(UpdateChoiceDocument, options);
+      }
+export type UpdateChoiceMutationHookResult = ReturnType<typeof useUpdateChoiceMutation>;
+export type UpdateChoiceMutationResult = ApolloReactCommon.MutationResult<UpdateChoiceMutation>;
+export type UpdateChoiceMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateChoiceMutation, UpdateChoiceMutationVariables>;
+export const UpdateQuestionDocument = gql`
+    mutation UpdateQuestion($data: UpdateQuestionInput!, $id: Int!) {
+  updateQuestion(data: $data, id: $id)
+}
+    `;
+export type UpdateQuestionMutationFn = ApolloReactCommon.MutationFunction<UpdateQuestionMutation, UpdateQuestionMutationVariables>;
+
+/**
+ * __useUpdateQuestionMutation__
+ *
+ * To run a mutation, you first call `useUpdateQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateQuestionMutation, { data, loading, error }] = useUpdateQuestionMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateQuestionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateQuestionMutation, UpdateQuestionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<UpdateQuestionMutation, UpdateQuestionMutationVariables>(UpdateQuestionDocument, options);
+      }
+export type UpdateQuestionMutationHookResult = ReturnType<typeof useUpdateQuestionMutation>;
+export type UpdateQuestionMutationResult = ApolloReactCommon.MutationResult<UpdateQuestionMutation>;
+export type UpdateQuestionMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateQuestionMutation, UpdateQuestionMutationVariables>;
+export const UpdateQuizDocument = gql`
+    mutation UpdateQuiz($id: Int!, $data: UpdateQuizInput!) {
+  updateQuiz(id: $id, data: $data)
+}
+    `;
+export type UpdateQuizMutationFn = ApolloReactCommon.MutationFunction<UpdateQuizMutation, UpdateQuizMutationVariables>;
+
+/**
+ * __useUpdateQuizMutation__
+ *
+ * To run a mutation, you first call `useUpdateQuizMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateQuizMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateQuizMutation, { data, loading, error }] = useUpdateQuizMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateQuizMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateQuizMutation, UpdateQuizMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<UpdateQuizMutation, UpdateQuizMutationVariables>(UpdateQuizDocument, options);
+      }
+export type UpdateQuizMutationHookResult = ReturnType<typeof useUpdateQuizMutation>;
+export type UpdateQuizMutationResult = ApolloReactCommon.MutationResult<UpdateQuizMutation>;
+export type UpdateQuizMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateQuizMutation, UpdateQuizMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

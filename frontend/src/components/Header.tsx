@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useLogoutMutation, useProfileQuery } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
-
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Limelight } from 'next/font/google';
 
@@ -21,10 +20,7 @@ export default function Header() {
 	});
 
 	const [logout] = useLogoutMutation();
-	console.log(data);
-
 	const user = data?.me || null;
-	console.log(user);
 
 	const handleLogout = async (e: FormEvent) => {
 		try {
@@ -41,12 +37,12 @@ export default function Header() {
 	return (
 		<header className="p-4 bg-zinc-900 text-white">
 			<div className="max-w-sm mx-auto flex justify-between items-center">
-				<Link href="/" className="w-max">
+				<Link href={`${user ? "/connected-user-page" : "/"}`} className="w-max">
 					<h1 className="text-2xl font-bold">CinéQuizz</h1>
 				</Link>
 
 				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>    {/* on utilise cet attribut pour gérer l'état de l'ouverture/fermeture */}
-					<DropdownMenuTrigger asChild>
+					<DropdownMenuTrigger asChild className="cursor-pointer">
 						<Button variant="ghost" size="icon" aria-label="Menu">
 							<Menu className={`size-6 ${openMenu ? "hidden": ""}`} />
 							<X className={`size-6 ${openMenu ? "": "hidden"}`} />
@@ -89,6 +85,13 @@ export default function Header() {
 									Profil
 								</DropdownMenuItem>
 							</Link>
+							{
+								user.is_admin && <Link href="/admin">
+									<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+										Admin
+									</DropdownMenuItem>
+								</Link>
+							}
 							<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500" onClick={handleLogout}>
 							Log out
 							</DropdownMenuItem>
