@@ -232,7 +232,7 @@ export default function PrivateHomeForm() {
 							{/* Start Button - Bottom */}
 							<Button
 								onClick={() => handleStartQuiz(quiz.id)}
-								className="w-full bg-black text-white font-bold hover:bg-zinc-900"
+								className="w-full bg-black text-white font-bold hover:bg-zinc-800 cursor-pointer"
 							>
 								Start quiz <ArrowRight className="w-4 h-4" />
 							</Button>

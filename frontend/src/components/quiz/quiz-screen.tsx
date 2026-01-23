@@ -191,7 +191,7 @@ export default function QuizScreen() {
                   "h-auto py-4 text-sm font-bold whitespace-normal",
                   selected === index
                     ? "bg-blue-700 text-white"
-                    : "bg-transparent text-white border border-gray-700",
+                    : "bg-transparent text-white border border-gray-700 cursor-pointer hover:bg-gray-400",
                   selected !== null &&
                     selected !== index &&
                     "opacity-50"

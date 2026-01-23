@@ -91,7 +91,7 @@ export default function LoginForm() {
                 {/* Pseudo field */}
                 <Field>
                   <FieldLabel htmlFor="pseudo" className="text-white">
-                    Username
+                    Pseudo
                   </FieldLabel>
                   <Input
                     id="pseudo"
@@ -107,7 +107,7 @@ export default function LoginForm() {
                 {/* Password field with visibility toggle */}
                 <Field>
                   <FieldLabel htmlFor="password" className="text-white">
-                    Password
+                    Mot de passe
                   </FieldLabel>
                   <div className="relative">
                     <Input

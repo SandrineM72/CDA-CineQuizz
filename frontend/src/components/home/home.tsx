@@ -124,7 +124,7 @@ export default function HomePage() {
                 {/* Bouton pour démarrer */}
                 <Button
                   onClick={() => handleStartQuiz(quiz.id)}
-                  className="w-full text-white"
+                  className="w-full text-white cursor-pointer hover:bg-white hover:text-black"
                   variant="outline"
                 >
                   Commencer le quiz
