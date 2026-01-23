@@ -190,7 +190,7 @@ export default function QuizScreen() {
                 className={cn(
                   "h-auto py-4 text-sm font-bold whitespace-normal",
                   selected === index
-                    ? "bg-red-600 text-white"
+                    ? "bg-blue-700 text-white"
                     : "bg-transparent text-white border border-gray-700",
                   selected !== null &&
                     selected !== index &&
