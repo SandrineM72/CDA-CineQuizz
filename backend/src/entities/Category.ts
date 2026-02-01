@@ -16,13 +16,10 @@ export class Category extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column({ type: "text", nullable: false })
+	@Column("text")  // nullable:false par défaut
 	name: string;
 
 	@Field(() => [Quiz])
-	@OneToMany(
-		() => Quiz,
-		(quiz) => quiz.category,
-	)
+	@OneToMany(() => Quiz, quiz => quiz.category)
 	quizzes: Quiz[];
 }

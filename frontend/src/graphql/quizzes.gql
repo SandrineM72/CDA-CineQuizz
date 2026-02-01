@@ -1,0 +1,18 @@
+query PrivateQuizzes($categoryId: Int, $decadeId: Int) {
+  privateQuizzes(categoryId: $categoryId, decadeId: $decadeId) {
+    id
+    title
+    description
+    image
+    time_limit
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+  }
+}
+

@@ -1,0 +1,25 @@
+query allQuizzes {
+  allQuizzes {
+    id
+    title
+    description
+    age_range
+    time_limit
+    is_public
+    is_draft
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+    liked_by {
+      id
+    }
+    questions {
+      id
+    }
+  }
+}

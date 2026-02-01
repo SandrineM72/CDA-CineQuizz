@@ -1,0 +1,30 @@
+query Quiz($id: Int!) {
+  quiz(id: $id) {
+    id
+    title
+    description
+    image
+    time_limit
+    is_public
+    is_draft
+    age_range
+    category {
+      id
+      name
+    }
+    decade {
+      id
+      name
+    }
+    questions {
+      id
+      title
+      choices {
+        id
+        description
+        is_correct
+      }
+    }
+  }
+}
+

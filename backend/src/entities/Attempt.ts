@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
 import {
 	BaseEntity,
 	Column,
@@ -45,6 +45,15 @@ export class Attempt extends BaseEntity {
 	user: User;
 
 	@Field(() => Quiz)
-	@ManyToOne(() => Quiz)
+	@ManyToOne(() => Quiz, {onDelete:"CASCADE"})
 	quiz: Quiz;
+}
+
+@InputType()
+	export class AnswerInput {
+	@Field(() => Int)
+	questionId!: number;
+
+	@Field(() => Int)
+	choiceId!: number;
 }

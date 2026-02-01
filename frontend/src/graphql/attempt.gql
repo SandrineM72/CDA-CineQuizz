@@ -1,0 +1,12 @@
+query Attempt($id: Int!) {
+  attempt(id: $id) {
+    id
+    score
+    percentage_success
+    passed
+    duration
+    quiz {
+      id
+    }
+  }
+}
