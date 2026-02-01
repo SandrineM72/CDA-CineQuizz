@@ -5,9 +5,9 @@ import { useLogoutMutation, useProfileQuery } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Limelight } from 'next/font/google';
+import { Quantico } from 'next/font/google';
 
-const limelight = Limelight({
+const quantico = Quantico({
 	weight: ["400"]
 });
 
@@ -52,7 +52,7 @@ export default function Header() {
 					<DropdownMenuContent sideOffset={10} className="w-60 text-white bg-stone-600 border-0" align="start">
 					{/* menu visiteur */}
 					{!user && 
-						<DropdownMenuGroup className={limelight.className}>
+						<DropdownMenuGroup className={quantico.className}>
 							<Link href="/contacts">
 								<DropdownMenuItem className="py-3 text-xl hover:bg-stone-500 cursor-pointer" >
 									Contacts
@@ -79,7 +79,7 @@ export default function Header() {
 					}
 					{/* menu utilisateur connecté */}
 					{user &&
-						<DropdownMenuGroup className={limelight.className}> 
+						<DropdownMenuGroup className={quantico.className}> 
 							<Link href="/profile">
 								<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
 									Profil

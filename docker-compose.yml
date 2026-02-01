@@ -12,7 +12,7 @@ services:
       retries: 10
     ports:
       - 5432:5432
-      
+
   backend:
     stop_grace_period: 0s
     environment:
@@ -30,7 +30,7 @@ services:
     stop_grace_period: 1s
     build: frontend
     ports:
-      - 3000:3000
+      - 3001:3000
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
