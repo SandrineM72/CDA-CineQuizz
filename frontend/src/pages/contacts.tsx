@@ -19,12 +19,12 @@ const Contacts = () => {
                             <li>Une question ?</li>
                             <li>Un avis ?</li>
                         </ul>
-                        <p className="py-3">L’équipe de CinéQuizz vous répondra dans les plus brefs délais.</p>
+                        <p className="py-3">L’équipe de CyberQuiz vous répondra dans les plus brefs délais.</p>
                         <div className='py-3'>
-                            <Link href="mailto: cinequizz@gmail.com" className="flex justify-start gap-5 py-3">
+                            <Link href="mailto: cyberquiz@gmail.com" className="flex justify-start gap-5 py-3">
                                 <Button type="submit" variant="outline" className="cursor-pointer mb-4 w-full border-white text-white hover:bg-white hover:text-black">
                                     <Mail />
-                                    <span>cinequizz@gmail.com</span>    
+                                    <span>cyberquiz@gmail.com</span>    
                                 </Button>
                             </Link>
                         </div>

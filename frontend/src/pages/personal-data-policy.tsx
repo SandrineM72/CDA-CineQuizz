@@ -14,7 +14,7 @@ const PersonalDataPolicy = () => {
                             <CardContent className="p-0 m-0">
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Données personnelles (RGPD)</h2>
                                 <p className="px-4 font-[arial]">Aucune donnée sensible n’est conservée ni exploitée; les informations saisies sont uniquement simulées pour démonstration.
-                                Vous pouvez néanmoins demander la suppression de toute donnée test à l’adresse : cinequizz@gmail.com.</p>
+                                Vous pouvez néanmoins demander la suppression de toute donnée test à l’adresse : cyberquiz@gmail.com.</p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Cookies</h2>
                                 <p className="px-4 font-[arial]"> Cookies techniques uniquement, utilisés pour la navigation et la démonstration. Vous pouvez les refuser via votre navigateur.</p>
@@ -32,7 +32,7 @@ const PersonalDataPolicy = () => {
                                 </p>
 
                                 <h2 className="text-xl bg-red-700 p-3 my-5">Médiation et litiges</h2>
-                                <p className="px-4 mb-3 font-[arial]">En cas de question ou de réclamation, écrivez-nous à cinequizz@gmail.com.</p>
+                                <p className="px-4 mb-3 font-[arial]">En cas de question ou de réclamation, écrivez-nous à cyberquiz@gmail.com.</p>
                             </CardContent>
                         </Card>                                  
                 </div>
