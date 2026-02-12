@@ -1,7 +1,7 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Quiz, UpdateQuizInput } from "../entities/Quiz";
 import { getCurrentUser } from "../auth";
-import { GraphQLContext, AgeRange } from "../types";
+import { GraphQLContext } from "../types";
 import { GraphQLError } from "graphql/error";
 
 @Resolver(() => Quiz)
@@ -13,8 +13,8 @@ export default class QuizResolver {
 			relations: [
 				"questions",
 				"questions.choices",
-				"category",
-				"decade",
+				"theme",
+				"level",
 				"liked_by",
 			],
 			order: {
@@ -28,7 +28,7 @@ export default class QuizResolver {
 	async quizzes() {
 		return Quiz.find({
 			where: { is_public: true, is_draft: false },
-			relations: ["category", "decade"],
+			relations: ["theme", "level", "questions"],
 		});
 	}
 
@@ -39,7 +39,7 @@ export default class QuizResolver {
 				is_public: true,
 				is_draft: false,
 			},
-			relations: ["category", "decade"],
+			relations: ["theme", "level", "questions"],
 			order: { created_at: "DESC" },
 		});
 	}
@@ -50,6 +50,9 @@ export default class QuizResolver {
 		@Arg("currentQuizId", () => Int) currentQuizId: number
 	): Promise<Quiz | null> {
 		return Quiz.createQueryBuilder("quiz")
+			.leftJoinAndSelect("quiz.questions", "questions")
+			.leftJoinAndSelect("quiz.theme", "theme")
+			.leftJoinAndSelect("quiz.level", "level")
 			.where("quiz.id > :currentQuizId", { currentQuizId })
 			.andWhere("quiz.is_public = true")
 			.andWhere("quiz.is_draft = false")
@@ -63,6 +66,9 @@ export default class QuizResolver {
 		@Arg("currentQuizId", () => Int) currentQuizId: number
 	): Promise<Quiz | null> {
 		return Quiz.createQueryBuilder("quiz")
+			.leftJoinAndSelect("quiz.questions", "questions")
+			.leftJoinAndSelect("quiz.theme", "theme")
+			.leftJoinAndSelect("quiz.level", "level")
 			.where("quiz.id > :currentQuizId", { currentQuizId })
 			.andWhere("quiz.is_draft = false")
 			.orderBy("quiz.id", "ASC")
@@ -72,46 +78,25 @@ export default class QuizResolver {
 	@Query(() => [Quiz])
 	async privateQuizzes(
 		@Ctx() context: GraphQLContext,
-		@Arg("categoryId", () => Int, { nullable: true }) categoryId?: number,
-		@Arg("decadeId", () => Int, { nullable: true }) decadeId?: number
+		@Arg("themeId", () => Int, { nullable: true }) themeId?: number,
+		@Arg("levelId", () => Int, { nullable: true }) levelId?: number
 	) {
-		const currentUser = await getCurrentUser(context);
-		const userAgeRange = currentUser.age_range;
+		await getCurrentUser(context); // Vérifie que l'utilisateur est connecté
 
 		const queryBuilder = Quiz.createQueryBuilder("quiz")
 			.where("quiz.is_public = false")
 			.andWhere("quiz.is_draft = false")
-			.leftJoinAndSelect("quiz.category", "category")
-			.leftJoinAndSelect("quiz.decade", "decade")
+			.leftJoinAndSelect("quiz.theme", "theme")
+			.leftJoinAndSelect("quiz.level", "level")
+			.leftJoinAndSelect("quiz.questions", "questions")
 			.leftJoinAndSelect("quiz.liked_by", "liked_by");
 
-		if (categoryId) {
-			queryBuilder.andWhere("category.id = :categoryId", { categoryId });
+		if (themeId) {
+			queryBuilder.andWhere("theme.id = :themeId", { themeId });
 		}
 
-		if (decadeId) {
-			queryBuilder.andWhere("decade.id = :decadeId", { decadeId });
-		}
-
-		if (userAgeRange === AgeRange.MOINS_12) {
-			queryBuilder.andWhere(
-				"(quiz.age_range = :tous OR quiz.age_range = :moins12)",
-				{
-					tous: AgeRange.TOUS_PUBLICS,
-					moins12: AgeRange.MOINS_12,
-				}
-			);
-		} else if (userAgeRange === AgeRange.MOINS_16) {
-			queryBuilder.andWhere(
-				"(quiz.age_range IN (:...ranges))",
-				{
-					ranges: [
-						AgeRange.TOUS_PUBLICS,
-						AgeRange.MOINS_12,
-						AgeRange.MOINS_16,
-					],
-				}
-			);
+		if (levelId) {
+			queryBuilder.andWhere("level.id = :levelId", { levelId });
 		}
 
 		return queryBuilder.getMany();
@@ -120,7 +105,7 @@ export default class QuizResolver {
 	@Query(() => [Quiz])
 	async allQuizzes() {
 		return Quiz.find({
-			relations: ["category", "decade", "questions", "liked_by"],
+			relations: ["theme", "level", "questions", "liked_by"],
 			order: {
 				id: "ASC"
 			},
@@ -141,7 +126,7 @@ export default class QuizResolver {
 	async updateQuiz(@Arg("id", () => Int) id: number, @Arg("data", () => UpdateQuizInput, {validate: true}) data: UpdateQuizInput ) {
 		const quizToUpdate = await Quiz.findOne({
 			where: {id: id},
-			relations: ["category", "decade", "questions"]
+			relations: ["theme", "level", "questions"]
 		});
 
 		if (!quizToUpdate) throw new GraphQLError("quiz not found", { extensions: { code: "NOT_FOUND", http: { status: 404 } } });

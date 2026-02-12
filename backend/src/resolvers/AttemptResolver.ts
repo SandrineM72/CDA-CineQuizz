@@ -53,7 +53,7 @@ export default class AttemptResolver {
 				quiz: { id: quizId },
 				user: { id: user.id },
 			},
-			relations: ["quiz"],
+			relations: ["quiz", "quiz.questions"],
 			order: { started_at: "DESC" },
 		});
 	}
@@ -78,7 +78,7 @@ export default class AttemptResolver {
 		});
 	}
 
-	if (!quiz.questions.length) {
+	if (!quiz.questions || !quiz.questions.length) {
 		throw new GraphQLError("Quiz has no questions");
 	}
 
@@ -140,4 +140,3 @@ export default class AttemptResolver {
 		});
 	}
 }
-

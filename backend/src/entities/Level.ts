@@ -10,7 +10,7 @@ import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()
-export class Decade extends BaseEntity {
+export class Level extends BaseEntity {
 	@Field(() => Int)
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -22,7 +22,7 @@ export class Decade extends BaseEntity {
 	@Field(() => [Quiz])
 	@OneToMany(
 		() => Quiz,
-		(quiz) => quiz.decade,
+		(quiz) => quiz.level,
 	)
 	quizzes: Quiz[];
 }

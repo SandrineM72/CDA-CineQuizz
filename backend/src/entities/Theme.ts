@@ -10,7 +10,7 @@ import { Quiz } from "./Quiz";
 
 @ObjectType()
 @Entity()
-export class Category extends BaseEntity {
+export class Theme extends BaseEntity {
 	@Field(() => Int)
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -20,6 +20,6 @@ export class Category extends BaseEntity {
 	name: string;
 
 	@Field(() => [Quiz])
-	@OneToMany(() => Quiz, quiz => quiz.category)
+	@OneToMany(() => Quiz, quiz => quiz.theme)
 	quizzes: Quiz[];
 }

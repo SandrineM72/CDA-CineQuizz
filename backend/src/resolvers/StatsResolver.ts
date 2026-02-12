@@ -4,12 +4,10 @@ import { Attempt } from "../entities/Attempt";
 import { 
 	GlobalStats, 
 	NewUsersStats, 
-	UserAgeDistribution, 
 	AttemptsSuccessRate, 
 	UserGrowthData 
 } from "../entities/Stats";
 import { MoreThanOrEqual } from "typeorm";
-import { AgeRange } from "../types";
 
 @Resolver()
 export default class StatsResolver {
@@ -45,58 +43,6 @@ export default class StatsResolver {
 			month: newUsersMonth,
 			year: newUsersYear,
 		};
-
-		// Age distribution
-		const allUsers = await User.find();
-		const ageDistributionMap = new Map<string, number>();
-		
-		allUsers.forEach((user) => {
-			const ageRange = user.age_range;
-			ageDistributionMap.set(ageRange, (ageDistributionMap.get(ageRange) || 0) + 1);
-		});
-
-		const totalUsers = allUsers.length;
-		
-		// Helper function to format age range labels
-		const formatAgeRangeLabel = (ageRange: AgeRange): string => {
-			switch (ageRange) {
-				case AgeRange.TOUS_PUBLICS:
-					return "Tous publics";
-				case AgeRange.MOINS_12:
-					return "Moins de 12 ans";
-				case AgeRange.MOINS_16:
-					return "12-16 ans";
-				default:
-					return ageRange;
-			}
-		};
-
-		const ageDistribution: UserAgeDistribution[] = [
-			{
-				age_range: AgeRange.TOUS_PUBLICS,
-				count: ageDistributionMap.get(AgeRange.TOUS_PUBLICS) || 0,
-				percentage: totalUsers > 0 
-					? Number((((ageDistributionMap.get(AgeRange.TOUS_PUBLICS) || 0) / totalUsers) * 100).toFixed(1))
-					: 0,
-				formattedLabel: formatAgeRangeLabel(AgeRange.TOUS_PUBLICS),
-			},
-			{
-				age_range: AgeRange.MOINS_12,
-				count: ageDistributionMap.get(AgeRange.MOINS_12) || 0,
-				percentage: totalUsers > 0 
-					? Number((((ageDistributionMap.get(AgeRange.MOINS_12) || 0) / totalUsers) * 100).toFixed(1))
-					: 0,
-				formattedLabel: formatAgeRangeLabel(AgeRange.MOINS_12),
-			},
-			{
-				age_range: AgeRange.MOINS_16,
-				count: ageDistributionMap.get(AgeRange.MOINS_16) || 0,
-				percentage: totalUsers > 0 
-					? Number((((ageDistributionMap.get(AgeRange.MOINS_16) || 0) / totalUsers) * 100).toFixed(1))
-					: 0,
-				formattedLabel: formatAgeRangeLabel(AgeRange.MOINS_16),
-			},
-		];
 
 		// User growth by month (last 3 months only)
 		const userGrowth: UserGrowthData[] = [];
@@ -147,7 +93,6 @@ export default class StatsResolver {
 
 		return {
 			newUsers,
-			ageDistribution,
 			userGrowth,
 			attemptsSuccessRate,
 			averageScore: Math.round(averageScore * 100) / 100, // Round to 2 decimal places

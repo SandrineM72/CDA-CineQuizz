@@ -10,13 +10,13 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from "typeorm";
-import { Category } from "./Category";
-import { Decade } from "./Decade";
+import { Theme } from "./Theme";
+import { Level } from "./Level";
 import { Question } from "./Question";
 import { User } from "./User";
 import { Attempt } from "./Attempt";
-import { AgeRange, ObjectId } from "../types";
-import { IsBoolean, IsEnum, IsUrl, Length, Min } from "class-validator";
+import { ObjectId } from "../types";
+import { IsBoolean, IsUrl, Length, Min } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -38,10 +38,6 @@ export class Quiz extends BaseEntity {
 	image: string;
 
 	@Field()
-	@Column({ type:"enum", enum: AgeRange})
-	age_range: AgeRange;
-
-	@Field()
 	@Column()
 	time_limit: number;
 	
@@ -61,27 +57,27 @@ export class Quiz extends BaseEntity {
 	@UpdateDateColumn()
 	updated_at: Date;
 
-	@Field(()=> Decade)
+	@Field(()=> Level)
 	@ManyToOne(
-		() => Decade,
-		(decade) => decade.quizzes,
+		() => Level,
+		(level) => level.quizzes,
 	)
-	decade: Decade;
+	level: Level;
 
-	@Field(() => Category)
+	@Field(() => Theme)
 	@ManyToOne(
-		() => Category,
-		(category) => category.quizzes,
+		() => Theme,
+		(theme) => theme.quizzes,
 	)
-	category: Category;
+	theme: Theme;
 
-	@Field(() => [Question])
+	@Field(() => [Question], { nullable: true })
 	@OneToMany(
 		() => Question,
 		(question) => question.quiz,
 		{cascade: true, onDelete: "CASCADE"} 
 	)
-	questions: Question[];
+	questions?: Question[];
 
 	@OneToMany(
 		() => Attempt,
@@ -122,15 +118,10 @@ export class UpdateQuizInput {
 	@IsBoolean()
 	is_draft: boolean;
 
-	@Field()
-	@IsEnum(AgeRange, {message: "La valeur doit être '-16', '-12' ou 'tous publics'"})
-	age_range: AgeRange
+	@Field(() => ObjectId)
+	theme: ObjectId;
 
 	@Field(() => ObjectId)
-	category: ObjectId;
-
-	@Field(() => ObjectId)
-	decade: ObjectId;
+	level: ObjectId;
 
 }
-

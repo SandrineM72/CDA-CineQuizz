@@ -1,20 +1,4 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import type { AgeRange } from "../types";
-
-@ObjectType()
-export class UserAgeDistribution {
-	@Field()
-	age_range: AgeRange;
-
-	@Field(() => Int)
-	count: number;
-
-	@Field()
-	percentage: number;
-
-	@Field()
-	formattedLabel: string;
-}
 
 @ObjectType()
 export class AttemptsSuccessRate {
@@ -56,9 +40,6 @@ export class NewUsersStats {
 export class GlobalStats {
 	@Field(() => NewUsersStats)
 	newUsers: NewUsersStats;
-
-	@Field(() => [UserAgeDistribution])
-	ageDistribution: UserAgeDistribution[];
 
 	@Field(() => [UserGrowthData])
 	userGrowth: UserGrowthData[];

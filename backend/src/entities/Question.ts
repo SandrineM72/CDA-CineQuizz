@@ -22,6 +22,10 @@ export class Question extends BaseEntity {
 	@Column({ type: "text", nullable: false })
 	title: string;
 
+	@Field({ nullable: true })
+	@Column({ type: "text", nullable: true })
+	explanation?: string;
+
 	@Field(() => [Choice])
 	@OneToMany(
 		() => Choice,
@@ -43,4 +47,7 @@ export class UpdateQuestionInput {
 @Field()
 @MinLength(5, {message: "La question doit contenir au moins 10 caractères" })
 title: string;
+
+@Field({ nullable: true })
+explanation?: string;
 }

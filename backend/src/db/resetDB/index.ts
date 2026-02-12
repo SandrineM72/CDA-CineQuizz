@@ -1,7 +1,7 @@
 import db from "../index";
 import { clearDB } from "./utils";
-import { createCategories } from "./category";
-import { createDecades } from "./decade";
+import { createThemes } from "./theme";
+import { createLevels } from "./level";
 import { createRewards } from "./reward";
 import { createUsers } from "./user";
 import { createQuizzes } from "./quiz";
@@ -12,9 +12,9 @@ import { createRelations } from "./relations";
 async function main() {
   await clearDB();
 
-  // Créer les catégories et décennies (sans dépendances)
-  const categories = await createCategories();
-  const decades = await createDecades();
+  // Créer les thèmes et niveaux (sans dépendances)
+  const themes = await createThemes();
+  const levels = await createLevels();
 
   // Créer les récompenses (sans dépendances)
   const rewards = await createRewards();
@@ -22,14 +22,14 @@ async function main() {
   // Créer les utilisateurs (sans dépendances)
   const users = await createUsers();
 
-  // Créer les quiz (dépend de categories et decades)
+  // Créer les quiz (dépend de themes et levels)
   const quizzes = await createQuizzes({
-    comedieCategory: categories.comedieCategory,
-    drameCategory: categories.drameCategory,
-    actionCategory: categories.actionCategory,
-    decade80: decades.decade80,
-    decade90: decades.decade90,
-    decade2000: decades.decade2000,
+    phishingTheme: themes.phishingTheme,
+    passwordTheme: themes.passwordTheme,
+    wifiTheme: themes.wifiTheme,
+    beginnerLevel: levels.beginnerLevel,
+    advancedLevel: levels.advancedLevel,
+    expertLevel: levels.expertLevel,
   });
 
   // Créer les questions et choix (dépend de quizzes)
@@ -86,4 +86,3 @@ async function main() {
 }
 
 main();
-

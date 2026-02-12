@@ -1,5 +1,4 @@
 import { User } from "../../entities/User";
-import { AgeRange } from "../../types";
 import { hash } from "argon2";
 
 export async function createUsers() {
@@ -7,36 +6,41 @@ export async function createUsers() {
   const guestUser = await User.create({
     email: "guest@cyberquiz.com",
     pseudo: "GuestUser",
-    age_range: AgeRange.TOUS_PUBLICS,
     hashedPassword: await hash("GuestPassword123!"),
-    avatar: "https://i.pravatar.cc/150?img=1",
+    avatar: "https://i.pravatar.cc/150?img=12",
     is_admin: false
   }).save();
 
   const user1 = await User.create({
     email: "marie@example.com",
-    pseudo: "MarieCinephile",
-    age_range: AgeRange.TOUS_PUBLICS,
+    pseudo: "MarieMefiante",
     hashedPassword: await hash("Password123!"),
-    avatar: "https://i.pravatar.cc/150?img=47",
+    avatar: "https://i.pravatar.cc/150?img=19",
     is_admin: false
   }).save();
 
   const user2 = await User.create({
     email: "jean@example.com",
-    pseudo: "JeanDuCinema",
-    age_range: AgeRange.TOUS_PUBLICS,
+    pseudo: "JeanCurieux",
     hashedPassword: await hash("Password123!"),
-    avatar: "https://i.pravatar.cc/150?img=12",
+    avatar: "https://i.pravatar.cc/150?img=56",
     is_admin: false
   }).save();
+
+    const user3 = await User.create({
+    email: "theo@example.com",
+    pseudo: "theoTrouvetout",
+    hashedPassword: await hash("Password123!"),
+    avatar: "https://i.pravatar.cc/150?img=04",
+    is_admin: false
+  }).save();
+
 
   const admin = await User.create({
     email: "admin@cyberquiz.com",
     pseudo: "AdminCyberQuiz",
-    age_range: AgeRange.TOUS_PUBLICS,
     hashedPassword: await hash("Password123!"),
-    avatar: "https://i.pravatar.cc/150?img=33",
+    avatar: "https://i.pravatar.cc/150?img=38",
     is_admin: true
   }).save();
 
@@ -44,6 +48,7 @@ export async function createUsers() {
     guestUser,
     user1,
     user2,
+    user3,
     admin,
   };
 }

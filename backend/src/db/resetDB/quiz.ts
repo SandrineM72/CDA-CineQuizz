@@ -1,349 +1,321 @@
 import { Quiz } from "../../entities/Quiz";
-import { AgeRange } from "../../types";
-import type { Category } from "../../entities/Category";
-import type { Decade } from "../../entities/Decade";
+import type { Theme } from "../../entities/Theme";
+import type { Level } from "../../entities/Level";
 
 interface CreateQuizzesParams {
-  comedieCategory: Category;
-  drameCategory: Category;
-  actionCategory: Category;
-  decade80: Decade;
-  decade90: Decade;
-  decade2000: Decade;
+  phishingTheme: Theme;
+  passwordTheme: Theme;
+  wifiTheme: Theme;
+  beginnerLevel: Level;
+  advancedLevel: Level;
+  expertLevel: Level;
 }
 
 export async function createQuizzes({
-  comedieCategory,
-  drameCategory,
-  actionCategory,
-  decade80,
-  decade90,
-  decade2000,
+  phishingTheme,
+  passwordTheme,
+  wifiTheme,
+  beginnerLevel,
+  advancedLevel,
+  expertLevel,
 }: CreateQuizzesParams) {
+  // ===== QUIZZES PUBLICS (3 SEULEMENT POUR L'ÉCRAN D'ACCUEIL) =====
   const quiz1 = await Quiz.create({
-    title: "Les Comédies Françaises Cultes",
-    description: "Testez vos connaissances sur les comédies françaises incontournables",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
+    title: "Phishing : repérer les arnaques par mail",
+    description: "Commencer le quiz d'essai niveau débutant",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
     time_limit: 300,
     is_public: true,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade90
+    theme: phishingTheme,
+    level: beginnerLevel
   }).save();
 
   const quiz2 = await Quiz.create({
-    title: "Le Cinéma d'Action des Années 80",
-    description: "Plongez dans l'univers explosif du cinéma d'action",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 600,
+    title: "Mots de passe sécurisés",
+    description: "Commencer le quiz d'essai niveau avancé",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 450,
     is_public: true,
     is_draft: false,
-    category: actionCategory,
-    decade: decade80
+    theme: passwordTheme,
+    level: advancedLevel
   }).save();
 
   const quiz3 = await Quiz.create({
-    title: "Les Drames des Années 2000",
-    description: "Explorez les films dramatiques qui ont marqué les années 2000",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_12,
-    time_limit: 450,
-    is_public: false,
-    is_draft: true,
-    category: drameCategory,
-    decade: decade2000
+    title: "Réseaux WiFi publics",
+    description: "Commencer le quiz d'essai niveau expert",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 600,
+    is_public: true,
+    is_draft: false,
+    theme: wifiTheme,
+    level: expertLevel
   }).save();
 
-  // ===== QUIZZES PRIVÉS =====
+  // ===== QUIZZES PRIVÉS (NÉCESSITENT CONNEXION) =====
   const quiz4 = await Quiz.create({
-    title: "Les Films de Science-Fiction Cultes",
-    description: "Voyagez dans le temps et l'espace avec les meilleurs films SF",
-    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 400,
+    title: "Phishing Avancé",
+    description: "Détectez les attaques de phishing sophistiquées",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 450,
     is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade80
+    theme: phishingTheme,
+    level: advancedLevel
   }).save();
 
   const quiz5 = await Quiz.create({
-    title: "Les Comédies Romantiques des 90's",
-    description: "Retrouvez les plus belles histoires d'amour du cinéma",
-    image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 350,
-    is_public: false,
-    is_draft: false,
-    category: comedieCategory,
-    decade: decade90
-  }).save();
-
-  const quiz6 = await Quiz.create({
-    title: "Les Thrillers Psychologiques",
-    description: "Plongez dans l'univers des films à suspense",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 500,
-    is_public: false,
-    is_draft: false,
-    category: drameCategory,
-    decade: decade2000
-  }).save();
-
-  const quiz7 = await Quiz.create({
-    title: "Les Films de Super-Héros",
-    description: "Testez vos connaissances sur les héros masqués",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
+    title: "Mots de Passe Avancés",
+    description: "Techniques avancées de gestion des mots de passe",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
     time_limit: 450,
     is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: passwordTheme,
+    level: advancedLevel
+  }).save();
+
+  const quiz6 = await Quiz.create({
+    title: "Sécurité WiFi Avancée",
+    description: "Protégez-vous efficacement sur les réseaux publics",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 450,
+    is_public: false,
+    is_draft: false,
+    theme: wifiTheme,
+    level: advancedLevel
+  }).save();
+
+  const quiz7 = await Quiz.create({
+    title: "Expert Phishing",
+    description: "Maîtrisez la détection des attaques de phishing les plus sophistiquées",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 600,
+    is_public: false,
+    is_draft: false,
+    theme: phishingTheme,
+    level: expertLevel
   }).save();
 
   const quiz8 = await Quiz.create({
-    title: "Les Comédies Musicales",
-    description: "Chantez et dansez avec les plus grands classiques",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 380,
+    title: "Expert Mots de Passe",
+    description: "Devenez un expert de la sécurité des identifiants",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 600,
     is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade90
+    theme: passwordTheme,
+    level: expertLevel
   }).save();
 
   const quiz9 = await Quiz.create({
-    title: "Les Films de Guerre",
-    description: "Revivez les grandes batailles du cinéma",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 550,
+    title: "Expert Réseaux WiFi",
+    description: "Maîtrisez tous les aspects de la sécurité WiFi",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 600,
     is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade80
+    theme: wifiTheme,
+    level: expertLevel
   }).save();
 
   const quiz10 = await Quiz.create({
-    title: "Les Comédies Américaines des 2000",
-    description: "Découvrez les meilleures comédies hollywoodiennes",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 420,
+    title: "Attaques Ciblées",
+    description: "Reconnaître les attaques de spear phishing",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 500,
     is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade2000
+    theme: phishingTheme,
+    level: expertLevel
   }).save();
 
   const quiz11 = await Quiz.create({
-    title: "Les Films d'Horreur Classiques",
-    description: "Frissons garantis avec les films d'épouvante",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 480,
-    is_public: false,
-    is_draft: false,
-    category: drameCategory,
-    decade: decade80
-  }).save();
-
-  const quiz12 = await Quiz.create({
-    title: "Les Films d'Animation Disney",
-    description: "Retour en enfance avec les classiques Disney",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_12,
-    time_limit: 360,
-    is_public: false,
-    is_draft: false,
-    category: comedieCategory,
-    decade: decade90
-  }).save();
-
-  const quiz13 = await Quiz.create({
-    title: "Les Films de Gangsters",
-    description: "Plongez dans l'univers du crime organisé",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 520,
-    is_public: false,
-    is_draft: false,
-    category: actionCategory,
-    decade: decade80
-  }).save();
-
-  const quiz14 = await Quiz.create({
-    title: "Les Comédies Françaises Modernes",
-    description: "Les meilleures comédies françaises récentes",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
+    title: "Gestionnaires de Mots de Passe",
+    description: "Tout savoir sur les gestionnaires de mots de passe",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
     time_limit: 400,
     is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade2000
+    theme: passwordTheme,
+    level: advancedLevel
+  }).save();
+
+  const quiz12 = await Quiz.create({
+    title: "VPN et Sécurité",
+    description: "Utiliser un VPN sur les réseaux publics",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 400,
+    is_public: false,
+    is_draft: false,
+    theme: wifiTheme,
+    level: advancedLevel
+  }).save();
+
+  const quiz13 = await Quiz.create({
+    title: "Ingénierie Sociale",
+    description: "Comprendre les techniques d'ingénierie sociale",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 550,
+    is_public: false,
+    is_draft: false,
+    theme: phishingTheme,
+    level: expertLevel
+  }).save();
+
+  const quiz14 = await Quiz.create({
+    title: "Authentification Multi-Facteurs",
+    description: "Sécurisez vos comptes avec la 2FA",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 350,
+    is_public: false,
+    is_draft: false,
+    theme: passwordTheme,
+    level: advancedLevel
   }).save();
 
   const quiz15 = await Quiz.create({
-    title: "Les Films de Fantasy",
-    description: "Explorez les mondes magiques du cinéma",
-    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 440,
+    title: "Protocoles de Sécurité WiFi",
+    description: "WPA, WPA2, WPA3 : comprendre les différences",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 450,
     is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: wifiTheme,
+    level: expertLevel
   }).save();
 
   const quiz16 = await Quiz.create({
-    title: "Les Drames Historiques",
-    description: "Revivez les grands moments de l'histoire",
-    image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 580,
+    title: "Emails Suspects",
+    description: "Identifier les signaux d'alerte dans vos emails",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 350,
     is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade90
+    theme: phishingTheme,
+    level: beginnerLevel
   }).save();
 
   const quiz17 = await Quiz.create({
-    title: "Les Films de Sport",
-    description: "L'esprit sportif au cinéma",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 390,
+    title: "Mots de Passe Faibles",
+    description: "Éviter les erreurs courantes",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 300,
     is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade2000
+    theme: passwordTheme,
+    level: beginnerLevel
   }).save();
 
   const quiz18 = await Quiz.create({
-    title: "Les Comédies Britanniques",
-    description: "L'humour britannique au cinéma",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 410,
+    title: "Hotspots Malveillants",
+    description: "Reconnaître les faux points d'accès WiFi",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 400,
     is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade90
+    theme: wifiTheme,
+    level: advancedLevel
   }).save();
 
   const quiz19 = await Quiz.create({
-    title: "Les Films de Road Movie",
-    description: "Partez sur la route avec les meilleurs road movies",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 430,
+    title: "Attaques par SMS",
+    description: "Se protéger du smishing",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 350,
     is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade80
+    theme: phishingTheme,
+    level: advancedLevel
   }).save();
 
   const quiz20 = await Quiz.create({
-    title: "Les Films de Zombies",
-    description: "Survivez à l'apocalypse zombie",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
-    time_limit: 470,
+    title: "Biométrie et Sécurité",
+    description: "Avantages et limites de l'authentification biométrique",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 400,
     is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: passwordTheme,
+    level: expertLevel
   }).save();
 
   const quiz21 = await Quiz.create({
-    title: "Les Comédies Italiennes",
-    description: "Découvrez l'humour italien",
-    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 370,
+    title: "Man-in-the-Middle",
+    description: "Comprendre les attaques MITM sur WiFi",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 500,
     is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade80
+    theme: wifiTheme,
+    level: expertLevel
   }).save();
 
   const quiz22 = await Quiz.create({
-    title: "Les Films de Super-Vilains",
-    description: "Les meilleurs méchants du cinéma",
-    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 460,
+    title: "Clone de Sites Web",
+    description: "Détecter les sites frauduleux",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
+    time_limit: 450,
     is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: phishingTheme,
+    level: advancedLevel
   }).save();
 
   const quiz23 = await Quiz.create({
-    title: "Les Drames Familiaux",
-    description: "Les histoires de famille au cinéma",
-    image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 440,
+    title: "Fuites de Données",
+    description: "Vérifier si vos mots de passe ont été compromis",
+    image: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800&h=600&fit=crop",
+    time_limit: 400,
     is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade90
+    theme: passwordTheme,
+    level: advancedLevel
   }).save();
 
-  // ===== QUIZZES PUBLICS SUPPLÉMENTAIRES =====
   const quiz24 = await Quiz.create({
-    title: "Les Blockbusters des Années 2000",
-    description: "Les plus gros succès du box-office des années 2000",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 480,
-    is_public: true,
+    title: "Cybersécurité au Quotidien",
+    description: "Les bases de la sécurité informatique pour tous",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=600&fit=crop",
+    time_limit: 350,
+    is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: phishingTheme,
+    level: beginnerLevel
   }).save();
 
   const quiz25 = await Quiz.create({
-    title: "Les Comédies des Années 80",
-    description: "L'âge d'or de la comédie au cinéma",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 420,
-    is_public: true,
+    title: "Sécurité Mobile",
+    description: "Protéger vos smartphones et tablettes",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 400,
+    is_public: false,
     is_draft: false,
-    category: comedieCategory,
-    decade: decade80
+    theme: wifiTheme,
+    level: beginnerLevel
   }).save();
 
   const quiz26 = await Quiz.create({
-    title: "Les Drames des Années 90",
-    description: "Les films dramatiques qui ont marqué les années 90",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-    age_range: AgeRange.MOINS_16,
+    title: "Ransomware et Menaces",
+    description: "Comprendre et se protéger des ransomwares",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
     time_limit: 500,
-    is_public: true,
+    is_public: false,
     is_draft: false,
-    category: drameCategory,
-    decade: decade90
+    theme: phishingTheme,
+    level: advancedLevel
   }).save();
 
   const quiz27 = await Quiz.create({
-    title: "Les Films d'Aventure des Années 2000",
-    description: "Partez à l'aventure avec les plus grands films d'action-aventure",
-    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=600&fit=crop",
-    age_range: AgeRange.TOUS_PUBLICS,
-    time_limit: 460,
-    is_public: true,
+    title: "Navigation Sécurisée",
+    description: "Bonnes pratiques pour surfer en toute sécurité",
+    image: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&h=600&fit=crop",
+    time_limit: 380,
+    is_public: false,
     is_draft: false,
-    category: actionCategory,
-    decade: decade2000
+    theme: wifiTheme,
+    level: beginnerLevel
   }).save();
 
   return {
@@ -376,4 +348,3 @@ export async function createQuizzes({
     quiz27,
   };
 }
-

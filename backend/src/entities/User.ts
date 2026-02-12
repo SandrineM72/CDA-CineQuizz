@@ -13,7 +13,6 @@ import {
 import { Reward } from "./Reward";
 import { Quiz } from "./Quiz";
 import { Attempt } from "./Attempt";
-import { AgeRange } from "../types";
 import { IsEmail, IsStrongPassword } from "class-validator";
 
 @ObjectType()
@@ -30,10 +29,6 @@ export class User extends BaseEntity {
 	@Field()
 	@Column({ type: "text", unique: true })
 	pseudo: string;
-
-	@Field()
-	@Column({ type:"enum", enum: AgeRange})
-	age_range: AgeRange;
 
 	@Column("text")
 	hashedPassword: string;
@@ -85,9 +80,6 @@ export class SignupInput {
 
   @Field()
   pseudo : string;
-
-  @Field()
-  age_range : AgeRange;
 
   @Field({nullable: true})
   avatar: string;
