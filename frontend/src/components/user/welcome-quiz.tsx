@@ -1,0 +1,96 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useQuizPublicQuery } from "@/graphql/generated/schema";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import Image from "next/image";
+
+export default function WelcomeQuiz() {
+  const router = useRouter();
+  const { data, loading, error } = useQuizPublicQuery();
+
+  const handleStartQuiz = (quizId: number) => {
+    router.push(`/quiz-details-page?id=${quizId}`);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
+        <div className="w-full max-w-md space-y-4">
+          <p className="text-center text-white">Chargement des quiz...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
+        <div className="w-full max-w-md space-y-4">
+          <p className="text-center text-[#c00f00]">
+            Erreur lors du chargement des quiz : {error.message}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Limite à 3 quiz maximum
+  const quizList = data?.getPublicQuizzes?.slice(0, 3) || [];
+
+  return (
+    <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
+      <div className="w-full max-w-md space-y-4">
+        {/* Header image */}
+        <div className="flex justify-center">
+          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+            <Image
+              src="/illustrations/smartphone_lock_plant-green.png"
+              alt="Bienvenue sur CyberQuiz"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
+
+        {/* Call to action button */}
+        <div className="flex flex-col items-center">
+          <Link href="/signup" className="w-3/4">
+            <Button
+              type="button"
+              className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-14 text-base font-semibold leading-tight"
+            >
+              S'inscrire pour accéder<br />à tout CyberQuiz
+            </Button>
+          </Link>
+        </div>
+
+        {/* Liste des quiz (maximum 3) */}
+        <div className="space-y-3">
+          {quizList.map((quiz) => (
+            <Card
+              key={quiz.id}
+              className="bg-black border-2 border-[#00bb0d] rounded-none"
+            >
+              <CardContent className="px-4 py-4">
+                {/* Titre du thème */}
+                <h3 className="text-[#565656] text-lg font-semibold text-center mb-3">
+                  {quiz.theme?.name || "Thème inconnu"}
+                </h3>
+
+                {/* Bouton pour démarrer */}
+                <Button
+                  onClick={() => handleStartQuiz(quiz.id)}
+                  className="w-full bg-black text-white border-2 border-[#00bb0d] hover:bg-[#00bb0d] hover:text-black rounded-none h-12 text-sm font-semibold"
+                >
+                  Commencer le quiz d'essai<br />niveau {quiz.level?.name || "inconnu"}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

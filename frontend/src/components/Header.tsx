@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useLogoutMutation, useProfileQuery } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Quantico } from 'next/font/google';
 
 const quantico = Quantico({
@@ -35,43 +35,45 @@ export default function Header() {
 	}
 
 	return (
-		<header className="p-4 bg-zinc-900 text-white">
+		<header className="p-4 bg-black text-white border-b-4 border-[#00bb0d]">
 			<div className="max-w-sm mx-auto flex justify-between items-center">
 				<Link href={`${user ? "/connected-user-page" : "/"}`} className="w-max">
-					<h1 className="text-2xl font-bold">CinéQuizz</h1>
+					<h1 className={`text-2xl font-bold text-[#00bb0d] ${quantico.className}`}>CyberQuiz</h1>
 				</Link>
 
-				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>    {/* on utilise cet attribut pour gérer l'état de l'ouverture/fermeture */}
+				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>
 					<DropdownMenuTrigger asChild className="cursor-pointer">
-						<Button variant="ghost" size="icon" aria-label="Menu">
+						<Button variant="ghost" size="icon" aria-label="Menu" className="text-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d]">
 							<Menu className={`size-6 ${openMenu ? "hidden": ""}`} />
 							<X className={`size-6 ${openMenu ? "": "hidden"}`} />
 						</Button>
 					</DropdownMenuTrigger>
 			
-					<DropdownMenuContent sideOffset={10} className="w-60 text-white bg-stone-600 border-0" align="start">
+					<DropdownMenuContent sideOffset={10} className="w-60 text-white bg-[#565656] border border-[#00bb0d] rounded-none" align="end">
 					{/* menu visiteur */}
 					{!user && 
 						<DropdownMenuGroup className={quantico.className}>
-							<Link href="/contacts">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-stone-500 cursor-pointer" >
+
+							<Link href="/infos/contacts">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" >
 									Contacts
 								</DropdownMenuItem>
 							</Link>
-							<Link href="/about">
-								<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+
+							<Link href="/infos/about">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Qui sommes-nous ?
 								</DropdownMenuItem>
 							</Link>
 							
-							<Link href="/personal-data-policy">
-								<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+							<Link href="/infos/personal-data-policy">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Protection des données
 								</DropdownMenuItem>
 							</Link>
 
-							<Link href="/legal-notices">
-								<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+							<Link href="/infos/legal-notices">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Mentions légales
 								</DropdownMenuItem>
 							</Link>
@@ -81,23 +83,22 @@ export default function Header() {
 					{user &&
 						<DropdownMenuGroup className={quantico.className}> 
 							<Link href="/profile">
-								<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Profil
 								</DropdownMenuItem>
 							</Link>
 							{
 								user.is_admin && <Link href="/admin">
-									<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500 cursor-pointer">
+									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 										Admin
 									</DropdownMenuItem>
 								</Link>
 							}
-							<DropdownMenuItem className="pb-3 text-xl hover:bg-stone-500" onClick={handleLogout}>
+							<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" onClick={handleLogout}>
 							Log out
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 					}
-						<DropdownMenuSeparator />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>

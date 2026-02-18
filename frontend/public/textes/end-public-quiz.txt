@@ -1,0 +1,12 @@
+<h1>Bravo !</h1>
+
+<p>Vous avez terminé 3 quiz sur la cybersécurité !
+Cette première étape est très importante. En testant vos connaissances, vous avez déjà commencé à développer les bons réflexes pour naviguer en toute sécurité dans le monde numérique.</p>
+
+<h2>Mais ce n’est que le début ! </h2>
+<p>La plupart des attaques peuvent être évitées avec les bons réflexes.</p>
+
+<p>La cybersécurité évolue chaque jour, et il reste encore beaucoup à découvrir pour acquérir des habitudes plus sûres.
+Inscrivez-vous dès maintenant pour accéder à de nouveaux quiz, approfondir voss connaissances et continuer à renforcer votre vigilance.</p>
+
+<h2>Continuez sur cette lancée et inscrivez-vous !</h2>

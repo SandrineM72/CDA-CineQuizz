@@ -1,0 +1,9 @@
+<h1>Bienvenue<br />
+sur CyberQuiz !</h1>
+
+<p>Testez vos réflexes cybersécurité et protégez ce qui compte vraiment. Chaque jour, des millions de personnes sont victimes d'arnaques en ligne, de vols de données ou de piratages. Un simple clic peut compromettre vos comptes bancaires, vos photos de famille ou les données de votre entreprise.</p>
+
+<h2>La bonne nouvelle ?</h2>
+<p>La plupart des attaques peuvent être évitées avec les bons réflexes.</p>
+
+<p>CyberQuiz vous propose des quiz adaptés à votre niveau pour apprendre à repérer les arnaques, créer des mots de passe sûrs, protéger votre vie privée et réagir face aux menaces du quotidien. Que vous soyez débutant ou expert, ces connaissances sont essentielles dans votre vie personnelle comme professionnelle.</p>
