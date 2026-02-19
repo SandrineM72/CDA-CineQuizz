@@ -1,0 +1,9 @@
+query GuestUserRecentAttempts {
+  guestUserRecentAttempts {
+    id
+    score
+    percentage_success
+    duration
+    finished_at
+  }
+}

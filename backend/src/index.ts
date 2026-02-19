@@ -11,7 +11,7 @@ async function start() {
   const apollo = await initApollo(fastify);
   await apollo.start();
   
-  fastify.all("/", fastifyApolloHandler(apollo, {
+  fastify.all("/graphql", fastifyApolloHandler(apollo, {
     context: async (req, res) => ({ res, req }),
   }));
   await fastify.listen({ port: env.GRAPHQL_SERVER_PORT, host: "0.0.0.0" });

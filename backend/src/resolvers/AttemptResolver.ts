@@ -5,6 +5,7 @@ import { User } from "../entities/User";
 import { GraphQLError } from "graphql/error";
 import { GraphQLContext } from "../types";
 import { getJWT } from "../auth";
+import { IsNull, Not } from "typeorm";
 
 // Helper function to get the authenticated user or use the dedicated guest user
 // The guest user is specifically created without admin rights to prevent security issues
@@ -139,4 +140,39 @@ export default class AttemptResolver {
 			order: { finished_at: "DESC" },
 		});
 	}
+
+
+	@Query(() => Int)
+	async guestUserCompletedQuizzes(
+	@Ctx() context: GraphQLContext
+	): Promise<number> {
+	const user = await getUserOrDefault(context);
+	
+	// Compte le nombre de quiz terminés
+	const completedCount = await Attempt.count({
+		where: {
+		user: { id: user.id },
+		finished_at: Not(IsNull()),
+		},
+	});
+	
+	return completedCount;
+	}
+
+	@Query(() => [Attempt])
+	async guestUserRecentAttempts(
+	@Ctx() context: GraphQLContext
+	): Promise<Attempt[]> {
+	const user = await getUserOrDefault(context);
+	
+	return await Attempt.find({
+		where: {
+		user: { id: user.id },
+		finished_at: Not(IsNull()),
+		},
+		order: { finished_at: "DESC" },
+		take: 3,
+	});
+	}
+
 }

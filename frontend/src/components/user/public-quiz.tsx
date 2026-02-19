@@ -12,34 +12,42 @@ import {
 export default function PublicQuiz() {
   const router = useRouter();
   const quizId = router.query.id ? Number(router.query.id) : undefined;
+  
+  // Récupérer questionIndex et answers depuis les query params (pour la navigation)
+  const questionIndexParam = router.query.questionIndex ? Number(router.query.questionIndex) : 0;
+  const answersParam = router.query.answers ? JSON.parse(router.query.answers as string) : [];
+  const durationParam = router.query.duration ? Number(router.query.duration) : 0;
 
   const { data, loading: isLoading, error } = useQuizQuery({
     variables: { id: quizId! },
     skip: !quizId,
   });
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(questionIndexParam);
   const [selected, setSelected] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(Date.now() - (durationParam * 1000));
 
   // Stocke les réponses utilisateur
-  const answersRef = useRef<
-    { questionId: number; choiceId: number }[]
-  >([]);
+  const answersRef = useRef<{ questionId: number; choiceId: number }[]>(answersParam);
 
   const quiz = data?.quiz;
   const currentQuestion = quiz?.questions?.[currentQuestionIndex];
   const totalQuestions = quiz?.questions?.length ?? 0;
 
-  // Init quiz
+  // Init quiz - réinitialiser seulement si c'est la première question
   useEffect(() => {
-    if (quiz?.questions) {
+    if (quiz?.questions && questionIndexParam === 0) {
       startTimeRef.current = Date.now();
       answersRef.current = [];
     }
-  }, [quiz?.questions]);
+  }, [quiz?.questions, questionIndexParam]);
+
+  // Mettre à jour currentQuestionIndex quand questionIndexParam change
+  useEffect(() => {
+    setCurrentQuestionIndex(questionIndexParam);
+  }, [questionIndexParam]);
 
   // Handle answer click
   const handleAnswerClick = (choiceId: number, choiceIndex: number) => {
@@ -100,7 +108,7 @@ export default function PublicQuiz() {
         <div className="flex justify-center">
           <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
             <Image
-              src={quiz.image || "/illustrations/smartphone_lock_plant-green.png"}
+              src="/illustrations/code_dark.jpg"
               alt="Quiz"
               fill
               className="object-cover"
@@ -111,14 +119,14 @@ export default function PublicQuiz() {
 
         {/* Question Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardContent className="px-4 py-6">
+          <CardContent className="px-4">
             <div className="space-y-4">
               {/* Question number and title */}
-              <div className="bg-[#565656] p-4 text-center">
-                <p className="text-white text-base font-semibold mb-2">
+              <div className="bg-[#565656] p-4 text-center space-y-2">
+                <p className="text-white text-base font-semibold">
                   Question N°{currentQuestionIndex + 1}
                 </p>
-                <p className="text-white text-lg">
+                <p className="text-white text-base font-normal leading-relaxed">
                   {currentQuestion.title}
                 </p>
               </div>
@@ -130,7 +138,7 @@ export default function PublicQuiz() {
                     key={choice.id}
                     onClick={() => handleAnswerClick(choice.id, index)}
                     disabled={selected !== null}
-                    className={`w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold ${
+                    className={`w-full bg-[#00bb0d] text-white border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal ${
                       selected === index ? 'opacity-70' : ''
                     } ${selected !== null && selected !== index ? 'opacity-50' : ''}`}
                   >

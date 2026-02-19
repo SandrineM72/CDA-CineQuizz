@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
@@ -12,7 +10,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { ArrowRight, Clock, Target } from "lucide-react";
-import { usePrivateQuizzesQuery, PrivateQuizzesQuery, useCategoriesQuery, useDecadesQuery } from "@/graphql/generated/schema";
+import { usePrivateQuizzesQuery, PrivateQuizzesQuery } from "@/graphql/generated/schema";
 
 function formatDuration(seconds: number): string {
 	const minutes = Math.floor(seconds / 60);

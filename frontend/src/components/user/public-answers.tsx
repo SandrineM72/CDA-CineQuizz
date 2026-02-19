@@ -5,8 +5,9 @@ import Image from "next/image";
 import {
   useQuizQuery,
   useCreateAttemptMutation,
+  useGuestUserCompletedQuizzesQuery,
 } from "@/graphql/generated/schema";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function PublicAnswers() {
   const router = useRouter();
@@ -28,20 +29,30 @@ export default function PublicAnswers() {
     skip: !parsedQuizId,
   });
 
+  // Récupérer le nombre de quiz terminés par le GuestUser
+  const { data: completedData, refetch: refetchCompleted } = useGuestUserCompletedQuizzesQuery();
+  const completedQuizzes = completedData?.guestUserCompletedQuizzes || 0;
+
   const quiz = data?.quiz;
   const currentQuestion = quiz?.questions?.[parsedQuestionIndex];
   const totalQuestions = quiz?.questions?.length ?? 0;
 
   // Déterminer le bouton et l'action
   const isLastQuestionOfQuiz = parsedQuestionIndex === totalQuestions - 1;
-  const totalAnswered = answersArray.length;
 
-  // Cas 1 : Pas fini le quiz actuel
+  // Cas 1 : Pas fini le quiz actuel (< 3 questions)
   const isCase1 = !isLastQuestionOfQuiz;
-  // Cas 2 : Quiz fini mais moins de 9 questions au total
-  const isCase2 = isLastQuestionOfQuiz && totalAnswered < 9;
-  // Cas 3 : 9 questions répondues (3 quiz terminés)
-  const isCase3 = totalAnswered >= 9;
+  // Cas 2 : Quiz fini, mais le user n'a pas encore terminé 3 quiz
+  const isCase2 = isLastQuestionOfQuiz && completedQuizzes < 2; // < 2 car on va en créer un de plus
+  // Cas 3 : Le user a déjà 2 quiz terminés, celui-ci sera le 3ème
+  const isCase3 = isLastQuestionOfQuiz && completedQuizzes >= 2;
+
+  // Trouver la réponse choisie par l'utilisateur
+  const userAnswer = answersArray.find(
+    (a: any) => a.questionId === currentQuestion?.id
+  );
+  const correctChoice = currentQuestion?.choices.find((c) => c.is_correct);
+  const isCorrectAnswer = userAnswer && correctChoice && userAnswer.choiceId === correctChoice.id;
 
   const handleNextAction = async () => {
     if (isProcessing) return;
@@ -60,7 +71,7 @@ export default function PublicAnswers() {
           },
         });
       } else if (isCase2) {
-        // Créer l'attempt pour ce quiz, puis retour à welcome-quiz
+        // Créer l'attempt pour ce quiz
         await createAttempt({
           variables: {
             quizId: parsedQuizId!,
@@ -68,16 +79,23 @@ export default function PublicAnswers() {
             duration: parsedDuration,
           },
         });
-        router.push('/quiz-welcome');
+        
+        // Recharger le nombre de quiz complétés
+        await refetchCompleted();
+        
+        // Retour à welcome-quiz pour choisir un autre quiz
+        router.push('/quiz-welcome-page');
       } else if (isCase3) {
-        // Créer l'attempt pour ce dernier quiz, puis aller à public-score
-        const result = await createAttempt({
+        // Créer l'attempt pour ce dernier quiz
+        await createAttempt({
           variables: {
             quizId: parsedQuizId!,
             answers: answersArray,
             duration: parsedDuration,
           },
         });
+        
+        // Aller à la page de score final
         router.push('/public-score-page');
       }
     } catch (err) {
@@ -89,15 +107,14 @@ export default function PublicAnswers() {
   const getButtonText = () => {
     if (isCase1) return "Compris, question suivante !";
     if (isCase2) return "Choisir un autre quiz";
-    if (isCase3) return "Les 3 quiz sont terminés - voir mes scores";
+    if (isCase3) return (
+      <>
+        Les 3 quiz sont terminés<br />
+        Voir mes scores
+      </>
+    );
     return "Continuer";
   };
-
-  // Trouver la réponse choisie et la bonne réponse
-  const userAnswer = answersArray.find(
-    (a: any) => a.questionId === currentQuestion?.id
-  );
-  const correctChoice = currentQuestion?.choices.find((c) => c.is_correct);
 
   if (loading) {
     return (
@@ -124,9 +141,9 @@ export default function PublicAnswers() {
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
       <div className="w-full max-w-md space-y-4">
-        {/* Image point d'interrogation */}
+        {/* Image point d'interrogation - ratio 20:9 pour image encore plus large */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full aspect-[20/9] overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/images/question_mark_right_green.jpg"
               alt="Point d'interrogation"
@@ -139,12 +156,20 @@ export default function PublicAnswers() {
 
         {/* Explanation Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardContent className="px-4 py-6">
+          <CardContent className="px-4">
             <div className="space-y-4">
-              {/* Explication */}
-              <div className="bg-[#565656] p-4">
-                <p className="text-white text-base">
-                  {currentQuestion.explanation}
+              {/* Explication avec Bravo/Dommage */}
+              <div className="bg-[#565656] p-4 space-y-2">
+                {/* Message Bravo ou Dommage */}
+                <p className={`text-lg font-semibold text-center ${
+                  isCorrectAnswer ? 'text-[#00bb0d]' : 'text-[#c00f00]'
+                }`}>
+                  {isCorrectAnswer ? 'Bravo !' : 'Dommage !'}
+                </p>
+                
+                {/* Explication */}
+                <p className="text-white text-sm font-normal leading-relaxed">
+                  {currentQuestion.explanation || "Explication non disponible"}
                 </p>
               </div>
 
@@ -152,7 +177,7 @@ export default function PublicAnswers() {
               <Button
                 onClick={handleNextAction}
                 disabled={isProcessing}
-                className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"
+                className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-auto min-h-[48px] py-3 px-4 text-base font-semibold leading-tight"
               >
                 {isProcessing ? "Chargement..." : getButtonText()}
               </Button>
@@ -163,9 +188,9 @@ export default function PublicAnswers() {
                   <Button
                     key={choice.id}
                     disabled
-                    className={`w-full h-12 text-base font-semibold rounded-full border-4 ${
+                    className={`w-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal rounded-full border-4 ${
                       choice.is_correct
-                        ? 'bg-[#00bb0d] border-[#00bb0d] text-black'
+                        ? 'bg-[#00bb0d] border-[#00bb0d] text-white'
                         : 'bg-[#c00f00] border-[#c00f00] text-white'
                     }`}
                   >

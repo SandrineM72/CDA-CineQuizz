@@ -33,9 +33,9 @@ export class User extends BaseEntity {
 	@Column("text")
 	hashedPassword: string;
 
-	@Field()
-	@Column({ type: "text"})
-	avatar: string;
+	@Field({ nullable: true })
+	@Column({ type: "text", nullable: true })
+	avatar?: string;
 
 	@Field()
 	@Column({default: false})
@@ -51,7 +51,7 @@ export class User extends BaseEntity {
 
 	// one to many pour to keep the data's history carried by the association 
 	@Field(() => [Attempt], {nullable: true})
-  @OneToMany(
+  	@OneToMany(
 		() => Attempt,
 		(attempt) => attempt.user,
 	)
@@ -79,10 +79,10 @@ export class SignupInput {
   password: string;
 
   @Field()
-  pseudo : string;
+  pseudo: string;
 
   @Field({nullable: true})
-  avatar: string;
+  avatar?: string;
 }
 
 @InputType()

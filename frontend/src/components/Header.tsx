@@ -28,7 +28,7 @@ export default function Header() {
 			await logout();
 			await refetch();
 			console.log("déconnexion faite");
-			router.push("/");
+			router.push("/login-page");
 		} catch(err) {
 			console.log("Logout error", err);
 		} 
@@ -77,12 +77,20 @@ export default function Header() {
 									Mentions légales
 								</DropdownMenuItem>
 							</Link>
+
+							<Link href="/home-page">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+									Retour accueil
+								</DropdownMenuItem>
+							</Link>
+
+
 						</DropdownMenuGroup>
 					}
 					{/* menu utilisateur connecté */}
 					{user &&
 						<DropdownMenuGroup className={quantico.className}> 
-							<Link href="/profile">
+							<Link href="/profile-page">
 								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Profil
 								</DropdownMenuItem>

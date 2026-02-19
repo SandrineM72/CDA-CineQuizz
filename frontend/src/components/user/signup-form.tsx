@@ -26,11 +26,9 @@ import Link from "next/link";
 export function SignupForm() {
 	const router = useRouter();
 	const [signup, { loading: isSubmitting, error }] = useSignupMutation();
-	const [avatar, setAvatar] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [pseudo, setPseudo] = useState("");
-	const [age_range, setAgeRange] = useState<"tous publics" | "-12" | "-16" | "">("");
 	const [showPassword, setShowPassword] = useState(false);
 	const [acceptedTerms, setAcceptedTerms] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -45,25 +43,18 @@ export function SignupForm() {
 				return;
 			}
 
-			if (!age_range) {
-				setErrorMessage("Veuillez sélectionner une tranche d'âge");
-				return;
-			}
-
 			const result = await signup({
 				variables: {
 					data: {
 						email,
 						pseudo,
 						password,
-						avatar,
-						age_range: age_range as "tous publics" | "-12" | "-16",
 					},
 				},
 			});
 
 			if (result.data && typeof result.data === "object" && "signup" in result.data) {
-				router.push("/login");
+				router.push("/login-page");
 			}
 		} catch (err: any) {
 			const message = 
@@ -84,7 +75,7 @@ export function SignupForm() {
 					<div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
 						<Image
 							src="/illustrations/smartphone_lock_plant-green.png"
-							alt="keyboard and locks"
+							alt="smartphone and plant"
 							fill
 							className="object-cover"
 							priority
@@ -164,25 +155,6 @@ export function SignupForm() {
 									/>
 								</Field>
 
-								{/* Age range - hidden visually but required */}
-								<Field className="hidden">
-									<Select
-										value={age_range || undefined}
-										onValueChange={(val) =>
-											setAgeRange(val as "tous publics" | "-12" | "-16")
-										}
-									>
-										<SelectTrigger className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12">
-											<SelectValue placeholder="Tranche d'âge" />
-										</SelectTrigger>
-										<SelectContent className="bg-[#565656] border-[#00bb0d] text-white">
-											<SelectItem value="tous publics">Tous publics</SelectItem>
-											<SelectItem value="-12">Moins de 12 ans</SelectItem>
-											<SelectItem value="-16">Entre 12 et 16 ans</SelectItem>
-										</SelectContent>
-									</Select>
-								</Field>
-
 								{/* Terms checkbox */}
 								<div className="flex items-center space-x-2">
 									<Checkbox
@@ -218,7 +190,7 @@ export function SignupForm() {
 								{/* Login link */}
 								<FieldDescription className="px-6 text-center text-white">
 									Déjà un compte ?{" "}
-									<Link href="/login" className="text-[#00bb0d] hover:underline font-semibold">
+									<Link href="/login-page" className="text-[#00bb0d] hover:underline font-semibold">
 										Se connecter
 									</Link>
 								</FieldDescription>

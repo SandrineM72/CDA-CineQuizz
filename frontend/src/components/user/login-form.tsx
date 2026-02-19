@@ -53,7 +53,7 @@ export default function LoginForm() {
         router.push("/admin");
       } else {
         alert("Connexion réussie en tant que joueur !");
-        router.push("/connected-user-page");
+        router.push("/choice-page");
       }
     } catch (err:any) {
       console.error(err);
@@ -71,7 +71,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md space-y-4">
         {/* Header image */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full h-64 overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/illustrations/keyboard_with_locks.jpg"
               alt="keyboard and locks"
@@ -85,7 +85,7 @@ export default function LoginForm() {
         {/* Login form */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardContent className="px-4">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <FieldGroup className="gap-4">
                 {/* Pseudo field */}
                 <Field>
@@ -159,7 +159,7 @@ export default function LoginForm() {
                   <p className="text-white text-sm">
                     Pas encore de compte ?
                   </p>
-                  <Link href="/signup" className="block">
+                  <Link href="/signup-page" className="block">
                     <Button
                       type="button"
                       className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"

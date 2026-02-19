@@ -12,6 +12,8 @@ services:
       retries: 10
     ports:
       - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   backend:
     stop_grace_period: 0s
@@ -31,6 +33,12 @@ services:
     build: frontend
     ports:
       - 3001:3001
+    environment:
+      NEXT_PUBLIC_GRAPHQL_API_URL: http://localhost:4000/graphql
+      GRAPHQL_API_URL_SSR: http://backend:4000/graphql
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
+
+volumes:
+  postgres_data:

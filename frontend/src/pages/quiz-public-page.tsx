@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import PublicQuiz from "@/components/public-quiz";
+import PublicQuiz from "@/components/user/public-quiz";
 
 export default function QuizPublicPage() {
   return (

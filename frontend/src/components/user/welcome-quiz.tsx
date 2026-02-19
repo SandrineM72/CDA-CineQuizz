@@ -10,7 +10,7 @@ export default function WelcomeQuiz() {
   const { data, loading, error } = useQuizPublicQuery();
 
   const handleStartQuiz = (quizId: number) => {
-    router.push(`/quiz-details-page?id=${quizId}`);
+    router.push(`/quiz-public-page?id=${quizId}`);
   };
 
   if (loading) {
@@ -35,8 +35,25 @@ export default function WelcomeQuiz() {
     );
   }
 
+  // Fonction pour déterminer l'ordre des niveaux
+  const getLevelOrder = (levelName: string) => {
+    const normalized = levelName.toLowerCase();
+    if (normalized.includes('débutant') || normalized.includes('debutant')) return 1;
+    if (normalized.includes('avancé') || normalized.includes('avance')) return 2;
+    if (normalized.includes('expert')) return 3;
+    return 4; // Autres niveaux en dernier
+  };
+
+  // Trier les quiz par niveau
+  const allQuizzes = data?.getPublicQuizzes || [];
+  const sortedQuizzes = [...allQuizzes].sort((a, b) => {
+    const orderA = getLevelOrder(a.level?.name || '');
+    const orderB = getLevelOrder(b.level?.name || '');
+    return orderA - orderB;
+  });
+
   // Limite à 3 quiz maximum
-  const quizList = data?.getPublicQuizzes?.slice(0, 3) || [];
+  const quizList = sortedQuizzes.slice(0, 3);
 
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
@@ -56,7 +73,7 @@ export default function WelcomeQuiz() {
 
         {/* Call to action button */}
         <div className="flex flex-col items-center">
-          <Link href="/signup" className="w-3/4">
+          <Link href="/signup-page" className="w-3/4">
             <Button
               type="button"
               className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-14 text-base font-semibold leading-tight"
@@ -73,7 +90,7 @@ export default function WelcomeQuiz() {
               key={quiz.id}
               className="bg-black border-2 border-[#00bb0d] rounded-none"
             >
-              <CardContent className="px-4 py-4">
+              <CardContent className="px-4">
                 {/* Titre du thème */}
                 <h3 className="text-[#565656] text-lg font-semibold text-center mb-3">
                   {quiz.theme?.name || "Thème inconnu"}

@@ -15,9 +15,10 @@ query Quiz($id: Int!) {
       id
       name
     }
-    questions {
+    questions {  
       id
       title
+      explanation
       choices {
         id
         description

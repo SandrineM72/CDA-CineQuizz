@@ -1,4 +1,4 @@
-import { Field, InputType, Int, ObjectType } from "type-graphql";
+import { Field, InputType, Int, ObjectType, Float } from "type-graphql";
 import {
 	BaseEntity,
 	Column,
@@ -20,19 +20,19 @@ export class Attempt extends BaseEntity {
 	@Column()
 	started_at: Date;
 
-	@Field()
+	@Field(() => Int)
 	@Column()
 	score: number;
 
-	@Field()
-	@Column()
+	@Field(() => Float) 
+	@Column("float")  
 	percentage_success: number;
 
 	@Field()
 	@Column({nullable: true})
 	finished_at: Date;
 
-	@Field()
+	@Field(() => Int)
 	@Column()
 	duration: number;
 
@@ -50,7 +50,7 @@ export class Attempt extends BaseEntity {
 }
 
 @InputType()
-	export class AnswerInput {
+export class AnswerInput {
 	@Field(() => Int)
 	questionId!: number;
 
