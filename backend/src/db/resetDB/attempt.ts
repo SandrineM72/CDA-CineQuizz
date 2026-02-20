@@ -36,6 +36,7 @@ export async function createAttempts({ user1, user2, quiz1, quiz2 }: CreateAttem
     user: user1,
     quiz: quiz2,
     started_at: new Date("2024-01-17T16:00:00"),
+    finished_at: new Date("2024-01-17T16:03:00"),
     score: 1,
     percentage_success: 33,
     duration: 180,

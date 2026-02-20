@@ -62,12 +62,13 @@ export default function PublicAnswers() {
       if (isCase1) {
         // Prochaine question du même quiz
         router.push({
-          pathname: '/quiz-public-page',
+          pathname: '/public-quiz-page',
           query: {
             id: parsedQuizId,
             questionIndex: parsedQuestionIndex + 1,
             answers: JSON.stringify(answersArray),
             duration: parsedDuration,
+            quizId: parsedQuizId,
           },
         });
       } else if (isCase2) {
@@ -141,11 +142,10 @@ export default function PublicAnswers() {
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
       <div className="w-full max-w-md space-y-4">
-        {/* Image point d'interrogation - ratio 20:9 pour image encore plus large */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[20/9] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full h-34 overflow-hidden border-4 border-[#00bb0d]">
             <Image
-              src="/images/question_mark_right_green.jpg"
+              src="/illustrations/question_mark_right_green.jpg"
               alt="Point d'interrogation"
               fill
               className="object-cover"

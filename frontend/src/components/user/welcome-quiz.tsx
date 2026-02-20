@@ -10,7 +10,7 @@ export default function WelcomeQuiz() {
   const { data, loading, error } = useQuizPublicQuery();
 
   const handleStartQuiz = (quizId: number) => {
-    router.push(`/quiz-public-page?id=${quizId}`);
+    router.push(`/public-quiz-page?id=${quizId}`);
   };
 
   if (loading) {
@@ -60,7 +60,7 @@ export default function WelcomeQuiz() {
       <div className="w-full max-w-md space-y-4">
         {/* Header image */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/illustrations/smartphone_lock_plant-green.png"
               alt="Bienvenue sur CyberQuiz"
@@ -76,9 +76,9 @@ export default function WelcomeQuiz() {
           <Link href="/signup-page" className="w-3/4">
             <Button
               type="button"
-              className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-14 text-base font-semibold leading-tight"
+              className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-16 text-base font-semibold leading-tight"
             >
-              S'inscrire pour accéder<br />à tout CyberQuiz
+              S'inscrire ou se<br />connecter pour accéder<br />à tout CyberQuiz
             </Button>
           </Link>
         </div>

@@ -41,6 +41,11 @@ export class User extends BaseEntity {
 	@Column({default: false})
 	is_admin: boolean;
 
+	// 👇 Champ last_login ajouté précédemment
+	@Field()
+	@Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+	last_login: Date;
+
 	@Field()
 	@CreateDateColumn()
 	created_at: Date;
@@ -102,6 +107,11 @@ export class UpdateUserInput {
 
   @Field({ nullable: true })
   avatar?: string;
+
+  // 👇 NOUVEAU : Ajout du champ email
+  @Field({ nullable: true })
+  @IsEmail({}, {message: "L'Email doit être valide."})
+  email?: string;
 
   @Field()
   password: string; // mot de passe actuel (requis pour valider la modification)

@@ -9,7 +9,10 @@ import { endSession, getCurrentUser, startSession } from "../auth";
 export default class UserResolver {
   @Query(() => [User])
   async users() {
-    return User.find();
+    return User.find({
+      relations: ["attempts", "attempts.quiz"],
+      order: { id: "ASC" },
+    });
   }
 
   @Mutation(() => User)
@@ -51,6 +54,10 @@ export default class UserResolver {
         extensions: {code: "INVALID_CREDENTIALS", http: { status: 401}},
       });
     }
+
+    // Mettre à jour last_login
+    user.last_login = new Date();
+    await user.save();
 
     // Créer la session
     await startSession(context, user);
@@ -114,6 +121,18 @@ export default class UserResolver {
         });
       }
       user.pseudo = data.pseudo;
+    }
+
+    // 👇 NOUVEAU : Mettre à jour l'email si fourni
+    if (data.email && data.email !== user.email) {
+      // Vérifier que le nouvel email n'est pas déjà utilisé
+      const existingUser = await User.findOne({ where: { email: data.email } });
+      if (existingUser) {
+        throw new GraphQLError("Cet email est déjà utilisé", {
+          extensions: { code: "EMAIL_ALREADY_TAKEN", http: { status: 400 }},
+        });
+      }
+      user.email = data.email;
     }
 
     // Mettre à jour l'avatar si fourni

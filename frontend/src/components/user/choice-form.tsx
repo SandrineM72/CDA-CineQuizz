@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import {
 	Select,
 	SelectContent,
@@ -11,130 +12,165 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useCategoriesQuery, useDecadesQuery } from "@/graphql/generated/schema";
+import { useThemesQuery, useLevelsQuery, usePrivateQuizzesLazyQuery } from "@/graphql/generated/schema";
 
-export default function ChoicePage() {
+export default function ChoiceForm() {
 	const router = useRouter();
-	const [category, setCategory] = useState<string>("");
-	const [decade, setDecade] = useState<string>("");
+	const [themeId, setThemeId] = useState<string>("");
+	const [levelId, setLevelId] = useState<string>("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	// Retrieves categories from my database
-	const { data: categoriesData, loading: categoriesLoading, error: categoriesError } = useCategoriesQuery();
+	// Récupère les thèmes depuis la base de données
+	const { data: themesData, loading: themesLoading, error: themesError } = useThemesQuery();
 	
-	// Retrieves decade from my database
-	const { data: decadesData, loading: decadesLoading, error: decadesError } = useDecadesQuery();
+	// Récupère les niveaux depuis la base de données
+	const { data: levelsData, loading: levelsLoading, error: levelsError } = useLevelsQuery();
 
-	const categories = categoriesData?.categories || [];
-	const decades = decadesData?.decades || [];
+	// Lazy query pour récupérer les quiz au moment du clic
+	const [fetchPrivateQuizzes] = usePrivateQuizzesLazyQuery();
 
-	const handleValider = () => {
-		// Dynamic construction of my URL for the selected choices
-		// Parameters become optional for the user to get acces to next page
-		const params = new URLSearchParams();
-		
-		if (category) {
-			params.append("categoryId", category);
+	const themes = themesData?.themes || [];
+	const levels = levelsData?.levels || [];
+
+	const handleJouer = async () => {
+		setIsLoading(true);
+		setErrorMessage(null);
+
+		try {
+			// Récupère les quiz correspondant aux filtres
+			const { data } = await fetchPrivateQuizzes({
+				variables: {
+					themeId: themeId ? Number(themeId) : undefined,
+					levelId: levelId ? Number(levelId) : undefined,
+				},
+			});
+
+			const quizzes = data?.privateQuizzes || [];
+
+			if (quizzes.length === 0) {
+				setErrorMessage("Aucun quiz disponible pour cette sélection.");
+				setIsLoading(false);
+				return;
+			}
+
+			// Prend le premier quiz de la liste (ou choisis aléatoirement si tu préfères)
+			const selectedQuiz = quizzes[0];
+			
+			// Redirige directement vers le quiz
+			router.push(`/private-quiz-page?id=${selectedQuiz.id}`);
+		} catch (err) {
+			console.error(err);
+			setErrorMessage("Erreur lors du chargement des quiz.");
+			setIsLoading(false);
 		}
-		
-		if (decade) {
-			params.append("decadeId", decade);
-		}
-		
-		// Redirection with the choices made earlier
-		const queryString = params.toString();
-		const url = queryString 
-			? `/connected-user-page?${queryString}`
-			: `/connected-user-page`;
-		
-		router.push(url);
 	};
 
 	return (
-		<div className="w-full max-w-sm mx-auto px-4 py-8 space-y-6">
-			<Card className="border-white">
-				<CardContent className="p-6 space-y-6">
-					{/* Image Section */}
-					<Card className="overflow-hidden p-0 border-white">
-						<div className="relative w-full aspect-4/3 bg-zinc-800">
-							<img
-								src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyyy9gKjkNfYftUtfaFr0aKh6BsCSsNQxAjw&s"
-								alt="Cinéma"
-								className="absolute inset-0 w-full h-full object-cover"
-							/>
-						</div>
-					</Card>
+		<div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
+			<div className="w-full max-w-md space-y-4">
+				{/* Image */}
+				<div className="flex justify-center">
+          			<div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
+						<Image
+							src="/illustrations/hacker_gloves.jpg"
+							alt="Hacker sur ordinateur"
+							fill
+							className="object-cover"
+							priority
+						/>
+					</div>
+				</div>
 
-					{/* Instruction button */}
-					<Button
-						onClick={() => {}}
-						className="w-full bg-zinc-800 border border-white text-white font-bold hover:bg-zinc-700 text-[12px]" 
-						disabled
-					>
-						Choix catégorie ou décennie 👇
-					</Button>
+				{/* Choice Card */}
+				<Card className="bg-black border-2 border-[#00bb0d] rounded-none">
+					<CardContent className="px-4">
+						<div className="space-y-4">
+							{/* Instruction */}
+							<div className="bg-[#565656] p-4 text-center">
+								<p className="text-white text-base font-normal">
+									Choisissez un niveau<br />et un thème
+								</p>
+							</div>
 
-					{/* Dropdown menues */}
-					<Card className="border-white">
-						<CardContent className="p-6">
-							<div className="flex gap-4 flex-col items-center">
+							{/* Message d'erreur */}
+							{errorMessage && (
+								<div className="bg-[#c00f00] p-3 text-center rounded">
+									<p className="text-white text-sm">{errorMessage}</p>
+								</div>
+							)}
+
+							{/* Dropdowns */}
+							<div className="space-y-3">
+								{/* Dropdown Niveau */}
 								<Select
-									value={category || undefined}
-									onValueChange={setCategory}
-									disabled={categoriesLoading}
+									value={levelId || undefined}
+									onValueChange={setLevelId}
+									disabled={levelsLoading || isLoading}
 								>
-									<SelectTrigger className="bg-zinc-800 border-zinc-700 text-white flex-1">
-										<SelectValue placeholder={categoriesLoading ? "Chargement..." : "Catégorie"} />
+									<SelectTrigger className="w-full bg-[#565656] border-2 border-[#00bb0d] text-white rounded-none h-12">
+										<SelectValue placeholder={levelsLoading ? "Chargement..." : "Niveau"} />
 									</SelectTrigger>
-									<SelectContent>
-										{categoriesError ? (
+									<SelectContent className="bg-[#565656] border-2 border-[#00bb0d] text-white">
+										{levelsError ? (
 											<SelectItem value="error" disabled>
 												Erreur de chargement
 											</SelectItem>
 										) : (
-											categories.map((category) => (
-												<SelectItem key={category.id} value={category.id.toString()}>
-													{category.name}
+											levels.map((level) => (
+												<SelectItem 
+													key={level.id} 
+													value={level.id.toString()}
+													className="text-white hover:bg-[#00bb0d] focus:bg-[#00bb0d]"
+												>
+													{level.name}
 												</SelectItem>
 											))
 										)}
 									</SelectContent>
 								</Select>
 
+								{/* Dropdown Thème */}
 								<Select
-									value={decade || undefined}
-									onValueChange={setDecade}
-									disabled={decadesLoading}
+									value={themeId || undefined}
+									onValueChange={setThemeId}
+									disabled={themesLoading || isLoading}
 								>
-									<SelectTrigger className="bg-zinc-800 border-zinc-700 text-white flex-1">
-										<SelectValue placeholder={decadesLoading ? "Chargement..." : "Decennie"} />
+									<SelectTrigger className="w-full bg-[#565656] border-2 border-[#00bb0d] text-white rounded-none h-12">
+										<SelectValue placeholder={themesLoading ? "Chargement..." : "Thème"} />
 									</SelectTrigger>
-									<SelectContent>
-										{decadesError ? (
+									<SelectContent className="bg-[#565656] border-2 border-[#00bb0d] text-white">
+										{themesError ? (
 											<SelectItem value="error" disabled>
 												Erreur de chargement
 											</SelectItem>
 										) : (
-											decades.map((decade) => (
-												<SelectItem key={decade.id} value={decade.id.toString()}>
-													{decade.name}
+											themes.map((theme) => (
+												<SelectItem 
+													key={theme.id} 
+													value={theme.id.toString()}
+													className="text-white hover:bg-[#00bb0d] focus:bg-[#00bb0d]"
+												>
+													{theme.name}
 												</SelectItem>
 											))
 										)}
 									</SelectContent>
 								</Select>
 							</div>
-						</CardContent>
-					</Card>
 
-					{/* Validation button */}
-					<Button
-						onClick={handleValider}
-						className="w-full bg-zinc-800 border border-white text-white font-bold hover:bg-zinc-700"
-					>
-						Valider
-					</Button>
-				</CardContent>
-			</Card>
+							{/* Bouton Jouer */}
+							<Button
+								onClick={handleJouer}
+								disabled={isLoading}
+								className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full mt-10 h-12 text-base font-semibold"
+							>
+								{isLoading ? "Chargement..." : "Jouer"}
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+			</div>
 		</div>
 	);
 }

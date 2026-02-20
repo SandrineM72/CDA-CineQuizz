@@ -1,0 +1,13 @@
+query UserSessionAttempts {
+  userSessionAttempts {
+    id
+    score
+    percentage_success
+    duration
+    finished_at
+    quiz {
+      id
+      title
+    }
+  }
+}

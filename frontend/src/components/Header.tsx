@@ -90,7 +90,7 @@ export default function Header() {
 					{/* menu utilisateur connecté */}
 					{user &&
 						<DropdownMenuGroup className={quantico.className}> 
-							<Link href="/profile-page">
+							<Link href="/profile-modify-page">
 								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Profil
 								</DropdownMenuItem>
@@ -103,7 +103,7 @@ export default function Header() {
 								</Link>
 							}
 							<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" onClick={handleLogout}>
-							Log out
+							Déconnexion
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 					}

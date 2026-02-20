@@ -106,7 +106,7 @@ export default function PublicQuiz() {
       <div className="w-full max-w-md space-y-4">
         {/* Image */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/illustrations/code_dark.jpg"
               alt="Quiz"

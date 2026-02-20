@@ -32,6 +32,7 @@ export default function LoginForm() {
   /**
    * Handle form submission
    * - Calls the login mutation
+   * - Stores the token in localStorage
    * - Redirects the user on success
    */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,6 +48,7 @@ export default function LoginForm() {
         },
       });
       
+     
       // Vérifier si l'utilisateur est admin
       if (result.data?.login?.is_admin) {
         alert("Connexion réussie en tant qu'administrateur !");
@@ -71,7 +73,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md space-y-4">
         {/* Header image */}
         <div className="flex justify-center">
-          <div className="relative w-full h-64 overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/illustrations/keyboard_with_locks.jpg"
               alt="keyboard and locks"
