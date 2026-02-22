@@ -73,7 +73,7 @@ export default function ChoiceForm() {
 				<div className="flex justify-center">
           			<div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
 						<Image
-							src="/illustrations/hacker_gloves.jpg"
+							src="/illustrations/hacker_keyboard.jpg"
 							alt="Hacker sur ordinateur"
 							fill
 							className="object-cover"

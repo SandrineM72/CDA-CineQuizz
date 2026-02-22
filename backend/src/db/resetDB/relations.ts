@@ -19,14 +19,6 @@ export async function createRelations({
   bronzeReward,
   silverReward,
 }: CreateRelationsParams) {
-  // Likes (table like_)
-  // user1 aime quiz1 et quiz2
-  user1.liked_quizzes = [quiz1, quiz2];
-  await user1.save();
-
-  // user2 aime quiz1
-  user2.liked_quizzes = [quiz1];
-  await user2.save();
 
   // Trophies (table trophy)
   // user1 a débloqué le trophée bronze et argent

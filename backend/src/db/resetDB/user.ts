@@ -38,7 +38,7 @@ export async function createUsers() {
 
   const admin = await User.create({
     email: "admin@cyberquiz.com",
-    pseudo: "AdminCyberQuiz",
+    pseudo: "Admincq",
     hashedPassword: await hash("Password123!"),
     avatar: "https://i.pravatar.cc/150?img=38",
     is_admin: true

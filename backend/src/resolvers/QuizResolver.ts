@@ -15,7 +15,6 @@ export default class QuizResolver {
 				"questions.choices",
 				"theme",
 				"level",
-				"liked_by",
 			],
 			order: {
 				id: "ASC",
@@ -88,8 +87,7 @@ export default class QuizResolver {
 			.andWhere("quiz.is_draft = false")
 			.leftJoinAndSelect("quiz.theme", "theme")
 			.leftJoinAndSelect("quiz.level", "level")
-			.leftJoinAndSelect("quiz.questions", "questions")
-			.leftJoinAndSelect("quiz.liked_by", "liked_by");
+			.leftJoinAndSelect("quiz.questions", "questions");
 
 		if (themeId) {
 			queryBuilder.andWhere("theme.id = :themeId", { themeId });
@@ -105,7 +103,7 @@ export default class QuizResolver {
 	@Query(() => [Quiz])
 	async allQuizzes() {
 		return Quiz.find({
-			relations: ["theme", "level", "questions", "liked_by"],
+			relations: ["theme", "level", "questions"],
 			order: {
 				id: "ASC"
 			},

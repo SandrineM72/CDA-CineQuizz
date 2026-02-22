@@ -67,10 +67,6 @@ export class User extends BaseEntity {
 	@ManyToMany(() => Reward)
 	won_rewards: Reward[];
 
-	@Field(() => [Quiz])
-	@JoinTable()
-	@ManyToMany(() => Quiz, quiz => quiz.liked_by, {onDelete: "CASCADE"})
-	liked_quizzes: Quiz[];
 }
 
 @InputType()

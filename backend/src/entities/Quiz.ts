@@ -4,7 +4,6 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
-	ManyToMany,
 	ManyToOne,
 	OneToMany,
 	PrimaryGeneratedColumn,
@@ -13,7 +12,6 @@ import {
 import { Theme } from "./Theme";
 import { Level } from "./Level";
 import { Question } from "./Question";
-import { User } from "./User";
 import { Attempt } from "./Attempt";
 import { ObjectId } from "../types";
 import { IsBoolean, IsUrl, Length, Min } from "class-validator";
@@ -85,11 +83,6 @@ export class Quiz extends BaseEntity {
 		{cascade: true, onDelete: "CASCADE"}
 	)
 	attempts: Attempt[];
-
-	// one to many to keep history of the number of likes carried by the association
-	@Field(() => [User])
-	@ManyToMany(() => User, user => user.liked_quizzes, {cascade: true, onDelete: "CASCADE"})
-	liked_by: User[];
 }
 
 @InputType()
@@ -123,5 +116,4 @@ export class UpdateQuizInput {
 
 	@Field(() => ObjectId)
 	level: ObjectId;
-
 }

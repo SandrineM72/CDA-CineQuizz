@@ -59,6 +59,9 @@ export type GlobalStats = {
   attemptsSuccessRate: AttemptsSuccessRate;
   averageScore: Scalars['Float']['output'];
   newUsers: NewUsersStats;
+  topLevels: Array<TopLevelStat>;
+  topQuizzes: Array<TopQuizStat>;
+  topThemes: Array<TopThemeStat>;
   userGrowth: Array<UserGrowthData>;
 };
 
@@ -225,7 +228,6 @@ export type Quiz = {
   is_draft: Scalars['Boolean']['output'];
   is_public: Scalars['Boolean']['output'];
   level: Level;
-  liked_by: Array<User>;
   questions?: Maybe<Array<Question>>;
   theme: Theme;
   time_limit: Scalars['Float']['output'];
@@ -253,6 +255,24 @@ export type Theme = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   quizzes?: Maybe<Array<Quiz>>;
+};
+
+export type TopLevelStat = {
+  __typename?: 'TopLevelStat';
+  attemptCount: Scalars['Int']['output'];
+  level: Level;
+};
+
+export type TopQuizStat = {
+  __typename?: 'TopQuizStat';
+  attemptCount: Scalars['Int']['output'];
+  quiz: Quiz;
+};
+
+export type TopThemeStat = {
+  __typename?: 'TopThemeStat';
+  attemptCount: Scalars['Int']['output'];
+  theme: Theme;
 };
 
 export type UpdateChoiceInput = {
@@ -293,7 +313,6 @@ export type User = {
   id: Scalars['Int']['output'];
   is_admin: Scalars['Boolean']['output'];
   last_login: Scalars['DateTimeISO']['output'];
-  liked_quizzes: Array<Quiz>;
   pseudo: Scalars['String']['output'];
   updated_at: Scalars['DateTimeISO']['output'];
   won_rewards?: Maybe<Array<Reward>>;
@@ -308,7 +327,7 @@ export type UserGrowthData = {
 export type AllQuizzesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllQuizzesQuery = { __typename?: 'Query', allQuizzes: Array<{ __typename?: 'Quiz', id: number, title: string, description: string, time_limit: number, is_public: boolean, is_draft: boolean, theme: { __typename?: 'Theme', id: number, name: string }, level: { __typename?: 'Level', id: number, name: string }, liked_by: Array<{ __typename?: 'User', id: number }>, questions?: Array<{ __typename?: 'Question', id: number }> | null }> };
+export type AllQuizzesQuery = { __typename?: 'Query', allQuizzes: Array<{ __typename?: 'Quiz', id: number, title: string, description: string, time_limit: number, is_public: boolean, is_draft: boolean, theme: { __typename?: 'Theme', id: number, name: string }, level: { __typename?: 'Level', id: number, name: string }, questions?: Array<{ __typename?: 'Question', id: number }> | null }> };
 
 export type AttemptQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -421,7 +440,7 @@ export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: '
 export type GlobalStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GlobalStatsQuery = { __typename?: 'Query', globalStats: { __typename?: 'GlobalStats', averageScore: number, newUsers: { __typename?: 'NewUsersStats', week: number, month: number, year: number }, userGrowth: Array<{ __typename?: 'UserGrowthData', period: string, count: number }>, attemptsSuccessRate: { __typename?: 'AttemptsSuccessRate', passed: number, failed: number, successRate: number, total: number } } };
+export type GlobalStatsQuery = { __typename?: 'Query', globalStats: { __typename?: 'GlobalStats', averageScore: number, newUsers: { __typename?: 'NewUsersStats', week: number, month: number, year: number }, userGrowth: Array<{ __typename?: 'UserGrowthData', period: string, count: number }>, attemptsSuccessRate: { __typename?: 'AttemptsSuccessRate', passed: number, failed: number, successRate: number, total: number }, topQuizzes: Array<{ __typename?: 'TopQuizStat', attemptCount: number, quiz: { __typename?: 'Quiz', id: number, title: string, level: { __typename?: 'Level', id: number, name: string }, theme: { __typename?: 'Theme', id: number, name: string } } }>, topLevels: Array<{ __typename?: 'TopLevelStat', attemptCount: number, level: { __typename?: 'Level', id: number, name: string } }>, topThemes: Array<{ __typename?: 'TopThemeStat', attemptCount: number, theme: { __typename?: 'Theme', id: number, name: string } }> } };
 
 export type ThemesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -486,9 +505,6 @@ export const AllQuizzesDocument = gql`
     level {
       id
       name
-    }
-    liked_by {
-      id
     }
     questions {
       id
@@ -1250,6 +1266,35 @@ export const GlobalStatsDocument = gql`
       total
     }
     averageScore
+    topQuizzes {
+      quiz {
+        id
+        title
+        level {
+          id
+          name
+        }
+        theme {
+          id
+          name
+        }
+      }
+      attemptCount
+    }
+    topLevels {
+      level {
+        id
+        name
+      }
+      attemptCount
+    }
+    topThemes {
+      theme {
+        id
+        name
+      }
+      attemptCount
+    }
   }
 }
     `;

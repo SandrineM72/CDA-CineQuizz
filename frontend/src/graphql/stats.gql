@@ -16,5 +16,34 @@ query GlobalStats {
       total
     }
     averageScore
+    topQuizzes {
+      quiz {
+        id
+        title
+        level {
+          id
+          name
+        }
+        theme {
+          id
+          name
+        }
+      }
+      attemptCount
+    }
+    topLevels {
+      level {
+        id
+        name
+      }
+      attemptCount
+    }
+    topThemes {
+      theme {
+        id
+        name
+      }
+      attemptCount
+    }
   }
 }

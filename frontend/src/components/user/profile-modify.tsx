@@ -275,7 +275,7 @@ export default function ProfileModify() {
       <div className="w-full max-w-md space-y-4">
         {/* Avatar + Pseudo */}
         <div className="flex flex-col items-center space-y-3">
-          <Avatar className="h-[150px] w-[150px] border-4 border-[#00bb0d] bg-black">
+          <Avatar className="h-[120px] w-[120px] border-4 border-[#00bb0d] bg-black">
             <AvatarImage src={user.avatar || newAvatarUrl} alt="Avatar" />
             <AvatarFallback className="bg-black text-white text-base font-semibold text-center px-4">
               Avatar

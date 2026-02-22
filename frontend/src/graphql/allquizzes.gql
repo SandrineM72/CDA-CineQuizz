@@ -14,9 +14,6 @@ query allQuizzes {
       id
       name
     }
-    liked_by {
-      id
-    }
     questions {
       id
     }
