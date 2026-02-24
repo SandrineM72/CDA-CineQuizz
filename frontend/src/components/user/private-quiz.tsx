@@ -61,9 +61,8 @@ export default function PrivateQuiz() {
       choiceId: choiceId,
     });
 
-    // Redirection vers la page d'explications après 1 seconde
     setTimeout(() => {
-      const duration = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      const duration = Math.floor((Date.now() - startTimeRef.current) / 500);
       
       router.push({
         pathname: '/private-answers-page',
@@ -100,7 +99,6 @@ export default function PrivateQuiz() {
     );
   }
 
-  // UI
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
       <div className="w-full max-w-md space-y-4">

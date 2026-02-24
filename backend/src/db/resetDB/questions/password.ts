@@ -30,8 +30,8 @@ export async function createPasswordQuestions({
     quiz: password_beginner_1
   }).save();
 
-  await Choice.create({ description: "MonPrenom2024", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "K8$mPz9!wQx", is_correct: true, question: q1_1 }).save();
+  await Choice.create({ description: "MonPrenom2024", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "123456789", is_correct: false, question: q1_1 }).save();
 
   const q1_2 = await Question.create({
@@ -51,8 +51,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "Dans un carnet personnel à la maison", is_correct: false, question: q1_3 }).save();
-  await Choice.create({ description: "Sur un post-it collé sur votre écran", is_correct: true, question: q1_3 }).save();
   await Choice.create({ description: "Dans un gestionnaire de mots de passe", is_correct: false, question: q1_3 }).save();
+  await Choice.create({ description: "Sur un post-it collé sur votre écran", is_correct: true, question: q1_3 }).save();
 
   // ========================================
   // QUIZ 2 : Double authentification pour tous (DÉBUTANT)
@@ -64,8 +64,8 @@ export async function createPasswordQuestions({
     quiz: password_beginner_2
   }).save();
 
-  await Choice.create({ description: "Avoir deux mots de passe différents", is_correct: false, question: q2_1 }).save();
   await Choice.create({ description: "Utiliser mot de passe + code envoyé sur téléphone", is_correct: true, question: q2_1 }).save();
+  await Choice.create({ description: "Avoir deux mots de passe différents", is_correct: false, question: q2_1 }).save();
   await Choice.create({ description: "Se connecter depuis deux appareils différents", is_correct: false, question: q2_1 }).save();
 
   const q2_2 = await Question.create({
@@ -85,8 +85,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "L'ignorer, c'est une erreur", is_correct: false, question: q2_3 }).save();
-  await Choice.create({ description: "Changer votre mot de passe immédiatement", is_correct: true, question: q2_3 }).save();
   await Choice.create({ description: "Donner le code au service client si on vous appelle", is_correct: false, question: q2_3 }).save();
+  await Choice.create({ description: "Changer votre mot de passe immédiatement", is_correct: true, question: q2_3 }).save();
 
   // ========================================
   // QUIZ 3 : Gestionnaires de mots de passe (AVANCÉ)
@@ -98,8 +98,8 @@ export async function createPasswordQuestions({
     quiz: password_advanced_1
   }).save();
 
-  await Choice.create({ description: "Il rend vos mots de passe visibles en clair", is_correct: false, question: q3_1 }).save();
   await Choice.create({ description: "Il crée des mots de passe uniques pour chaque site", is_correct: true, question: q3_1 }).save();
+  await Choice.create({ description: "Il rend vos mots de passe visibles en clair", is_correct: false, question: q3_1 }).save();
   await Choice.create({ description: "Il partage vos mots de passe avec vos amis", is_correct: false, question: q3_1 }).save();
 
   const q3_2 = await Question.create({
@@ -119,8 +119,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "Non, seuls les logiciels payants sont sûrs", is_correct: false, question: q3_3 }).save();
-  await Choice.create({ description: "Oui, l'open-source permet l'audit par des experts", is_correct: true, question: q3_3 }).save();
   await Choice.create({ description: "Non, ils revendent vos données", is_correct: false, question: q3_3 }).save();
+  await Choice.create({ description: "Oui, l'open-source permet l'audit par des experts", is_correct: true, question: q3_3 }).save();
 
   // ========================================
   // QUIZ 4 : Fuites de données et compromission (AVANCÉ)
@@ -153,8 +153,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "Oui, le hashage rend vos mots de passe illisibles", is_correct: false, question: q4_3 }).save();
-  await Choice.create({ description: "Partiellement, changez quand même votre mot de passe", is_correct: true, question: q4_3 }).save();
   await Choice.create({ description: "Non, le hashage ne protège pas du tout", is_correct: false, question: q4_3 }).save();
+  await Choice.create({ description: "Partiellement, changez quand même votre mot de passe", is_correct: true, question: q4_3 }).save();
 
   // ========================================
   // QUIZ 5 : Authentification moderne et biométrie (EXPERT)
@@ -166,8 +166,8 @@ export async function createPasswordQuestions({
     quiz: password_expert_1
   }).save();
 
-  await Choice.create({ description: "Ils sont plus faciles à retenir", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Ils ne peuvent pas être volés en cas de piratage du site", is_correct: true, question: q5_1 }).save();
+  await Choice.create({ description: "Ils sont plus faciles à retenir", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Ils fonctionnent sans connexion Internet", is_correct: false, question: q5_1 }).save();
 
   const q5_2 = await Question.create({
@@ -187,8 +187,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "Uniquement des clés USB spécialisées (Yubikey)", is_correct: false, question: q5_3 }).save();
-  await Choice.create({ description: "Clés USB, smartphones, ordinateurs avec TPM", is_correct: true, question: q5_3 }).save();
   await Choice.create({ description: "Seulement les iPhones et ordinateurs Apple", is_correct: false, question: q5_3 }).save();
+  await Choice.create({ description: "Clés USB, smartphones, ordinateurs avec TPM", is_correct: true, question: q5_3 }).save();
 
   // ========================================
   // QUIZ 6 : Attaques par force brute et dictionnaire (EXPERT)
@@ -200,8 +200,8 @@ export async function createPasswordQuestions({
     quiz: password_expert_2
   }).save();
 
-  await Choice.create({ description: "P@ssw0rd2024", is_correct: false, question: q6_1 }).save();
   await Choice.create({ description: "Xk9#mPq2$wLz", is_correct: true, question: q6_1 }).save();
+  await Choice.create({ description: "P@ssw0rd2024", is_correct: false, question: q6_1 }).save();
   await Choice.create({ description: "JeAimeLeChat!", is_correct: false, question: q6_1 }).save();
 
   const q6_2 = await Question.create({
@@ -221,8 +221,8 @@ export async function createPasswordQuestions({
   }).save();
 
   await Choice.create({ description: "Un virus qui vole les mots de passe colorés", is_correct: false, question: q6_3 }).save();
-  await Choice.create({ description: "Une base de hash pré-calculés pour accélérer le cassage", is_correct: true, question: q6_3 }).save();
   await Choice.create({ description: "Un algorithme de chiffrement multicouleur", is_correct: false, question: q6_3 }).save();
+  await Choice.create({ description: "Une base de hash pré-calculés pour accélérer le cassage", is_correct: true, question: q6_3 }).save();
 
   console.log("✅ Questions Mots de Passe créées avec succès");
 }

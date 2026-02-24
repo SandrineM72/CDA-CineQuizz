@@ -31,12 +31,13 @@ export default function AdminSidebar() {
 			<nav className="flex-1 p-4">
 				<ul className="space-y-2">
 					{menuItems.map((item) => {
-						const isActive = router.pathname === item.url;
+						// Vérifier si on est sur cette page ou une sous-page
+						const isActive = router.pathname === item.url || router.pathname.startsWith(item.url + "/");
 						return (
 							<li key={item.title}>
 								<Link
 									href={item.url}
-									className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
+									className={`flex items-center gap-3 px-3 py-2 transition-colors ${
 										isActive
 											? "bg-[#00bb0d] text-black font-semibold"
 											: "text-gray-300 hover:bg-gray-800 hover:text-white"

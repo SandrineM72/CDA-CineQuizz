@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver, Int } from "type-graphql";
-import { LoginInput, SignupInput, UpdateUserInput, User } from "../entities/User";
+import { LoginInput, SignupInput, UpdateUserInput, AdminUpdateUserInput, User } from "../entities/User";
 import { GraphQLError } from "graphql/error";
 import { hash, verify } from "argon2";
 import { GraphQLContext } from "../types";
@@ -12,6 +12,13 @@ export default class UserResolver {
     return User.find({
       relations: ["attempts", "attempts.quiz"],
       order: { id: "ASC" },
+    });
+  }
+
+  @Query(() => User, { nullable: true })
+  async user(@Arg("id", () => Int) id: number): Promise<User | null> {
+    return await User.findOne({ 
+      where: { id },
     });
   }
 
@@ -103,12 +110,21 @@ export default class UserResolver {
       });
     }
 
-    // Vérifier le mot de passe actuel
-    const isValidPassword = await verify(user.hashedPassword, data.password);
-    if (!isValidPassword) {
-      throw new GraphQLError("Mot de passe incorrect", {
-        extensions: { code: "INVALID_PASSWORD", http: { status: 401 }},
-      });
+    // Vérifier le mot de passe actuel uniquement pour email et newPassword
+    const needsPasswordCheck = !!(data.email || data.newPassword);
+
+    if (needsPasswordCheck) {
+      if (!data.password) {
+        throw new GraphQLError("Mot de passe requis pour cette modification", {
+          extensions: { code: "PASSWORD_REQUIRED", http: { status: 400 }},
+        });
+      }
+      const isValidPassword = await verify(user.hashedPassword, data.password);
+      if (!isValidPassword) {
+        throw new GraphQLError("Mot de passe incorrect", {
+          extensions: { code: "INVALID_PASSWORD", http: { status: 401 }},
+        });
+      }
     }
 
     // Mettre à jour le pseudo si fourni
@@ -163,5 +179,59 @@ export default class UserResolver {
     
     await user.remove();
     return "Utilisateur supprimé avec succès";
+  }
+
+  @Mutation(() => User)
+  async adminUpdateUser(
+    @Arg("id", () => Int) id: number,
+    @Arg("data", () => AdminUpdateUserInput, { validate: true }) data: AdminUpdateUserInput,
+    @Ctx() context: GraphQLContext,
+  ) {
+    // Vérifier que l'utilisateur connecté est admin
+    const currentUser = await getCurrentUser(context);
+    if (!currentUser || !currentUser.is_admin) {
+      throw new GraphQLError("Seuls les administrateurs peuvent modifier les utilisateurs", {
+        extensions: { code: "FORBIDDEN", http: { status: 403 }},
+      });
+    }
+
+    // Récupérer l'utilisateur à modifier
+    const user = await User.findOne({ where: { id } });
+    if (!user) {
+      throw new GraphQLError("Utilisateur introuvable", {
+        extensions: { code: "USER_NOT_FOUND", http: { status: 404 }},
+      });
+    }
+
+    // Vérifier que le pseudo n'est pas déjà utilisé
+    if (data.pseudo !== user.pseudo) {
+      const existingUser = await User.findOne({ where: { pseudo: data.pseudo } });
+      if (existingUser) {
+        throw new GraphQLError("Ce pseudo est déjà utilisé", {
+          extensions: { code: "PSEUDO_ALREADY_TAKEN", http: { status: 400 }},
+        });
+      }
+    }
+
+    // Vérifier que l'email n'est pas déjà utilisé
+    if (data.email !== user.email) {
+      const existingUser = await User.findOne({ where: { email: data.email } });
+      if (existingUser) {
+        throw new GraphQLError("Cet email est déjà utilisé", {
+          extensions: { code: "EMAIL_ALREADY_TAKEN", http: { status: 400 }},
+        });
+      }
+    }
+
+    // Mettre à jour les champs
+    user.pseudo = data.pseudo;
+    user.email = data.email;
+    if (data.avatar !== undefined) {
+      user.avatar = data.avatar;
+    }
+    user.is_admin = data.is_admin;
+
+    await user.save();
+    return user;
   }
 }

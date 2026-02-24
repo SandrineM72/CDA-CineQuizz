@@ -1,10 +1,10 @@
-import Layout from "@/components/Layout";
+import AdminLayout from "@/components/AdminLayout";
 import GamesTable from "@/components/admin/GamesTable";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default function GamesPage() {
 	return (
-		<Layout pageTitle="Quiz - Admin">
+		<AdminLayout pageTitle="Quiz - Admin">
 			<div className="flex">
 				<AdminSidebar />
 				<main className="flex-1 p-8 overflow-auto bg-black">
@@ -14,6 +14,6 @@ export default function GamesPage() {
 					</div>
 				</main>
 			</div>
-		</Layout>
+		</AdminLayout>
 	);
 }

@@ -20,8 +20,10 @@ import {
 	useDeleteUserMutation,
 } from "@/graphql/generated/schema";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function UsersTable() {
+	const router = useRouter();
 	const { data, loading, error, refetch } = useUsersQuery();
 	const [deleteUser] = useDeleteUserMutation();
 	const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -90,7 +92,7 @@ export default function UsersTable() {
 							<TableHead className="text-gray-300">Pseudo</TableHead>
 							<TableHead className="text-gray-300">Email</TableHead>
 							<TableHead className="text-gray-300">Rôle</TableHead>
-							<TableHead className="text-gray-300 text-right">Actions</TableHead>
+							<TableHead className="text-gray-300 text-right pr-18">Actions</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -118,8 +120,8 @@ export default function UsersTable() {
 									<span
 										className={`px-2 py-1 rounded-full text-xs ${
 											user.is_admin
-												? "bg-purple-900 text-purple-300"
-												: "bg-blue-900 text-blue-300"
+												? "bg-red-900 text-red-300"
+												: "bg-gray-700 text-gray-300"
 										}`}
 									>
 										{user.is_admin ? "Admin" : "Utilisateur"}
@@ -129,13 +131,15 @@ export default function UsersTable() {
 									<Button
 										variant="outline"
 										size="sm"
-										className="text-white border-gray-600 hover:bg-gray-700"
+										onClick={() => router.push(`/admin/users/${user.id}/edit`)}
+										className="text-white border-gray-600 hover:bg-green-700"
 									>
 										Modifier
 									</Button>
 									<Button
 										variant="destructive"
-										size="sm"
+										size="sm"							className="text-white border-gray-600 hover:bg-red-900"
+									
 										onClick={() => handleDelete(user.id, user.pseudo)}
 										disabled={deletingId === user.id}
 									>

@@ -20,6 +20,13 @@ export type Scalars = {
   DateTimeISO: { input: any; output: any; }
 };
 
+export type AdminUpdateUserInput = {
+  avatar?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  is_admin: Scalars['Boolean']['input'];
+  pseudo: Scalars['String']['input'];
+};
+
 export type AnswerInput = {
   choiceId: Scalars['Int']['input'];
   questionId: Scalars['Int']['input'];
@@ -79,6 +86,7 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  adminUpdateUser: User;
   createAttempt: Attempt;
   deleteQuiz: Scalars['String']['output'];
   deleteUser: Scalars['String']['output'];
@@ -89,6 +97,12 @@ export type Mutation = {
   updateQuestion: Scalars['String']['output'];
   updateQuiz: Scalars['String']['output'];
   updateUser: User;
+};
+
+
+export type MutationAdminUpdateUserArgs = {
+  data: AdminUpdateUserInput;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -170,6 +184,7 @@ export type Query = {
   quiz?: Maybe<Quiz>;
   quizzes: Array<Quiz>;
   themes: Array<Theme>;
+  user?: Maybe<User>;
   userSessionAttempts: Array<Attempt>;
   users: Array<User>;
 };
@@ -207,6 +222,11 @@ export type QueryPrivateQuizzesArgs = {
 
 
 export type QueryQuizArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryUserArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -287,12 +307,12 @@ export type UpdateQuestionInput = {
 
 export type UpdateQuizInput = {
   description: Scalars['String']['input'];
-  image: Scalars['String']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
   is_draft: Scalars['Boolean']['input'];
   is_public: Scalars['Boolean']['input'];
   level: ObjectId;
   theme: ObjectId;
-  time_limit: Scalars['Float']['input'];
+  time_limit?: InputMaybe<Scalars['Float']['input']>;
   title: Scalars['String']['input'];
 };
 
@@ -323,6 +343,14 @@ export type UserGrowthData = {
   count: Scalars['Int']['output'];
   period: Scalars['String']['output'];
 };
+
+export type AdminUpdateUserMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  data: AdminUpdateUserInput;
+}>;
+
+
+export type AdminUpdateUserMutation = { __typename?: 'Mutation', adminUpdateUser: { __typename?: 'User', id: number, pseudo: string, email: string, avatar?: string | null, is_admin: boolean, created_at: any, updated_at: any } };
 
 export type AllQuizzesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -478,6 +506,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: number, pseudo: string, avatar?: string | null, email: string, is_admin: boolean, created_at: any, updated_at: any } };
 
+export type UserQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, pseudo: string, email: string, avatar?: string | null, is_admin: boolean, created_at: any } | null };
+
 export type UserSessionAttemptsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -489,6 +524,46 @@ export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, email: string, pseudo: string, avatar?: string | null, is_admin: boolean, created_at: any }> };
 
 
+export const AdminUpdateUserDocument = gql`
+    mutation AdminUpdateUser($id: Int!, $data: AdminUpdateUserInput!) {
+  adminUpdateUser(id: $id, data: $data) {
+    id
+    pseudo
+    email
+    avatar
+    is_admin
+    created_at
+    updated_at
+  }
+}
+    `;
+export type AdminUpdateUserMutationFn = ApolloReactCommon.MutationFunction<AdminUpdateUserMutation, AdminUpdateUserMutationVariables>;
+
+/**
+ * __useAdminUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useAdminUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAdminUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [adminUpdateUserMutation, { data, loading, error }] = useAdminUpdateUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAdminUpdateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AdminUpdateUserMutation, AdminUpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<AdminUpdateUserMutation, AdminUpdateUserMutationVariables>(AdminUpdateUserDocument, options);
+      }
+export type AdminUpdateUserMutationHookResult = ReturnType<typeof useAdminUpdateUserMutation>;
+export type AdminUpdateUserMutationResult = ApolloReactCommon.MutationResult<AdminUpdateUserMutation>;
+export type AdminUpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<AdminUpdateUserMutation, AdminUpdateUserMutationVariables>;
 export const AllQuizzesDocument = gql`
     query allQuizzes {
   allQuizzes {
@@ -1505,6 +1580,51 @@ export function useUpdateUserMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = ApolloReactCommon.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UserDocument = gql`
+    query User($id: Int!) {
+  user(id: $id) {
+    id
+    pseudo
+    email
+    avatar
+    is_admin
+    created_at
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: ApolloReactHooks.QueryHookOptions<UserQuery, UserQueryVariables> & ({ variables: UserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export function useUserSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserSuspenseQueryHookResult = ReturnType<typeof useUserSuspenseQuery>;
+export type UserQueryResult = ApolloReactCommon.QueryResult<UserQuery, UserQueryVariables>;
 export const UserSessionAttemptsDocument = gql`
     query UserSessionAttempts {
   userSessionAttempts {

@@ -51,8 +51,8 @@ export async function createPrivacyQuestions({
   }).save();
 
   await Choice.create({ description: "Oui, c'est juste pour personnaliser le quiz", is_correct: false, question: q1_3 }).save();
-  await Choice.create({ description: "Non, ces permissions sont abusives", is_correct: true, question: q1_3 }).save();
   await Choice.create({ description: "Oui, si tous vos amis l'ont fait", is_correct: false, question: q1_3 }).save();
+  await Choice.create({ description: "Non, ces permissions sont abusives", is_correct: true, question: q1_3 }).save();
 
   // ========================================
   // QUIZ 2 : Paramètres de confidentialité essentiels (DÉBUTANT)
@@ -74,8 +74,8 @@ export async function createPrivacyQuestions({
     quiz: privacy_beginner_2
   }).save();
 
-  await Choice.create({ description: "Contre l'accès même si le mot de passe est volé", is_correct: true, question: q2_2 }).save();
   await Choice.create({ description: "Seulement contre les virus", is_correct: false, question: q2_2 }).save();
+  await Choice.create({ description: "Contre l'accès même si le mot de passe est volé", is_correct: true, question: q2_2 }).save();
   await Choice.create({ description: "Contre les publicités ciblées", is_correct: false, question: q2_2 }).save();
 
   const q2_3 = await Question.create({
@@ -84,9 +84,9 @@ export async function createPrivacyQuestions({
     quiz: privacy_beginner_2
   }).save();
 
-  await Choice.create({ description: "La limitation du suivi publicitaire", is_correct: true, question: q2_3 }).save();
   await Choice.create({ description: "Le mode avion permanent", is_correct: false, question: q2_3 }).save();
   await Choice.create({ description: "Le partage de position avec Google", is_correct: false, question: q2_3 }).save();
+  await Choice.create({ description: "La limitation du suivi publicitaire", is_correct: true, question: q2_3 }).save();
 
   // ========================================
   // QUIZ 3 : RGPD et droits numériques (AVANCÉ)
@@ -108,8 +108,8 @@ export async function createPrivacyQuestions({
     quiz: privacy_advanced_1
   }).save();
 
-  await Choice.create({ description: "Vous notifier dans les 72 heures", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "Rien, c'est leur problème", is_correct: false, question: q3_2 }).save();
+  await Choice.create({ description: "Vous notifier dans les 72 heures", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "Attendre 6 mois avant de vous prévenir", is_correct: false, question: q3_2 }).save();
 
   const q3_3 = await Question.create({
@@ -118,9 +118,9 @@ export async function createPrivacyQuestions({
     quiz: privacy_advanced_1
   }).save();
 
-  await Choice.create({ description: "Récupérer vos données dans un format exportable", is_correct: true, question: q3_3 }).save();
   await Choice.create({ description: "Voyager avec vos données à l'étranger", is_correct: false, question: q3_3 }).save();
   await Choice.create({ description: "Copier les données d'une entreprise", is_correct: false, question: q3_3 }).save();
+  await Choice.create({ description: "Récupérer vos données dans un format exportable", is_correct: true, question: q3_3 }).save();
 
   // ========================================
   // QUIZ 4 : Chiffrement et anonymat en ligne (AVANCÉ)
@@ -142,8 +142,8 @@ export async function createPrivacyQuestions({
     quiz: privacy_advanced_2
   }).save();
 
-  await Choice.create({ description: "Il fait passer votre connexion par plusieurs serveurs", is_correct: true, question: q4_2 }).save();
   await Choice.create({ description: "Il chiffre votre disque dur", is_correct: false, question: q4_2 }).save();
+  await Choice.create({ description: "Il fait passer votre connexion par plusieurs serveurs", is_correct: true, question: q4_2 }).save();
   await Choice.create({ description: "Il bloque toutes les publicités", is_correct: false, question: q4_2 }).save();
 
   const q4_3 = await Question.create({
@@ -152,9 +152,9 @@ export async function createPrivacyQuestions({
     quiz: privacy_advanced_2
   }).save();
 
-  await Choice.create({ description: "VeraCrypt, BitLocker ou FileVault", is_correct: true, question: q4_3 }).save();
   await Choice.create({ description: "Un mot de passe sur le fichier Word suffit", is_correct: false, question: q4_3 }).save();
   await Choice.create({ description: "Cacher le fichier dans un dossier système", is_correct: false, question: q4_3 }).save();
+  await Choice.create({ description: "VeraCrypt, BitLocker ou FileVault", is_correct: true, question: q4_3 }).save();
 
   // ========================================
   // QUIZ 5 : Surveillance numérique et traçage (EXPERT)
@@ -176,8 +176,8 @@ export async function createPrivacyQuestions({
     quiz: privacy_expert_1
   }).save();
 
-  await Choice.create({ description: "En agrégeant des données de multiples sources", is_correct: true, question: q5_2 }).save();
   await Choice.create({ description: "En piratant votre ordinateur", is_correct: false, question: q5_2 }).save();
+  await Choice.create({ description: "En agrégeant des données de multiples sources", is_correct: true, question: q5_2 }).save();
   await Choice.create({ description: "Uniquement via les réseaux sociaux", is_correct: false, question: q5_2 }).save();
 
   const q5_3 = await Question.create({
@@ -186,9 +186,9 @@ export async function createPrivacyQuestions({
     quiz: privacy_expert_1
   }).save();
 
-  await Choice.create({ description: "Injectés par le FAI, impossibles à bloquer", is_correct: true, question: q5_3 }).save();
   await Choice.create({ description: "Des cookies très grands (>1MB)", is_correct: false, question: q5_3 }).save();
   await Choice.create({ description: "Des cookies de sites gouvernementaux", is_correct: false, question: q5_3 }).save();
+  await Choice.create({ description: "Injectés par le FAI, impossibles à bloquer", is_correct: true, question: q5_3 }).save();
 
   // ========================================
   // QUIZ 6 : Métadonnées et empreinte numérique (EXPERT)
@@ -210,8 +210,8 @@ export async function createPrivacyQuestions({
     quiz: privacy_expert_2
   }).save();
 
-  await Choice.create({ description: "Votre réseau social, habitudes, santé, opinions", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "Seulement le nombre d'appels par jour", is_correct: false, question: q6_2 }).save();
+  await Choice.create({ description: "Votre réseau social, habitudes, santé, opinions", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "Rien d'important, c'est juste technique", is_correct: false, question: q6_2 }).save();
 
   const q6_3 = await Question.create({
@@ -220,9 +220,9 @@ export async function createPrivacyQuestions({
     quiz: privacy_expert_2
   }).save();
 
-  await Choice.create({ description: "Combiner des données innocentes pour déduire des infos sensibles", is_correct: true, question: q6_3 }).save();
   await Choice.create({ description: "Corriger les erreurs dans les bases de données", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Comparer deux fichiers pour trouver des doublons", is_correct: false, question: q6_3 }).save();
+  await Choice.create({ description: "Combiner des données innocentes pour déduire des infos sensibles", is_correct: true, question: q6_3 }).save();
 
   console.log("✅ Questions Protection des Données créées avec succès");
 }

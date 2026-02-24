@@ -14,7 +14,7 @@ import { Level } from "./Level";
 import { Question } from "./Question";
 import { Attempt } from "./Attempt";
 import { ObjectId } from "../types";
-import { IsBoolean, IsUrl, Length, Min } from "class-validator";
+import { IsBoolean, IsOptional, IsUrl, Length, Min } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -95,13 +95,15 @@ export class UpdateQuizInput {
 	@Length(5, 100, { message: "La description doit contenir entre 5 et 100 caractères" })
 	description: string;
 
-	@Field()
+	@Field({ nullable: true })
+	@IsOptional()
 	@Min(0, { message: "la limite de temps doit être positif" })
-	time_limit: number
+	time_limit?: number
 
-	@Field()
+	@Field({ nullable: true })
+	@IsOptional()
 	@IsUrl()
-	image: string;
+	image?: string;
 
 	@Field()
 	@IsBoolean()

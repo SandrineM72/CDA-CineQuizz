@@ -32,7 +32,7 @@ export default function AdminHeader() {
 			await logout();
 			await refetch();
 			console.log("Déconnexion admin effectuée");
-			router.push("/");
+			router.push("/login-page");
 		} catch (err) {
 			console.log("Erreur lors de la déconnexion:", err);
 		}
@@ -69,12 +69,6 @@ export default function AdminHeader() {
 							<Link href="/admin">
 								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
 									Accueil Admin
-								</DropdownMenuItem>
-							</Link>
-
-							<Link href="/connected-user-page">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
-									Retour site utilisateur
 								</DropdownMenuItem>
 							</Link>
 

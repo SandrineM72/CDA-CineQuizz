@@ -14,6 +14,7 @@ import { Reward } from "./Reward";
 import { Quiz } from "./Quiz";
 import { Attempt } from "./Attempt";
 import { IsEmail, IsStrongPassword } from "class-validator";
+import { IsBoolean, IsOptional, IsUrl, Length, MinLength } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -104,15 +105,37 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   avatar?: string;
 
-  // 👇 NOUVEAU : Ajout du champ email
   @Field({ nullable: true })
   @IsEmail({}, {message: "L'Email doit être valide."})
   email?: string;
 
-  @Field()
-  password: string; // mot de passe actuel (requis pour valider la modification)
+	@Field({ nullable: true })
+	@IsOptional()
+	password?: string;
 
   @Field({ nullable: true })
   @IsStrongPassword({}, {message: "Le nouveau mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},)
   newPassword?: string;
 }
+
+@InputType()
+export class AdminUpdateUserInput {
+	@Field()
+	@Length(3, 20, { message: "Le pseudo doit contenir entre 3 et 20 caractères" })
+	pseudo: string;
+
+	@Field()
+	@IsEmail({}, { message: "L'email doit être valide" })
+	email: string;
+
+	@Field({ nullable: true })
+	@IsOptional()
+	@IsUrl()
+	avatar?: string;
+
+	@Field()
+	@IsBoolean()
+	is_admin: boolean;
+}
+
+

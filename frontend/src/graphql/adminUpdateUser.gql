@@ -1,0 +1,11 @@
+mutation AdminUpdateUser($id: Int!, $data: AdminUpdateUserInput!) {
+  adminUpdateUser(id: $id, data: $data) {
+    id
+    pseudo
+    email
+    avatar
+    is_admin
+    created_at
+    updated_at
+  }
+}

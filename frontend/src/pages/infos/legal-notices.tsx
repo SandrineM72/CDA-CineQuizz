@@ -20,10 +20,10 @@ const LegalNotices = () => {
                                         <span className="underline">Forme juridique</span> : EURL
                                     </p>
                                     <p className="mb-3">
-                                        <span className="underline">Adresse</span> : 30 rue du Paradis
+                                        <span className="underline">Adresse</span> : 30 rue Mozart - 72000 Le Mans
                                     </p>
                                     <p className="mb-3">
-                                        <span className="underline">Téléphone</span> : 01.23.45.67.89
+                                        <span className="underline">Téléphone</span> : 02 43 56 78 90
                                     </p>
                                     <p className="mb-3">
                                         <span className="underline">E-mail</span> : <Link href="mailto:cyberquiz@gmail.com" className="cursor-pointer hover:underline">cyberquiz@gmail.com</Link>

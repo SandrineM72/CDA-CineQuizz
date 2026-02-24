@@ -8,9 +8,12 @@ import { Eye, EyeOff, Pencil, ChevronDown, ChevronUp, Upload } from "lucide-reac
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useProfileQuery, useUpdateUserMutation } from "@/graphql/generated/schema";
 
+type OpenSection = "avatar" | "pseudo" | "email" | "password" | null;
+
 export default function ProfileModify() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pasteZoneRef = useRef<HTMLDivElement>(null);
 
   // Récupérer les infos du profil
   const { data, loading, refetch } = useProfileQuery({
@@ -20,21 +23,20 @@ export default function ProfileModify() {
   const [updateUser] = useUpdateUserMutation();
   const user = data?.me;
 
-  // Section expansion states
-  const [avatarExpanded, setAvatarExpanded] = useState(false);
-  const [pseudoExpanded, setPseudoExpanded] = useState(false);
-  const [emailExpanded, setEmailExpanded] = useState(false);
-  const [passwordExpanded, setPasswordExpanded] = useState(false);
+  // Accordion exclusif : une seule section ouverte à la fois
+  const [openSection, setOpenSection] = useState<OpenSection>(null);
+
+  const toggleSection = (section: OpenSection) => {
+    setOpenSection((prev) => (prev === section ? null : section));
+  };
 
   // Avatar form state
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
-  const [avatarPassword, setAvatarPassword] = useState("");
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [avatarError, setAvatarError] = useState<string | null>(null);
 
   // Pseudo form state
   const [newPseudo, setNewPseudo] = useState("");
-  const [pseudoPassword, setPseudoPassword] = useState("");
   const [pseudoLoading, setPseudoLoading] = useState(false);
   const [pseudoError, setPseudoError] = useState<string | null>(null);
 
@@ -54,16 +56,17 @@ export default function ProfileModify() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
-  // 👇 Gestion du copier-coller d'image
+  // 👇 Gestion du copier-coller d'image directement sur la zone dédiée
   useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      if (!avatarExpanded) return; // Seulement si la section avatar est ouverte
+    const zone = pasteZoneRef.current;
+    if (!zone) return;
 
+    const handlePaste = (e: ClipboardEvent) => {
       const items = e.clipboardData?.items;
       if (!items) return;
 
       for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf('image') !== -1) {
+        if (items[i].type.indexOf("image") !== -1) {
           const blob = items[i].getAsFile();
           if (blob) {
             convertBlobToBase64(blob);
@@ -72,9 +75,9 @@ export default function ProfileModify() {
       }
     };
 
-    window.addEventListener('paste', handlePaste);
-    return () => window.removeEventListener('paste', handlePaste);
-  }, [avatarExpanded]);
+    zone.addEventListener("paste", handlePaste);
+    return () => zone.removeEventListener("paste", handlePaste);
+  }, [openSection]);
 
   // Convertir l'image en base64
   const convertBlobToBase64 = (blob: Blob) => {
@@ -93,7 +96,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Avatar handlers
+  // Avatar handlers — pas besoin de mot de passe
   const handleAvatarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAvatarError(null);
@@ -104,26 +107,19 @@ export default function ProfileModify() {
         setAvatarError("Veuillez ajouter une image");
         return;
       }
-      if (!avatarPassword) {
-        setAvatarError("Mot de passe requis");
-        return;
-      }
 
       await updateUser({
         variables: {
           data: {
             avatar: newAvatarUrl,
-            password: avatarPassword,
           }
         }
       });
 
       await refetch();
-      
-      // Reset form on success
+
       setNewAvatarUrl("");
-      setAvatarPassword("");
-      setAvatarExpanded(false);
+      setOpenSection(null);
       alert("Avatar modifié avec succès !");
     } catch (err: any) {
       setAvatarError(err.message || "Erreur lors de la mise à jour de l'avatar");
@@ -132,7 +128,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Pseudo handlers
+  // Pseudo handlers — pas besoin de mot de passe
   const handlePseudoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPseudoError(null);
@@ -143,26 +139,19 @@ export default function ProfileModify() {
         setPseudoError("Veuillez saisir un nouveau pseudo");
         return;
       }
-      if (!pseudoPassword) {
-        setPseudoError("Mot de passe requis");
-        return;
-      }
 
       await updateUser({
         variables: {
           data: {
             pseudo: newPseudo,
-            password: pseudoPassword,
           }
         }
       });
 
       await refetch();
-      
-      // Reset form on success
+
       setNewPseudo("");
-      setPseudoPassword("");
-      setPseudoExpanded(false);
+      setOpenSection(null);
       alert("Pseudo modifié avec succès !");
     } catch (err: any) {
       setPseudoError(err.message || "Erreur lors de la mise à jour du pseudo");
@@ -197,11 +186,10 @@ export default function ProfileModify() {
       });
 
       await refetch();
-      
-      // Reset form on success
+
       setNewEmail("");
       setEmailPassword("");
-      setEmailExpanded(false);
+      setOpenSection(null);
       alert("Email modifié avec succès !");
     } catch (err: any) {
       setEmailError(err.message || "Erreur lors de la mise à jour de l'email");
@@ -240,12 +228,11 @@ export default function ProfileModify() {
       });
 
       await refetch();
-      
-      // Reset form on success
+
       setNewPassword("");
       setConfirmPassword("");
       setCurrentPassword("");
-      setPasswordExpanded(false);
+      setOpenSection(null);
       alert("Mot de passe modifié avec succès !");
     } catch (err: any) {
       setPasswordError(err.message || "Erreur lors de la mise à jour du mot de passe");
@@ -286,35 +273,50 @@ export default function ProfileModify() {
 
         {/* Modify Avatar Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardHeader 
+          <CardHeader
             className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
-            onClick={() => setAvatarExpanded(!avatarExpanded)}
+            onClick={() => toggleSection("avatar")}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Pencil className="w-5 h-5 text-[#00bb0d]" />
                 <h3 className="text-white text-lg font-semibold">Modifier l'avatar</h3>
               </div>
-              {avatarExpanded ? (
+              {openSection === "avatar" ? (
                 <ChevronUp className="w-5 h-5 text-[#00bb0d]" />
               ) : (
                 <ChevronDown className="w-5 h-5 text-[#00bb0d]" />
               )}
             </div>
           </CardHeader>
-          
-          {avatarExpanded && (
+
+          {openSection === "avatar" && (
             <CardContent className="px-4 pb-4">
               <form onSubmit={handleAvatarSubmit}>
                 <FieldGroup className="gap-4">
-                  {/* Zone de copier-coller */}
-                  <div className="bg-[#565656] border-2 border-dashed border-[#00bb0d] rounded p-6 text-center">
-                    <p className="text-white text-sm mb-2">
-                      📋 Collez une image (Ctrl+V)
-                    </p>
-                    <p className="text-[#a5a5a5] text-xs">
-                      ou utilisez le bouton ci-dessous
-                    </p>
+                  {/* Zone de copier-coller : focusable pour recevoir l'événement paste */}
+                  <div
+                    ref={pasteZoneRef}
+                    tabIndex={0}
+                    onClick={() => pasteZoneRef.current?.focus()}
+                    className="bg-[#565656] border-2 border-dashed border-[#00bb0d] rounded p-6 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00bb0d]"
+                  >
+                    {newAvatarUrl ? (
+                      <img
+                        src={newAvatarUrl}
+                        alt="Aperçu"
+                        className="mx-auto max-h-32 object-contain"
+                      />
+                    ) : (
+                      <>
+                        <p className="text-white text-sm mb-2">
+                          📋 Cliquez ici puis collez une image (Ctrl+V)
+                        </p>
+                        <p className="text-[#a5a5a5] text-xs">
+                          ou utilisez le bouton ci-dessous
+                        </p>
+                      </>
+                    )}
                   </div>
 
                   {/* Input file caché */}
@@ -336,20 +338,6 @@ export default function ProfileModify() {
                     Choisir une image
                   </Button>
 
-                  <Field>
-                    <FieldLabel htmlFor="avatarPassword" className="text-white text-base mb-2">
-                      Mot de passe actuel
-                    </FieldLabel>
-                    <Input
-                      id="avatarPassword"
-                      type="password"
-                      placeholder="••••••••"
-                      value={avatarPassword}
-                      onChange={(e) => setAvatarPassword(e.target.value)}
-                      className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12"
-                    />
-                  </Field>
-
                   {avatarError && (
                     <p className="text-sm text-[#c00f00] text-center">{avatarError}</p>
                   )}
@@ -369,24 +357,24 @@ export default function ProfileModify() {
 
         {/* Modify Pseudo Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardHeader 
+          <CardHeader
             className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
-            onClick={() => setPseudoExpanded(!pseudoExpanded)}
+            onClick={() => toggleSection("pseudo")}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Pencil className="w-5 h-5 text-[#00bb0d]" />
                 <h3 className="text-white text-lg font-semibold">Modifier le pseudo</h3>
               </div>
-              {pseudoExpanded ? (
+              {openSection === "pseudo" ? (
                 <ChevronUp className="w-5 h-5 text-[#00bb0d]" />
               ) : (
                 <ChevronDown className="w-5 h-5 text-[#00bb0d]" />
               )}
             </div>
           </CardHeader>
-          
-          {pseudoExpanded && (
+
+          {openSection === "pseudo" && (
             <CardContent className="px-4 pb-4">
               <p className="text-[#565656] text-sm mb-4">Pseudo actuel : <span className="text-white">{user.pseudo}</span></p>
               <form onSubmit={handlePseudoSubmit}>
@@ -402,20 +390,6 @@ export default function ProfileModify() {
                       value={newPseudo}
                       onChange={(e) => setNewPseudo(e.target.value)}
                       className="bg-[#565656] border-[#00bb0d] border-2 text-white placeholder:text-[#a5a5a5] rounded-none h-12"
-                    />
-                  </Field>
-
-                  <Field>
-                    <FieldLabel htmlFor="pseudoPassword" className="text-white text-base mb-2">
-                      Mot de passe actuel
-                    </FieldLabel>
-                    <Input
-                      id="pseudoPassword"
-                      type="password"
-                      placeholder="••••••••"
-                      value={pseudoPassword}
-                      onChange={(e) => setPseudoPassword(e.target.value)}
-                      className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12"
                     />
                   </Field>
 
@@ -438,24 +412,24 @@ export default function ProfileModify() {
 
         {/* Modify Email Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardHeader 
+          <CardHeader
             className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
-            onClick={() => setEmailExpanded(!emailExpanded)}
+            onClick={() => toggleSection("email")}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Pencil className="w-5 h-5 text-[#00bb0d]" />
                 <h3 className="text-white text-lg font-semibold">Modifier l'email</h3>
               </div>
-              {emailExpanded ? (
+              {openSection === "email" ? (
                 <ChevronUp className="w-5 h-5 text-[#00bb0d]" />
               ) : (
                 <ChevronDown className="w-5 h-5 text-[#00bb0d]" />
               )}
             </div>
           </CardHeader>
-          
-          {emailExpanded && (
+
+          {openSection === "email" && (
             <CardContent className="px-4 pb-4">
               <p className="text-[#565656] text-sm mb-4">Email actuel : <span className="text-white">{user.email}</span></p>
               <form onSubmit={handleEmailSubmit}>
@@ -507,24 +481,24 @@ export default function ProfileModify() {
 
         {/* Modify Password Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
-          <CardHeader 
+          <CardHeader
             className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
-            onClick={() => setPasswordExpanded(!passwordExpanded)}
+            onClick={() => toggleSection("password")}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Pencil className="w-5 h-5 text-[#00bb0d]" />
                 <h3 className="text-white text-lg font-semibold">Modifier le mot de passe</h3>
               </div>
-              {passwordExpanded ? (
+              {openSection === "password" ? (
                 <ChevronUp className="w-5 h-5 text-[#00bb0d]" />
               ) : (
                 <ChevronDown className="w-5 h-5 text-[#00bb0d]" />
               )}
             </div>
           </CardHeader>
-          
-          {passwordExpanded && (
+
+          {openSection === "password" && (
             <CardContent className="px-4 pb-4">
               <form onSubmit={handlePasswordSubmit}>
                 <FieldGroup className="gap-4">

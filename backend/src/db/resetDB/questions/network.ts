@@ -30,8 +30,8 @@ export async function createNetworkQuestions({
     quiz: network_beginner_1
   }).save();
 
-  await Choice.create({ description: "Le WiFi gratuit du café", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "Vos données mobiles (4G/5G)", is_correct: true, question: q1_1 }).save();
+  await Choice.create({ description: "Le WiFi gratuit du café", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "Le WiFi du café avec un mot de passe", is_correct: false, question: q1_1 }).save();
 
   const q1_2 = await Question.create({
@@ -51,8 +51,8 @@ export async function createNetworkQuestions({
   }).save();
 
   await Choice.create({ description: "Choisir 'Hotel_Guest_Free' car c'est gratuit", is_correct: false, question: q1_3 }).save();
-  await Choice.create({ description: "Demander à la réception quel est le bon réseau", is_correct: true, question: q1_3 }).save();
   await Choice.create({ description: "Se connecter aux deux pour plus de débit", is_correct: false, question: q1_3 }).save();
+  await Choice.create({ description: "Demander à la réception quel est le bon réseau", is_correct: true, question: q1_3 }).save();
 
   // ========================================
   // QUIZ 2 : Navigation sécurisée au quotidien (DÉBUTANT)
@@ -74,8 +74,8 @@ export async function createNetworkQuestions({
     quiz: network_beginner_2
   }).save();
 
-  await Choice.create({ description: "Non, surtout si vous devez entrer un mot de passe", is_correct: true, question: q2_2 }).save();
   await Choice.create({ description: "Oui, c'est juste un avertissement pour rien", is_correct: false, question: q2_2 }).save();
+  await Choice.create({ description: "Non, surtout si vous devez entrer un mot de passe", is_correct: true, question: q2_2 }).save();
   await Choice.create({ description: "Oui, si c'est un site connu", is_correct: false, question: q2_2 }).save();
 
   const q2_3 = await Question.create({
@@ -85,8 +85,8 @@ export async function createNetworkQuestions({
   }).save();
 
   await Choice.create({ description: "Pour avoir de nouvelles fonctionnalités", is_correct: false, question: q2_3 }).save();
-  await Choice.create({ description: "Pour corriger les failles de sécurité", is_correct: true, question: q2_3 }).save();
   await Choice.create({ description: "Pour économiser de la batterie", is_correct: false, question: q2_3 }).save();
+  await Choice.create({ description: "Pour corriger les failles de sécurité", is_correct: true, question: q2_3 }).save();
 
   // ========================================
   // QUIZ 3 : VPN et chiffrement (AVANCÉ)
@@ -108,8 +108,8 @@ export async function createNetworkQuestions({
     quiz: network_advanced_1
   }).save();
 
-  await Choice.create({ description: "Ils peuvent revendre vos données de navigation", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "Ils sont toujours aussi sûrs que les payants", is_correct: false, question: q3_2 }).save();
+  await Choice.create({ description: "Ils peuvent revendre vos données de navigation", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "Ils n'ont aucun risque particulier", is_correct: false, question: q3_2 }).save();
 
   const q3_3 = await Question.create({
@@ -119,8 +119,8 @@ export async function createNetworkQuestions({
   }).save();
 
   await Choice.create({ description: "Oui, un VPN protège contre tout", is_correct: false, question: q3_3 }).save();
-  await Choice.create({ description: "Non, il ne protège pas contre phishing et virus", is_correct: true, question: q3_3 }).save();
   await Choice.create({ description: "Oui, mais seulement les VPN payants", is_correct: false, question: q3_3 }).save();
+  await Choice.create({ description: "Non, il ne protège pas contre phishing et virus", is_correct: true, question: q3_3 }).save();
 
   // ========================================
   // QUIZ 4 : Hotspots malveillants (AVANCÉ)
@@ -142,8 +142,8 @@ export async function createNetworkQuestions({
     quiz: network_advanced_2
   }).save();
 
-  await Choice.create({ description: "Voir vos mots de passe et rediriger vers de faux sites", is_correct: true, question: q4_2 }).save();
   await Choice.create({ description: "Seulement ralentir votre connexion", is_correct: false, question: q4_2 }).save();
+  await Choice.create({ description: "Voir vos mots de passe et rediriger vers de faux sites", is_correct: true, question: q4_2 }).save();
   await Choice.create({ description: "Rien si vous utilisez HTTPS", is_correct: false, question: q4_2 }).save();
 
   const q4_3 = await Question.create({
@@ -152,9 +152,9 @@ export async function createNetworkQuestions({
     quiz: network_advanced_2
   }).save();
 
-  await Choice.create({ description: "Demander le nom exact au personnel du lieu", is_correct: true, question: q4_3 }).save();
   await Choice.create({ description: "Choisir celui qui a le signal le plus fort", is_correct: false, question: q4_3 }).save();
   await Choice.create({ description: "Se connecter au premier réseau disponible", is_correct: false, question: q4_3 }).save();
+  await Choice.create({ description: "Demander le nom exact au personnel du lieu", is_correct: true, question: q4_3 }).save();
 
   // ========================================
   // QUIZ 5 : Attaques Man-in-the-Middle (EXPERT)
@@ -166,8 +166,8 @@ export async function createNetworkQuestions({
     quiz: network_expert_1
   }).save();
 
-  await Choice.create({ description: "Dans votre ordinateur avec un virus", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Entre vous et le serveur que vous contactez", is_correct: true, question: q5_1 }).save();
+  await Choice.create({ description: "Dans votre ordinateur avec un virus", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Sur le serveur du site que vous visitez", is_correct: false, question: q5_1 }).save();
 
   const q5_2 = await Question.create({
@@ -176,8 +176,8 @@ export async function createNetworkQuestions({
     quiz: network_expert_1
   }).save();
 
-  await Choice.create({ description: "Forcer une connexion HTTPS à devenir HTTP", is_correct: true, question: q5_2 }).save();
   await Choice.create({ description: "Voler les certificats SSL des sites web", is_correct: false, question: q5_2 }).save();
+  await Choice.create({ description: "Forcer une connexion HTTPS à devenir HTTP", is_correct: true, question: q5_2 }).save();
   await Choice.create({ description: "Désactiver le WiFi de votre appareil", is_correct: false, question: q5_2 }).save();
 
   const q5_3 = await Question.create({
@@ -186,9 +186,9 @@ export async function createNetworkQuestions({
     quiz: network_expert_1
   }).save();
 
-  await Choice.create({ description: "L'app mémorise le certificat exact et détecte les faux", is_correct: true, question: q5_3 }).save();
   await Choice.create({ description: "L'app demande un mot de passe supplémentaire", is_correct: false, question: q5_3 }).save();
   await Choice.create({ description: "L'app refuse toutes les connexions HTTPS", is_correct: false, question: q5_3 }).save();
+  await Choice.create({ description: "L'app mémorise le certificat exact et détecte les faux", is_correct: true, question: q5_3 }).save();
 
   // ========================================
   // QUIZ 6 : Protocoles de sécurité WiFi (EXPERT)
@@ -210,8 +210,8 @@ export async function createNetworkQuestions({
     quiz: network_expert_2
   }).save();
 
-  await Choice.create({ description: "Une faille permettant de déchiffrer le trafic WPA2", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "Un virus qui casse les mots de passe WiFi", is_correct: false, question: q6_2 }).save();
+  await Choice.create({ description: "Une faille permettant de déchiffrer le trafic WPA2", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "Un malware qui s'installe via le WiFi", is_correct: false, question: q6_2 }).save();
 
   const q6_3 = await Question.create({
@@ -220,9 +220,9 @@ export async function createNetworkQuestions({
     quiz: network_expert_2
   }).save();
 
-  await Choice.create({ description: "Résistance aux attaques par dictionnaire hors ligne", is_correct: true, question: q6_3 }).save();
   await Choice.create({ description: "Connexion WiFi plus rapide", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Portée du signal WiFi augmentée", is_correct: false, question: q6_3 }).save();
+  await Choice.create({ description: "Résistance aux attaques par dictionnaire hors ligne", is_correct: true, question: q6_3 }).save();
 
   console.log("✅ Questions Réseaux créées avec succès");
 }

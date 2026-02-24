@@ -30,8 +30,8 @@ export async function createPhishingQuestions({
     quiz: phishing_beginner_1
   }).save();
 
-  await Choice.create({ description: "Vous cliquez sur le lien pour vérifier", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "Vous appelez votre banque au numéro officiel", is_correct: true, question: q1_1 }).save();
+  await Choice.create({ description: "Vous cliquez sur le lien pour vérifier", is_correct: false, question: q1_1 }).save();
   await Choice.create({ description: "Vous répondez à l'email pour demander si c'est vrai", is_correct: false, question: q1_1 }).save();
 
   const q1_2 = await Question.create({
@@ -51,8 +51,8 @@ export async function createPhishingQuestions({
   }).save();
 
   await Choice.create({ description: "Vous payez rapidement pour éviter les frais", is_correct: false, question: q1_3 }).save();
-  await Choice.create({ description: "Vous vérifiez auprès du transporteur officiel", is_correct: true, question: q1_3 }).save();
   await Choice.create({ description: "Vous cliquez sur le lien pour voir les détails", is_correct: false, question: q1_3 }).save();
+  await Choice.create({ description: "Vous vérifiez auprès du transporteur officiel", is_correct: true, question: q1_3 }).save();
 
   // ========================================
   // QUIZ 2 : Réseaux sociaux et arnaques (DÉBUTANT)
@@ -64,8 +64,8 @@ export async function createPhishingQuestions({
     quiz: phishing_beginner_2
   }).save();
 
-  await Choice.create({ description: "Vous cliquez par curiosité", is_correct: false, question: q2_1 }).save();
   await Choice.create({ description: "Vous contactez votre ami par téléphone d'abord", is_correct: true, question: q2_1 }).save();
+  await Choice.create({ description: "Vous cliquez par curiosité", is_correct: false, question: q2_1 }).save();
   await Choice.create({ description: "Vous partagez le lien pour prévenir les autres", is_correct: false, question: q2_1 }).save();
 
   const q2_2 = await Question.create({
@@ -85,8 +85,8 @@ export async function createPhishingQuestions({
   }).save();
 
   await Choice.create({ description: "'En vacances aux Maldives, retour le 15 août !'", is_correct: false, question: q2_3 }).save();
-  await Choice.create({ description: "Rien pendant les vacances, vous partagez au retour", is_correct: true, question: q2_3 }).save();
   await Choice.create({ description: "Des photos en temps réel avec géolocalisation", is_correct: false, question: q2_3 }).save();
+  await Choice.create({ description: "Rien pendant les vacances, vous partagez au retour", is_correct: true, question: q2_3 }).save();
 
   // ========================================
   // QUIZ 3 : Phishing ciblé en entreprise (AVANCÉ)
@@ -98,8 +98,8 @@ export async function createPhishingQuestions({
     quiz: phishing_advanced_1
   }).save();
 
-  await Choice.create({ description: "Vous faites le virement, c'est urgent", is_correct: false, question: q3_1 }).save();
   await Choice.create({ description: "Vous appelez votre PDG pour confirmer", is_correct: true, question: q3_1 }).save();
+  await Choice.create({ description: "Vous faites le virement, c'est urgent", is_correct: false, question: q3_1 }).save();
   await Choice.create({ description: "Vous répondez par email pour demander confirmation", is_correct: false, question: q3_1 }).save();
 
   const q3_2 = await Question.create({
@@ -108,8 +108,8 @@ export async function createPhishingQuestions({
     quiz: phishing_advanced_1
   }).save();
 
-  await Choice.create({ description: "Les RH n'envoient pas de fichiers .exe", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "C'est normal, c'est un logiciel de paie", is_correct: false, question: q3_2 }).save();
+  await Choice.create({ description: "Les RH n'envoient pas de fichiers .exe", is_correct: true, question: q3_2 }).save();
   await Choice.create({ description: "Rien n'est suspect, c'est sécurisé", is_correct: false, question: q3_2 }).save();
 
   const q3_3 = await Question.create({
@@ -119,8 +119,8 @@ export async function createPhishingQuestions({
   }).save();
 
   await Choice.create({ description: "Vous donnez vos identifiants, c'est pour un job", is_correct: false, question: q3_3 }).save();
-  await Choice.create({ description: "Vous refusez et signalez le profil", is_correct: true, question: q3_3 }).save();
   await Choice.create({ description: "Vous créez un faux compte pour voir", is_correct: false, question: q3_3 }).save();
+  await Choice.create({ description: "Vous refusez et signalez le profil", is_correct: true, question: q3_3 }).save();
 
   // ========================================
   // QUIZ 4 : Vérification d'URL et domaines (AVANCÉ)
@@ -132,8 +132,8 @@ export async function createPhishingQuestions({
     quiz: phishing_advanced_2
   }).save();
 
-  await Choice.create({ description: "C'est le vrai site PayPal", is_correct: false, question: q4_1 }).save();
   await Choice.create({ description: "C'est un faux site utilisant un 'I' au lieu d'un 'l'", is_correct: true, question: q4_1 }).save();
+  await Choice.create({ description: "C'est le vrai site PayPal", is_correct: false, question: q4_1 }).save();
   await Choice.create({ description: "C'est la version internationale de PayPal", is_correct: false, question: q4_1 }).save();
 
   const q4_2 = await Question.create({
@@ -152,9 +152,9 @@ export async function createPhishingQuestions({
     quiz: phishing_advanced_2
   }).save();
 
-  await Choice.create({ description: "On ne peut pas voir la vraie destination", is_correct: true, question: q4_3 }).save();
   await Choice.create({ description: "Bit.ly est un site de virus", is_correct: false, question: q4_3 }).save();
   await Choice.create({ description: "Ce n'est pas dangereux, c'est pratique", is_correct: false, question: q4_3 }).save();
+  await Choice.create({ description: "On ne peut pas voir la vraie destination", is_correct: true, question: q4_3 }).save();
 
   // ========================================
   // QUIZ 5 : Business Email Compromise - BEC (EXPERT)
@@ -166,8 +166,8 @@ export async function createPhishingQuestions({
     quiz: phishing_expert_1
   }).save();
 
-  await Choice.create({ description: "Ils piratent le compte email du dirigeant", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Ils créent un sentiment d'urgence et d'autorité", is_correct: true, question: q5_1 }).save();
+  await Choice.create({ description: "Ils piratent le compte email du dirigeant", is_correct: false, question: q5_1 }).save();
   await Choice.create({ description: "Ils envoient un virus pour voler les mots de passe", is_correct: false, question: q5_1 }).save();
 
   const q5_2 = await Question.create({
@@ -200,8 +200,8 @@ export async function createPhishingQuestions({
     quiz: phishing_expert_2
   }).save();
 
-  await Choice.create({ description: "Résoudre réellement un problème technique", is_correct: false, question: q6_1 }).save();
   await Choice.create({ description: "Obtenir vos identifiants ou un accès système", is_correct: true, question: q6_1 }).save();
+  await Choice.create({ description: "Résoudre réellement un problème technique", is_correct: false, question: q6_1 }).save();
   await Choice.create({ description: "Vous vendre un logiciel antivirus", is_correct: false, question: q6_1 }).save();
 
   const q6_2 = await Question.create({
@@ -210,8 +210,8 @@ export async function createPhishingQuestions({
     quiz: phishing_expert_2
   }).save();
 
-  await Choice.create({ description: "Les gens font confiance à qui les aide", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "C'est une vraie offre commerciale", is_correct: false, question: q6_2 }).save();
+  await Choice.create({ description: "Les gens font confiance à qui les aide", is_correct: true, question: q6_2 }).save();
   await Choice.create({ description: "Ça permet de tester la sécurité", is_correct: false, question: q6_2 }).save();
 
   const q6_3 = await Question.create({
@@ -221,8 +221,8 @@ export async function createPhishingQuestions({
   }).save();
 
   await Choice.create({ description: "Vous la branchez pour voir ce qu'il y a", is_correct: false, question: q6_3 }).save();
-  await Choice.create({ description: "Vous la remettez au service IT sans la brancher", is_correct: true, question: q6_3 }).save();
   await Choice.create({ description: "Vous la branchez sur votre PC personnel à la maison", is_correct: false, question: q6_3 }).save();
+  await Choice.create({ description: "Vous la remettez au service IT sans la brancher", is_correct: true, question: q6_3 }).save();
 
   console.log("✅ Questions Phishing créées avec succès");
 }

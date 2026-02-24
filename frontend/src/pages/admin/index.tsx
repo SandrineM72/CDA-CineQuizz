@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import AdminLayout from "@/components/AdminLayout";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import Link from "next/link";
 import { CircleUserRound, Gamepad2, ChartArea } from "lucide-react";
@@ -26,7 +26,7 @@ const adminSections = [
 
 export default function AdminHomePage() {
 	return (
-		<Layout pageTitle="Administration">
+		<AdminLayout pageTitle="Administration">
 			<div className="flex">
 				<AdminSidebar />
 				<main className="flex-1 p-8 overflow-auto bg-black">
@@ -35,9 +35,9 @@ export default function AdminHomePage() {
 							Bienvenue sur l'écran de l'administration CyberQuiz !
 						</h1>
 
-						<p className="text-xl text-[#00bb0d] mb-8 text-center">Choix possibles :</p>
+						<p className="text-xl text-[#00bb0d] my-8 text-center">Choix possibles :</p>
 
-						<ul className="space-y-2 mb-8 text-[#00bb0d]">
+						<ul className="space-y-2 mb-8 text-[#00bb0d] text-center" >
 							{adminSections.map((section) => (
 								<li key={section.url} className="text-lg">
 									{section.title}
@@ -50,12 +50,12 @@ export default function AdminHomePage() {
 							<img
 								src="/illustrations/Startrek.jpg"
 								alt="Spock - Live long and prosper"
-								className="max-w-md rounded-lg border-4 border-[#00bb0d]"
+								className="max-w-md rounded-none border-4 border-[#00bb0d]"
 							/>
 						</div>
 					</div>
 				</main>
 			</div>
-		</Layout>
+		</AdminLayout>
 	);
 }
