@@ -7,10 +7,9 @@ import Image from "next/image";
 
 export default function WelcomeQuiz() {
   const router = useRouter();
-  const { data, loading, error } = useQuizPublicQuery();
   
-  // ✨ AJOUTÉ : Récupérer les IDs des quiz complétés
-  // fetchPolicy: 'network-only' force le rechargement depuis le serveur à chaque fois
+  // 2 requêtes graphql nécessaires pour gérer la limite du nombre de quiz
+  const { data, loading, error } = useQuizPublicQuery();
   const { data: completedData } = useGuestUserCompletedQuizIdsQuery({
     fetchPolicy: 'network-only',
   });
@@ -51,7 +50,7 @@ export default function WelcomeQuiz() {
     return 4; // Autres niveaux en dernier
   };
 
-  // Trier les quiz par niveau
+  // Tri des quiz par niveau
   const allQuizzes = data?.getPublicQuizzes || [];
   const sortedQuizzes = [...allQuizzes].sort((a, b) => {
     const orderA = getLevelOrder(a.level?.name || '');

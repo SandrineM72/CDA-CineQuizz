@@ -33,9 +33,9 @@ const About = () => {
                                     <Link href="/signup-page" className="w-3/4">
                                         <button 
                                             type="button" 
-                                            className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold flex items-center justify-center"
+                                            className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-14 text-base font-semibold flex items-center justify-center"
                                         >
-                                            S'inscrire
+                                            S'inscrire<br />ou se connecter
                                         </button>
                                     </Link>
                                 </div>
