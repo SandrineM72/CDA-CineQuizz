@@ -224,5 +224,4 @@ export async function createNetworkQuestions({
   await Choice.create({ description: "Portée du signal WiFi augmentée", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Résistance aux attaques par dictionnaire hors ligne", is_correct: true, question: q6_3 }).save();
 
-  console.log("✅ Questions Réseaux créées avec succès");
 }

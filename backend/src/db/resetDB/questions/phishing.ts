@@ -224,5 +224,4 @@ export async function createPhishingQuestions({
   await Choice.create({ description: "Vous la branchez sur votre PC personnel à la maison", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Vous la remettez au service IT sans la brancher", is_correct: true, question: q6_3 }).save();
 
-  console.log("✅ Questions Phishing créées avec succès");
 }

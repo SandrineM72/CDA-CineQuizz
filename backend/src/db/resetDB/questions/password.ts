@@ -224,5 +224,4 @@ export async function createPasswordQuestions({
   await Choice.create({ description: "Un algorithme de chiffrement multicouleur", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Une base de hash pré-calculés pour accélérer le cassage", is_correct: true, question: q6_3 }).save();
 
-  console.log("✅ Questions Mots de Passe créées avec succès");
 }

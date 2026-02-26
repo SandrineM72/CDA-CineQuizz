@@ -224,5 +224,4 @@ export async function createPrivacyQuestions({
   await Choice.create({ description: "Comparer deux fichiers pour trouver des doublons", is_correct: false, question: q6_3 }).save();
   await Choice.create({ description: "Combiner des données innocentes pour déduire des infos sensibles", is_correct: true, question: q6_3 }).save();
 
-  console.log("✅ Questions Protection des Données créées avec succès");
 }
