@@ -103,7 +103,7 @@ export default function PublicQuiz() {
   // UI
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         {/* Image */}
         <div className="flex justify-center">
           <div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">

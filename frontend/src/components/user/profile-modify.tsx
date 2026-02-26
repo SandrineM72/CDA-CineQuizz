@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Pencil, ChevronDown, ChevronUp, Upload } from "lucide-react";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useProfileQuery, useUpdateUserMutation } from "@/graphql/generated/schema";
+import UserStatsCard from "@/components/user/UserStatsCard";
 
 type OpenSection = "avatar" | "pseudo" | "email" | "password" | null;
 
@@ -221,7 +222,7 @@ export default function ProfileModify() {
       await updateUser({
         variables: {
           data: {
-            newPassword: newPassword,
+            newPassword,
             password: currentPassword,
           }
         }
@@ -241,35 +242,38 @@ export default function ProfileModify() {
     }
   };
 
-  if (loading) {
+  if (loading || !user) {
     return (
-      <div className="flex w-full items-start justify-center px-6 pt-2 pb-8">
-        <p className="text-white">Chargement...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="flex w-full items-start justify-center px-6 pt-2 pb-8">
-        <p className="text-[#c00f00]">Utilisateur non trouvé</p>
+      <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
+        <div className="w-full max-w-sm">
+          <p className="text-center text-white">Chargement...</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-      <div className="w-full max-w-md space-y-4">
-        {/* Avatar + Pseudo */}
-        <div className="flex flex-col items-center space-y-3">
-          <Avatar className="h-[120px] w-[120px] border-4 border-[#00bb0d] bg-black">
-            <AvatarImage src={user.avatar || newAvatarUrl} alt="Avatar" />
-            <AvatarFallback className="bg-black text-white text-base font-semibold text-center px-4">
-              Avatar
-            </AvatarFallback>
-          </Avatar>
-          <p className="text-white text-xl font-semibold">{user.pseudo}</p>
-        </div>
+      <div className="w-full max-w-sm space-y-4">
+        {/* Avatar Section */}
+        <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
+          <CardContent className="px-4">
+            <div className="flex flex-col items-center space-y-2">
+              <Avatar className="w-24 h-24 border-4 border-[#00bb0d]">
+                <AvatarImage src={user.avatar || undefined} alt={user.pseudo} />
+                <AvatarFallback className="bg-[#565656] text-white text-2xl">
+                  {user.pseudo.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-center">
+                <h2 className="text-white text-xl font-bold">{user.pseudo}</h2>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Insertion composant pour stats individuelles */}
+        <UserStatsCard />
 
         {/* Modify Avatar Card */}
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
@@ -294,49 +298,31 @@ export default function ProfileModify() {
             <CardContent className="px-4 pb-4">
               <form onSubmit={handleAvatarSubmit}>
                 <FieldGroup className="gap-4">
-                  {/* Zone de copier-coller : focusable pour recevoir l'événement paste */}
-                  <div
+                  {/* Zone de collage d'image */}
+                  <div 
                     ref={pasteZoneRef}
                     tabIndex={0}
-                    onClick={() => pasteZoneRef.current?.focus()}
-                    className="bg-[#565656] border-2 border-dashed border-[#00bb0d] rounded p-6 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#00bb0d]"
+                    className="w-full p-8 border-2 border-dashed border-[#00bb0d] bg-[#565656] rounded-lg text-center cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors"
+                    onClick={() => fileInputRef.current?.click()}
                   >
                     {newAvatarUrl ? (
-                      <img
-                        src={newAvatarUrl}
-                        alt="Aperçu"
-                        className="mx-auto max-h-32 object-contain"
-                      />
+                      <img src={newAvatarUrl} alt="Preview" className="w-24 h-24 mx-auto rounded-full object-cover" />
                     ) : (
-                      <>
-                        <p className="text-white text-sm mb-2">
-                          📋 Cliquez ici puis collez une image (Ctrl+V)
-                        </p>
-                        <p className="text-[#a5a5a5] text-xs">
-                          ou utilisez le bouton ci-dessous
-                        </p>
-                      </>
+                      <div className="text-white">
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-[#00bb0d]" />
+                        <p className="text-sm">Cliquez ou collez une image</p>
+                        <p className="text-xs text-gray-400 mt-1">Ctrl+V pour coller</p>
+                      </div>
                     )}
                   </div>
 
-                  {/* Input file caché */}
                   <input
-                    type="file"
                     ref={fileInputRef}
-                    onChange={handleFileChange}
+                    type="file"
                     accept="image/*"
+                    onChange={handleFileChange}
                     className="hidden"
                   />
-
-                  {/* Bouton pour ouvrir l'input file */}
-                  <Button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full bg-[#565656] text-white border-2 border-[#00bb0d] hover:bg-[#00bb0d] hover:text-black rounded-none h-12"
-                  >
-                    <Upload className="w-5 h-5 mr-2" />
-                    Choisir une image
-                  </Button>
 
                   {avatarError && (
                     <p className="text-sm text-[#c00f00] text-center">{avatarError}</p>

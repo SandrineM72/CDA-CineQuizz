@@ -97,7 +97,7 @@ export default function PrivateAnswers() {
   if (loading) {
     return (
       <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <p className="text-center text-white">Chargement...</p>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function PrivateAnswers() {
   if (error || !quiz || !currentQuestion) {
     return (
       <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <p className="text-center text-[#c00f00]">
             {error?.message || "Question introuvable"}
           </p>
@@ -118,7 +118,7 @@ export default function PrivateAnswers() {
 
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         <div className="flex justify-center">
           <div className="relative w-full h-34 overflow-hidden border-4 border-[#00bb0d]">
             <Image

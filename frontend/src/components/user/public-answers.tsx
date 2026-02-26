@@ -29,7 +29,7 @@ export default function PublicAnswers() {
     skip: !parsedQuizId,
   });
 
-  // ✨ MODIFIÉ : Récupérer les IDs des quiz uniques complétés par le GuestUser
+  // Récupérer les IDs des quiz uniques complétés par le GuestUser
   const { data: completedData, refetch: refetchCompleted } = useGuestUserCompletedQuizIdsQuery();
   const completedQuizIds = completedData?.guestUserCompletedQuizIds || [];
 
@@ -40,7 +40,7 @@ export default function PublicAnswers() {
   // Déterminer le bouton et l'action
   const isLastQuestionOfQuiz = parsedQuestionIndex === totalQuestions - 1;
 
-  // ✨ MODIFIÉ : Vérifier si APRÈS avoir terminé ce quiz, on aura 3 quiz différents
+  // Vérifier si APRÈS avoir terminé ce quiz, on aura 3 quiz différents
   // On ajoute le quiz actuel s'il n'est pas déjà dans la liste
   const quizIdsAfterCompletion = parsedQuizId && !completedQuizIds.includes(parsedQuizId)
     ? [...completedQuizIds, parsedQuizId]
@@ -149,7 +149,7 @@ export default function PublicAnswers() {
 
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         <div className="flex justify-center">
           <div className="relative w-full h-34 overflow-hidden border-4 border-[#00bb0d]">
             <Image

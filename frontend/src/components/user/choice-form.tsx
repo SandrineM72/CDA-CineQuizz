@@ -34,15 +34,33 @@ export default function ChoiceForm() {
 	const levels = levelsData?.levels || [];
 
 	const handleJouer = async () => {
-		setIsLoading(true);
+		// Réinitialise le message d'erreur
 		setErrorMessage(null);
+
+		// Validation : vérifie que niveau et thème sont sélectionnés
+		if (!levelId && !themeId) {
+			setErrorMessage("Veuillez choisir un niveau et un thème");
+			return;
+		}
+		
+		if (!levelId) {
+			setErrorMessage("Veuillez choisir un niveau");
+			return;
+		}
+
+		if (!themeId) {
+			setErrorMessage("Veuillez choisir un thème");
+			return;
+		}
+
+		setIsLoading(true);
 
 		try {
 			// Récupère les quiz correspondant aux filtres
 			const { data } = await fetchPrivateQuizzes({
 				variables: {
-					themeId: themeId ? Number(themeId) : undefined,
-					levelId: levelId ? Number(levelId) : undefined,
+					themeId: Number(themeId),
+					levelId: Number(levelId),
 				},
 			});
 
@@ -68,7 +86,7 @@ export default function ChoiceForm() {
 
 	return (
 		<div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-			<div className="w-full max-w-md space-y-4">
+			<div className="w-full max-w-sm space-y-4">
 				{/* Image */}
 				<div className="flex justify-center">
           			<div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">
@@ -105,7 +123,10 @@ export default function ChoiceForm() {
 								{/* Dropdown Niveau */}
 								<Select
 									value={levelId || undefined}
-									onValueChange={setLevelId}
+									onValueChange={(value) => {
+										setLevelId(value);
+										setErrorMessage(null); // Réinitialise l'erreur lors de la sélection
+									}}
 									disabled={levelsLoading || isLoading}
 								>
 									<SelectTrigger className="w-full bg-[#565656] border-2 border-[#00bb0d] text-white rounded-none h-12">
@@ -133,7 +154,10 @@ export default function ChoiceForm() {
 								{/* Dropdown Thème */}
 								<Select
 									value={themeId || undefined}
-									onValueChange={setThemeId}
+									onValueChange={(value) => {
+										setThemeId(value);
+										setErrorMessage(null); // Réinitialise l'erreur lors de la sélection
+									}}
 									disabled={themesLoading || isLoading}
 								>
 									<SelectTrigger className="w-full bg-[#565656] border-2 border-[#00bb0d] text-white rounded-none h-12">

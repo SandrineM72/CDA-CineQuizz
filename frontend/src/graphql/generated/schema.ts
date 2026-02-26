@@ -187,6 +187,7 @@ export type Query = {
   quizzes: Array<Quiz>;
   themes: Array<Theme>;
   user?: Maybe<User>;
+  userPersonalStats: UserPersonalStats;
   userSessionAttempts: Array<Attempt>;
   users: Array<User>;
 };
@@ -344,6 +345,15 @@ export type UserGrowthData = {
   __typename?: 'UserGrowthData';
   count: Scalars['Int']['output'];
   period: Scalars['String']['output'];
+};
+
+export type UserPersonalStats = {
+  __typename?: 'UserPersonalStats';
+  completionRate: Scalars['Float']['output'];
+  totalQuizzesAttempted: Scalars['Int']['output'];
+  totalQuizzesAvailable: Scalars['Int']['output'];
+  totalQuizzesPassed: Scalars['Int']['output'];
+  totalSuccessRate: Scalars['Float']['output'];
 };
 
 export type AdminUpdateUserMutationVariables = Exact<{
@@ -524,6 +534,11 @@ export type UserQueryVariables = Exact<{
 
 
 export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, pseudo: string, email: string, avatar?: string | null, is_admin: boolean, created_at: any } | null };
+
+export type UserPersonalStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserPersonalStatsQuery = { __typename?: 'Query', userPersonalStats: { __typename?: 'UserPersonalStats', totalSuccessRate: number, totalQuizzesPassed: number, totalQuizzesAttempted: number, totalQuizzesAvailable: number, completionRate: number } };
 
 export type UserSessionAttemptsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1704,6 +1719,49 @@ export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserSuspenseQueryHookResult = ReturnType<typeof useUserSuspenseQuery>;
 export type UserQueryResult = ApolloReactCommon.QueryResult<UserQuery, UserQueryVariables>;
+export const UserPersonalStatsDocument = gql`
+    query UserPersonalStats {
+  userPersonalStats {
+    totalSuccessRate
+    totalQuizzesPassed
+    totalQuizzesAttempted
+    totalQuizzesAvailable
+    completionRate
+  }
+}
+    `;
+
+/**
+ * __useUserPersonalStatsQuery__
+ *
+ * To run a query within a React component, call `useUserPersonalStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserPersonalStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserPersonalStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserPersonalStatsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>(UserPersonalStatsDocument, options);
+      }
+export function useUserPersonalStatsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>(UserPersonalStatsDocument, options);
+        }
+export function useUserPersonalStatsSuspenseQuery(baseOptions?: ApolloReactHooks.SkipToken | ApolloReactHooks.SuspenseQueryHookOptions<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>) {
+          const options = baseOptions === ApolloReactHooks.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useSuspenseQuery<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>(UserPersonalStatsDocument, options);
+        }
+export type UserPersonalStatsQueryHookResult = ReturnType<typeof useUserPersonalStatsQuery>;
+export type UserPersonalStatsLazyQueryHookResult = ReturnType<typeof useUserPersonalStatsLazyQuery>;
+export type UserPersonalStatsSuspenseQueryHookResult = ReturnType<typeof useUserPersonalStatsSuspenseQuery>;
+export type UserPersonalStatsQueryResult = ApolloReactCommon.QueryResult<UserPersonalStatsQuery, UserPersonalStatsQueryVariables>;
 export const UserSessionAttemptsDocument = gql`
     query UserSessionAttempts {
   userSessionAttempts {

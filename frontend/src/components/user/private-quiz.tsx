@@ -80,7 +80,7 @@ export default function PrivateQuiz() {
   if (isLoading) {
     return (
       <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <p className="text-center text-white">Chargement du quiz...</p>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default function PrivateQuiz() {
   if (error || !quiz || !currentQuestion) {
     return (
       <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <p className="text-center text-[#c00f00]">
             {errorMessage || error?.message || "Quiz introuvable"}
           </p>
@@ -101,7 +101,7 @@ export default function PrivateQuiz() {
 
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         {/* Image */}
         <div className="flex justify-center">
           <div className="relative w-full h-54 overflow-hidden border-4 border-[#00bb0d]">

@@ -1,0 +1,9 @@
+query UserPersonalStats {
+  userPersonalStats {
+    totalSuccessRate
+    totalQuizzesPassed
+    totalQuizzesAttempted
+    totalQuizzesAvailable
+    completionRate
+  }
+}

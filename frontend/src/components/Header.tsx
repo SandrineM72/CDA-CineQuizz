@@ -22,6 +22,9 @@ export default function Header() {
 	const [logout] = useLogoutMutation();
 	const user = data?.me || null;
 
+	// Détection si on est sur la page de modification du profil
+	const isOnProfilePage = router.pathname === "/profile-modify-page";
+
 	const handleLogout = async (e: FormEvent) => {
 		try {
 			e.preventDefault();
@@ -90,11 +93,21 @@ export default function Header() {
 					{/* menu utilisateur connecté */}
 					{user &&
 						<DropdownMenuGroup className={quantico.className}> 
-							<Link href="/profile-modify-page">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
-									Profil
-								</DropdownMenuItem>
-							</Link>
+							{/* Affichage conditionnel : "Jouer" si on est sur la page profil, "Profil" sinon */}
+							{isOnProfilePage ? (
+								<Link href="/choice-page">
+									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+										Jouer
+									</DropdownMenuItem>
+								</Link>
+							) : (
+								<Link href="/profile-modify-page">
+									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+										Profil
+									</DropdownMenuItem>
+								</Link>
+							)}
+							
 							{
 								user.is_admin && <Link href="/admin">
 									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">

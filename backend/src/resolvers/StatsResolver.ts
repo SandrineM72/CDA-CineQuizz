@@ -1,4 +1,4 @@
-import { Query, Resolver } from "type-graphql";
+import { Ctx, Query, Resolver } from "type-graphql";
 import { User } from "../entities/User";
 import { Attempt } from "../entities/Attempt";
 import { Quiz } from "../entities/Quiz";
@@ -14,6 +14,10 @@ import {
 	TopThemeStat
 } from "../entities/Stats";
 import { MoreThanOrEqual } from "typeorm";
+import { UserPersonalStats } from "../entities/UserStats";
+import { GraphQLContext } from "../types";
+import { getJWT } from "../auth";
+import { GraphQLError } from "graphql";
 
 @Resolver()
 export default class StatsResolver {
@@ -178,4 +182,53 @@ export default class StatsResolver {
 			topThemes,
 		};
 	}
+
+	@Query(() => UserPersonalStats)
+		async userPersonalStats(
+			@Ctx() context: GraphQLContext
+		): Promise<UserPersonalStats> {
+			// Récupère l'utilisateur connecté
+			const jwt = await getJWT(context);
+			if (!jwt) {
+				throw new GraphQLError("Non authentifié", {
+					extensions: { code: "UNAUTHENTICATED", http: { status: 401 } },
+				});
+			}
+	
+			const userId = jwt.userId;
+	
+			// Récupère toutes les tentatives de l'utilisateur
+			const allAttempts = await Attempt.find({
+				where: { user: { id: userId } },
+				relations: ["quiz"],
+			});
+	
+			// Calcul du taux de réussite total (moyenne de tous les scores)
+			const totalSuccessRate = allAttempts.length > 0
+				? allAttempts.reduce((sum, attempt) => sum + attempt.percentage_success, 0) / allAttempts.length
+				: 0;
+	
+			// Nombre de quiz réussis (>= 70%)
+			const totalQuizzesPassed = allAttempts.filter(attempt => attempt.passed).length;
+	
+			// Nombre de quiz uniques joués
+			const uniqueQuizIds = new Set(allAttempts.map(attempt => attempt.quiz.id));
+			const totalQuizzesAttempted = uniqueQuizIds.size;
+	
+			// Nombre total de quiz disponibles dans la BDD
+			const totalQuizzesAvailable = await Quiz.count();
+	
+			// Pourcentage de quiz joués par rapport au total disponible
+			const completionRate = totalQuizzesAvailable > 0
+				? (totalQuizzesAttempted / totalQuizzesAvailable) * 100
+				: 0;
+	
+			return {
+				totalSuccessRate: Math.round(totalSuccessRate * 100) / 100,
+				totalQuizzesPassed,
+				totalQuizzesAttempted,
+				totalQuizzesAvailable,
+				completionRate: Math.round(completionRate * 100) / 100,
+			};
+		}
 }
