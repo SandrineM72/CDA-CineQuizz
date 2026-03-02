@@ -46,43 +46,43 @@ export default function Header() {
 
 				<DropdownMenu onOpenChange={()=> setOpenMenu(!openMenu)}>
 					<DropdownMenuTrigger asChild className="cursor-pointer">
-						<Button variant="ghost" size="icon" aria-label="Menu" className="text-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d]">
+						<Button variant="ghost" size="icon" aria-label="Menu" data-testid="menu-burger-button" className="text-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d]">
 							<Menu className={`size-6 ${openMenu ? "hidden": ""}`} />
 							<X className={`size-6 ${openMenu ? "": "hidden"}`} />
 						</Button>
 					</DropdownMenuTrigger>
 			
-					<DropdownMenuContent sideOffset={10} className="w-60 text-white bg-[#565656] border border-[#00bb0d] rounded-none" align="end">
+					<DropdownMenuContent sideOffset={10} className="w-60 text-white bg-[#565656] border border-[#00bb0d] rounded-none" align="end" data-testid="menu-dropdown">
 					{/* menu visiteur */}
 					{!user && 
 						<DropdownMenuGroup className={quantico.className}>
 
 							<Link href="/infos/contacts">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" >
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-contacts">
 									Contacts
 								</DropdownMenuItem>
 							</Link>
 
 							<Link href="/infos/about">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-about">
 									Qui sommes-nous ?
 								</DropdownMenuItem>
 							</Link>
 							
 							<Link href="/infos/personal-data-policy">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-personal-data">
 									Protection des données
 								</DropdownMenuItem>
 							</Link>
 
 							<Link href="/infos/legal-notices">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-legal-notices">
 									Mentions légales
 								</DropdownMenuItem>
 							</Link>
 
 							<Link href="/home-page">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-home">
 									Retour accueil
 								</DropdownMenuItem>
 							</Link>
