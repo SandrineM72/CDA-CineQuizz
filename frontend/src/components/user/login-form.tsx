@@ -134,7 +134,7 @@ export default function LoginForm() {
 
                 {error && (
                   <p className="text-sm text-[#c00f00] text-center" data-testid="login-error">
-                    {errorMessage || error?.message}
+                    {errorMessage || "Une erreur est survenue lors de la connexion"}
                   </p>
                 )}
 

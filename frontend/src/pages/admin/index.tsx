@@ -49,7 +49,10 @@ export default function AdminHomePage() {
 							<Image
 								src="/illustrations/Startrek.jpg"
 								alt="Spock - Live long and prosper"
+								width={300}
+								height={200}
 								className="max-w-md rounded-none border-4 border-[#00bb0d]"
+								priority
 							/>
 						</div>
 					</div>

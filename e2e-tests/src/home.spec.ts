@@ -1,12 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { clearDB } from "../../backend/src/db/resetDB/utils";
-import { connectDB, disconnectDB } from "./dbHelpers";
+import { clearDB, connectDB, disconnectDB } from "./dbHelpers";
 
 test.beforeAll(connectDB);
 test.beforeEach(clearDB);
 test.afterAll(disconnectDB);
 
-test("le menu burger affiche les éléments corrects pour un visiteur non connecté", async ({ page }) => {
+test("not connected user should have burger menu with correct sections", async ({ page }) => {
     // Aller sur la page d'accueil
     await page.goto('/home-page');
     

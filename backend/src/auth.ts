@@ -4,30 +4,31 @@ import env from "./env";
 import { GraphQLContext } from "./types";
 import { UnauthenticatedError } from "./entities/errors";
 
-export const cookieName = "authToken"; // nom cookie
+export const cookieName = "authToken";
 
-export interface JWTPayload{ // interface pour le payload du JWT (ici, on aura une propriété id pour l'id de l'user connecté)
+export interface JWTPayload {
     userId: number;
 }
 
 export async function createJWT(user: User): Promise<string>{
-    const payload: JWTPayload = {       // création payload pour le jwt avec l'id de l'user passé en param
+    const payload: JWTPayload = {
         userId: user.id                
     };
     console.log("payload dans createJWT() : ", payload);
     
-    return jwt.sign(payload, env.JWT_SECRET, {expiresIn: "7d"}); // renvoi du token généré
+    return jwt.sign(payload, env.JWT_SECRET, {expiresIn: "7d"});
 }
 
 export async function startSession(context: GraphQLContext, user: User){
-    const token = await createJWT(user);  // génération du token (le payload contient l'id du user courant)
+    const token = await createJWT(user);
     console.log("token renvoyé par la fn createJWT : ", token);
 
-    context.res.cookie(cookieName, token, {  // création du cookie (avec le nom "authToken") pour porter le token
+    // Cast en 'any' pour contourner le problème de typage
+    (context.res as any).cookie(cookieName, token, {
         httpOnly: true,
         secure: env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days (corrigé : *1000 au lieu de *1)
     });
     return token;
 }
@@ -42,11 +43,12 @@ export const verifyJWT = (token: string) : JWTPayload | null => {
 };
 
 export async function getJWT(context: GraphQLContext): Promise<JWTPayload | null > {
-    const token = context.req.cookies?.[cookieName]; // récupération du cookie "authToken" depuis tous les cookies présent dans la requête
+    // Cast en 'any' pour contourner le problème de typage
+    const token = (context.req as any).cookies?.[cookieName];
     if (!token) return null;
-    const payload = verifyJWT(token); // récupération payload
+    const payload = verifyJWT(token);
     if (!payload) return null;
-    return payload; // renvoie le payload extrait du token
+    return payload;
 }
 
 export async function getCurrentUser(context: GraphQLContext): Promise<User> {
@@ -55,10 +57,11 @@ export async function getCurrentUser(context: GraphQLContext): Promise<User> {
     if (jwt === null) throw new UnauthenticatedError();
     const currentUser = await User.findOne({where: {id: jwt.userId}});
     if (currentUser === null) throw new UnauthenticatedError();
-    console.log("current user renvoyé depuis getCurrentUser() : ", currentUser); // à ce niveau, on a toutes les infos du user courant
+    console.log("current user renvoyé depuis getCurrentUser() : ", currentUser);
     return currentUser;    
 }
 
 export async function endSession(context: GraphQLContext) {
-    context.res.clearCookie(cookieName);  // on supprime le cookie authToken donc plus de token exploitable (plus de connexion pour le user)
+    // Cast en 'any' pour contourner le problème de typage
+    (context.res as any).clearCookie(cookieName);
 }
