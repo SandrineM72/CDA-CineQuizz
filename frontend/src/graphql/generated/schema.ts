@@ -466,9 +466,7 @@ export type PrivateQuizzesQuery = { __typename?: 'Query', privateQuizzes: Array<
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', me?: {
-  email: ReactNode; __typename?: 'User', id: number, avatar?: string | null, pseudo: string, is_admin: boolean, attempts?: Array<{ __typename?: 'Attempt', id: number, score: number, finished_at: any }> | null, won_rewards?: Array<{ __typename?: 'Reward', id: number }> | null 
-} | null };
+export type ProfileQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, avatar?: string | null, pseudo: string, email: string, is_admin: boolean, attempts?: Array<{ __typename?: 'Attempt', id: number, score: number, finished_at: any }> | null, won_rewards?: Array<{ __typename?: 'Reward', id: number }> | null } | null };
 
 export type QuizPublicQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1226,6 +1224,7 @@ export const ProfileDocument = gql`
     id
     avatar
     pseudo
+    email
     is_admin
     attempts {
       id

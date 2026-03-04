@@ -32,7 +32,7 @@ const PersonalDataPolicy = () => {
                                     HappyQuiz respecte la vie privée de ses utilisateurs. Aucune donnée personnelle n'est collectée à des fins commerciales ou publicitaires.
                                     Les seules informations susceptibles d'être enregistrées sont celles saisies volontairement dans le cadre de la démonstration pédagogique du site.
                                     Ces données ne sont ni transmises à des tiers, ni utilisées à d'autres fins que la simulation de fonctionnalités.
-                                    Vous pouvez demander la suppression de toute donnée test vous concernant en écrivant à contact@fetchmehome.org.
+                                    Vous pouvez demander la suppression de toute donnée test vous concernant en écrivant à cyberquiz@gmail.com.
                                     Pour toute question relative à la confidentialité, contactez-nous à la même adresse.
                                 </p>
 

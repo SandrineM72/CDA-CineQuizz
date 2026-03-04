@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -12,7 +13,7 @@ import UserStatsCard from "@/components/user/UserStatsCard";
 type OpenSection = "avatar" | "pseudo" | "email" | "password" | null;
 
 export default function ProfileModify() {
-  const router = useRouter();
+  // const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pasteZoneRef = useRef<HTMLButtonElement>(null);
 
@@ -46,6 +47,7 @@ export default function ProfileModify() {
   const [emailPassword, setEmailPassword] = useState("");
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [showEmailPassword, setShowEmailPassword] = useState(false);
 
   // Password form state
   const [newPassword, setNewPassword] = useState("");
@@ -57,10 +59,19 @@ export default function ProfileModify() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
-  // Gestion du copier-coller d'image directement sur la zone dédiée
+  // Convertir l'image en base64
+  const convertBlobToBase64 = useCallback((blob: Blob) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewAvatarUrl(reader.result as string);
+    };
+    reader.readAsDataURL(blob);
+  }, []);
+
+  // Gestion du copier-coller d'image au niveau du document quand la section avatar est ouverte
   useEffect(() => {
-    const zone = pasteZoneRef.current;
-    if (!zone) return;
+    // Activer le paste uniquement quand la section avatar est ouverte
+    if (openSection !== "avatar") return;
 
     const handlePaste = (e: ClipboardEvent) => {
       const items = e.clipboardData?.items;
@@ -68,6 +79,7 @@ export default function ProfileModify() {
 
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") !== -1) {
+          e.preventDefault(); // Empêcher le comportement par défaut
           const blob = items[i].getAsFile();
           if (blob) {
             convertBlobToBase64(blob);
@@ -76,18 +88,10 @@ export default function ProfileModify() {
       }
     };
 
-    zone.addEventListener("paste", handlePaste);
-    return () => zone.removeEventListener("paste", handlePaste);
-  }, [openSection]);
-
-  // Convertir l'image en base64
-  const convertBlobToBase64 = (blob: Blob) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNewAvatarUrl(reader.result as string);
-    };
-    reader.readAsDataURL(blob);
-  };
+    // Écouter au niveau du document pour capturer Ctrl+V partout
+    document.addEventListener("paste", handlePaste);
+    return () => document.removeEventListener("paste", handlePaste);
+  }, [openSection, convertBlobToBase64]);
 
   // Gestion de l'upload via input file
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +101,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Avatar handlers — pas besoin de mot de passe
+  // Modification avatar — pas besoin de mot de passe
   const handleAvatarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAvatarError(null);
@@ -129,7 +133,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Pseudo handlers — pas besoin de mot de passe
+  // Modification pseudo - pas besoin de mot de passe
   const handlePseudoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPseudoError(null);
@@ -161,7 +165,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Email handlers
+  // Modification email
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setEmailError(null);
@@ -199,7 +203,7 @@ export default function ProfileModify() {
     }
   };
 
-  // Password handlers
+  // Modification password
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPasswordError(null);
@@ -256,7 +260,7 @@ export default function ProfileModify() {
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
       <div className="w-full max-w-sm space-y-4">
 
-        <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
+        <Card className="bg-black border-4 border-[#00bb0d] rounded-none">
           <CardContent className="p-4">
             <div className="flex flex-col items-center space-y-2">
               <Avatar className="w-24 h-24 border-4 border-[#00bb0d]">
@@ -299,17 +303,24 @@ export default function ProfileModify() {
                   <button
                     type="button"
                     ref={pasteZoneRef}
-                    className="w-full p-8 border-2 border-dashed border-[#00bb0d] bg-[#565656] rounded-lg text-center cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors"
+                    className="w-full p-8 border-2 border-dashed border-[#00bb0d] bg-[#565656] rounded-lg text-center cursor-pointer hover:bg-[#3a3a3a] transition-colors"
                     onClick={() => fileInputRef.current?.click()}
                     aria-label="Sélectionner ou coller une image"
                   >
                     {newAvatarUrl ? (
-                      <img src={newAvatarUrl} alt="Preview" className="w-24 h-24 mx-auto rounded-full object-cover" />
+                      <Image
+                        src={newAvatarUrl}
+                        alt="Preview"
+                        width={96}
+                        height={96}
+                        className="mx-auto rounded-full object-cover"
+                        unoptimized 
+                      />
                     ) : (
                       <div className="text-white">
                         <Upload className="w-8 h-8 mx-auto mb-2 text-[#00bb0d]" />
-                        <p className="text-sm">Cliquez ou collez une image</p>
-                        <p className="text-xs text-gray-400 mt-1">Ctrl+V pour coller</p>
+                        <p className="text-sm">Cliquer pour uploader une image</p>
+                        <p className="text-xs text-[#00bb0d]">Ctrl+V pour coller une image<br />depuis le presse-papier</p>
                       </div>
                     )}
                   </button>
@@ -413,9 +424,9 @@ export default function ProfileModify() {
 
           {openSection === "email" && (
             <CardContent className="px-4 pb-4">
-              <p className="text-[#565656] text-sm mb-4">Email actuel : 
-              {/* user.email à réparer */}
-              <span className="text-white">{user.email}</span></p>
+              <p className="text-[#565656] text-sm mb-4">
+                Email actuel : <span className="text-white">{user?.email}</span>
+              </p>
               <form onSubmit={handleEmailSubmit}>
                 <FieldGroup className="gap-4">
                   <Field>
@@ -436,14 +447,23 @@ export default function ProfileModify() {
                     <FieldLabel htmlFor="emailPassword" className="text-white text-base mb-2">
                       Saisir votre mot de passe pour valider
                     </FieldLabel>
-                    <Input
-                      id="emailPassword"
-                      type="password"
-                      placeholder="••••••••"
-                      value={emailPassword}
-                      onChange={(e) => setEmailPassword(e.target.value)}
-                      className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="emailPassword"
+                        type={showEmailPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        value={emailPassword}
+                        onChange={(e) => setEmailPassword(e.target.value)}
+                        className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12 pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowEmailPassword(!showEmailPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white"
+                      >
+                        {showEmailPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
                   </Field>
 
                   {emailError && (
@@ -488,7 +508,7 @@ export default function ProfileModify() {
 
                   <Field>
                     <FieldLabel htmlFor="currentPasswordForPwd" className="text-white text-base mb-2">
-                      Mot de passe actuel
+                      Saisir mot de passe actuel
                     </FieldLabel>
                     <div className="relative">
                       <Input
@@ -511,7 +531,7 @@ export default function ProfileModify() {
 
                   <Field>
                     <FieldLabel htmlFor="newPassword" className="text-white text-base mb-2">
-                      Nouveau mot de passe
+                      Saisir nouveau mot de passe
                     </FieldLabel>
                     <div className="relative">
                       <Input
@@ -534,7 +554,7 @@ export default function ProfileModify() {
 
                   <Field>
                     <FieldLabel htmlFor="confirmPassword" className="text-white text-base mb-2">
-                      Confirmation nouveau mot de passe
+                      Confirmer nouveau mot de passe
                     </FieldLabel>
                     <div className="relative">
                       <Input

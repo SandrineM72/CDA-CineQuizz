@@ -10,7 +10,7 @@ export default function PublicScore() {
   const { data, loading } = useGuestUserRecentAttemptsQuery();
   const attempts = data?.guestUserRecentAttempts || [];
 
-  // ✨ AJOUTÉ : Mutation pour nettoyer les attempts après affichage
+  // Mutation pour nettoyer les attempts après affichage
   const [clearAttempts] = useClearGuestUserAttemptsMutation();
 
   // Calcul du score global (moyenne des 3 quiz)
@@ -27,7 +27,7 @@ export default function PublicScore() {
     return `${minutes} min ${remainingSeconds}`;
   };
 
-  // ✨ AJOUTÉ : Nettoyer les attempts quand l'utilisateur quitte la page
+  // Nettoyer les attempts quand l'utilisateur quitte la page
   useEffect(() => {
     return () => {
       // Fonction de nettoyage appelée quand le composant se démonte
@@ -48,9 +48,8 @@ export default function PublicScore() {
   return (
     <div className="flex w-full items-start justify-center px-6 pt-2 pb-8 md:px-10">
       <div className="w-full max-w-sm space-y-4">
-        {/* Image trophée */}
         <div className="flex justify-center">
-          <div className="relative w-full aspect-[4/3] overflow-hidden border-4 border-[#00bb0d]">
+          <div className="relative w-full aspect-4/3 overflow-hidden border-4 border-[#00bb0d]">
             <Image
               src="/illustrations/trophy_blue_green.jpg"
               alt="Trophée"
@@ -64,7 +63,6 @@ export default function PublicScore() {
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardContent className="px-4 py-4">
             <div className="space-y-3">
-              {/* Section 1 : Message */}
               <div className="bg-[#565656] p-4 text-center">
                 <p className="text-white text-base font-normal">
                   Vos 3 quiz d'essai sont terminés,
@@ -74,14 +72,12 @@ export default function PublicScore() {
                 </p>
               </div>
 
-              {/* Section 2 : Score */}
               <div className="bg-[#565656] p-4 text-center">
                 <p className="text-white text-base font-normal">
                   Réussite : {globalScore}%
                 </p>
               </div>
 
-              {/* Section 3 : Temps */}
               <div className="bg-[#565656] p-4 text-center">
                 <p className="text-white text-base font-normal">
                   Temps : {formatTime(totalTime)}
@@ -91,7 +87,6 @@ export default function PublicScore() {
           </CardContent>
         </Card>
 
-        {/* Call to action button */}
         <div className="flex flex-col items-center">
           <Link href="/signup-page" className="w-3/4">
             <Button

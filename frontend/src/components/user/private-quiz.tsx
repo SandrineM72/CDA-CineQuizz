@@ -25,7 +25,7 @@ export default function PrivateQuiz() {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(questionIndexParam);
   const [selected, setSelected] = useState<number | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage] = useState<string | null>(null);
 
   const startTimeRef = useRef<number>(Date.now() - (durationParam * 1000));
 
@@ -34,7 +34,7 @@ export default function PrivateQuiz() {
 
   const quiz = data?.quiz;
   const currentQuestion = quiz?.questions?.[currentQuestionIndex];
-  const totalQuestions = quiz?.questions?.length ?? 0;
+  // const totalQuestions = quiz?.questions?.length ?? 0;
 
   // Init quiz - réinitialiser seulement si c'est la première question
   useEffect(() => {

@@ -3,6 +3,7 @@ query Profile {
     id
     avatar
     pseudo
+    email
     is_admin
     attempts {
       id

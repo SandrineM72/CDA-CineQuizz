@@ -65,7 +65,7 @@ export default function Header() {
 
 							<Link href="/infos/about">
 								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-about">
-									Qui sommes-nous ?
+									A propos
 								</DropdownMenuItem>
 							</Link>
 							
