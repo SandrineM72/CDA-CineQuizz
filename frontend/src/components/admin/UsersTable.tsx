@@ -21,12 +21,15 @@ import {
 } from "@/graphql/generated/schema";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function UsersTable() {
 	const router = useRouter();
 	const { data, loading, error, refetch } = useUsersQuery();
 	const [deleteUser] = useDeleteUserMutation();
 	const [deletingId, setDeletingId] = useState<number | null>(null);
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 8;
 
 	const handleDelete = async (id: number, pseudo: string) => {
 		if (
@@ -72,6 +75,20 @@ export default function UsersTable() {
 
 	const users = data?.users || [];
 
+	// Calculs pagination
+	const totalPages = Math.ceil(users.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const currentUsers = users.slice(startIndex, endIndex);
+
+	const goToPreviousPage = () => {
+		setCurrentPage((prev) => Math.max(prev - 1, 1));
+	};
+
+	const goToNextPage = () => {
+		setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+	};
+
 	return (
 		<Card className="bg-gray-900 border-gray-700">
 			<CardHeader>
@@ -96,7 +113,7 @@ export default function UsersTable() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{users.map((user) => (
+						{currentUsers.map((user, index) => (
 							<TableRow key={user.id} className="border-gray-700 hover:bg-gray-800">
 								<TableCell>
 									{user.avatar ? (
@@ -150,7 +167,36 @@ export default function UsersTable() {
 						))}
 					</TableBody>
 				</Table>
-			</CardContent>
+
+				{/* Pagination */}
+				{totalPages > 1 && (
+					<div className="flex items-center justify-center gap-4 mt-6">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={goToPreviousPage}
+							disabled={currentPage === 1}
+							className="text-white border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+						>
+							<ChevronLeft className="w-4 h-4 mr-1" />
+							Précédent
+						</Button>
+						<span className="text-white">
+							Page {currentPage} sur {totalPages}
+						</span>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={goToNextPage}
+							disabled={currentPage === totalPages}
+							className="text-white border-gray-600 hover:bg-gray-700 disabled:opacity-50"
+						>
+							Suivant
+							<ChevronRight className="w-4 h-4 ml-1" />
+						</Button>
+					</div>
+				)}
+			</CardContent>		
 		</Card>
 	);
 }

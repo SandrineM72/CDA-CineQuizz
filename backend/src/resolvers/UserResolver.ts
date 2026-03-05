@@ -69,7 +69,7 @@ export default class UserResolver {
     // Créer la session
     await startSession(context, user);
     
-    // Retourner l'objet User complet (avec is_admin)
+    // Retourner l'objet User complet (avec is_admin si nécessaire)
     return user;
   }
 

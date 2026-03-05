@@ -80,7 +80,7 @@ export default function LoginForm() {
                   <Input
                     id="pseudo"
                     type="text"
-                    placeholder="Ada Lovelace"
+                    placeholder="Alan Turing"
                     required
                     value={pseudo}
                     onChange={(e) => setPseudo(e.target.value)}
@@ -98,6 +98,7 @@ export default function LoginForm() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       required
+                      placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="bg-[#565656] border-[#00bb0d] border-2 text-white rounded-none h-12 pr-10"

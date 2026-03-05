@@ -13,7 +13,7 @@ import {
 import { Reward } from "./Reward";
 import { Attempt } from "./Attempt";
 import { IsEmail, IsStrongPassword } from "class-validator";
-import { IsBoolean, IsOptional, IsUrl, Length, MinLength } from "class-validator";
+import { IsBoolean, IsOptional, IsUrl, Length } from "class-validator";
 
 @ObjectType()
 @Entity()

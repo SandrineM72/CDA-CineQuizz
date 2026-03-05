@@ -23,7 +23,7 @@ export default function GamesTable() {
 	const router = useRouter();
 	const { data, loading, error } = useAllQuizzesQuery();
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 10;
+	const itemsPerPage = 8;
 
 	if (loading) {
 		return (
