@@ -15,15 +15,15 @@ import { Attempt } from "./Attempt";
 import { IsEmail, IsStrongPassword } from "class-validator";
 import { IsBoolean, IsOptional, IsUrl, Length } from "class-validator";
 
-@ObjectType()
-@Entity()
+@ObjectType() // déco Type-GraphQL - déclare User comme objet GraphQL
+@Entity() // déco TypeORM - création de la table user
 export class User extends BaseEntity {
 	@Field(() => Int)
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn() // déco TypeORM - clé primaire auto-incrémentée
 	id: number;
 
 	@Field()
-	@Column({type: "text", unique: true })
+	@Column({type: "text", unique: true }) // déco TypeORM - propriété->colonne
 	email: string;
 
 	@Field()
@@ -31,9 +31,9 @@ export class User extends BaseEntity {
 	pseudo: string;
 
 	@Column("text")
-	hashedPassword: string;
+	hashedPassword: string; // déco Type-GraphQL - pas de @Field
 
-	@Field({ nullable: true })
+	@Field({ nullable: true }) // déco Type-GraphQL - champ optionnel
 	@Column({ type: "text", nullable: true })
 	avatar?: string;
 
@@ -46,34 +46,34 @@ export class User extends BaseEntity {
 	last_login: Date;
 
 	@Field()
-	@CreateDateColumn()
+	@CreateDateColumn() // déco TypeORM - colonne remplie automatiquement
 	created_at: Date;
 
 	@Field()
 	@UpdateDateColumn()
 	updated_at: Date;
 
-	@Field(() => [Attempt], {nullable: true})
-  	@OneToMany(
+	@Field(() => [Attempt], {nullable: true}) // déco Type-GraphQL - tableau d'objets Attempt et champ optionnel
+  	@OneToMany( // déco TypeORM - relation 1 user pour plusieurs attempts
 		() => Attempt,
 		(attempt) => attempt.user,
 	)
 	attempts: Attempt[];
 
 	@Field(() => [Reward], {nullable: true})
-	@JoinTable()
-	@ManyToMany(() => Reward)
+	@JoinTable() // déco TypeORM nécessaire d'un côté de ManyToMany - crée la jointure
+	@ManyToMany(() => Reward) // déco TypeORM - relation n-n
 	won_rewards: Reward[];
 }
 
 @InputType()
 export class SignupInput {
   @Field()
-  @IsEmail({}, {message: "L'Email doit être valide."})
+  @IsEmail({}, {message: "L'Email doit être valide."}) // déco class-validator qui vérifie le format de l'email
   email:string;
 
   @Field()
-  @IsStrongPassword({}, {message: "Le mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},)
+  @IsStrongPassword({}, {message: "Le mot de passe doit contenir un minimum de 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial."},) //// déco class-validator qui vérifie la robustesse du password
   password: string;
 
   @Field()
