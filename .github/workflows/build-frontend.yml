@@ -1,4 +1,4 @@
-name: build and push production server to dockerhub
+name: build and push production frontend to dockerhub
 
 on:
   workflow_call:
