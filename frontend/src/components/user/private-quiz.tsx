@@ -133,7 +133,7 @@ export default function PrivateQuiz() {
                     key={choice.id}
                     onClick={() => handleAnswerClick(choice.id, index)}
                     disabled={selected !== null}
-                    className={`w-full bg-[#00bb0d] text-white border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal ${
+                    className={`w-full bg-[#06950a] text-white border-4 border-[#06950a] hover:bg-transparent hover:text-[#06950a] rounded-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal ${
                       selected === index ? 'opacity-70' : ''
                     } ${selected !== null && selected !== index ? 'opacity-50' : ''}`}
                   >
