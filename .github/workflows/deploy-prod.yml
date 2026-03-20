@@ -9,6 +9,9 @@ jobs:
   client-tests:
     uses: sandrinem72/CDA-CyberQuiz/.github/workflows/test-frontend.yml@main
 
+  e2e-tests:
+    uses: sandrinem72/CDA-CyberQuiz/.github/workflows/e2e-tests.yml@main
+
   build-and-push-server:
     uses: sandrinem72/CDA-CyberQuiz/.github/workflows/build-backend.yml@main
     secrets:
@@ -26,3 +29,15 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     with:
       image_name: sandrinem72/cyberquiz-front:production
+
+
+  notify-vps:
+    needs:
+      -e2e-tests
+      -build-and-push-server
+      -build-and-push-client
+    runs-on: ubuntu-latest
+    steps:
+      - name : Trigger Webhook on VPS
+        run: |
+          curl -X POST -H "X-Webhook-Secret: ${{ secrets.WEBHOOK_SECRET }}" https://ops.cyberquiz.culturecook.fr/hooks/redeploy-cyberquiz-production
