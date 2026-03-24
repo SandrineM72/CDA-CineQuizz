@@ -138,7 +138,7 @@ export default function PublicQuiz() {
                     key={choice.id}
                     onClick={() => handleAnswerClick(choice.id, index)}
                     disabled={selected !== null}
-                    className={`w-full bg-[#00bb0d] text-white border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal ${
+                    className={`w-full bg-[#0E8A16] text-white border-4 border-[#0E8A16] hover:bg-transparent hover:text-[#0E8A16] rounded-full h-auto min-h-[30px] py-1 px-4 text-base font-normal leading-relaxed whitespace-normal ${
                       selected === index ? 'opacity-70' : ''
                     } ${selected !== null && selected !== index ? 'opacity-50' : ''}`}
                   >

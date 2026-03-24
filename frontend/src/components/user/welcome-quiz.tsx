@@ -79,14 +79,14 @@ export default function WelcomeQuiz() {
 
         {/* Call to action button */}
         <div className="flex flex-col items-center">
-          <Link href="/signup-page" className="w-3/4">
-            <Button
-              type="button"
-              className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-18 text-base font-semibold leading-tight"
-            >
+          <Button
+            asChild
+            className="w-3/4 bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-18 text-base font-semibold leading-tight text-center"
+          >
+            <Link href="/signup-page">
               S'inscrire ou se<br />connecter pour accéder<br />à tout CyberQuiz
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* Liste des quiz (maximum 3) */}

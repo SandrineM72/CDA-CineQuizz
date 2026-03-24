@@ -280,8 +280,18 @@ export default function ProfileModify() {
 
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardHeader
-            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
+            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors px-4 outline-none"
             onClick={() => toggleSection("avatar")}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSection("avatar");
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-expanded={openSection === "avatar"}
+            aria-label="Modifier l'avatar"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -303,7 +313,7 @@ export default function ProfileModify() {
                   <button
                     type="button"
                     ref={pasteZoneRef}
-                    className="w-full p-8 border-2 border-dashed border-[#00bb0d] bg-[#565656] rounded-lg text-center cursor-pointer hover:bg-[#3a3a3a] transition-colors"
+                    className="w-full p-8 border-2 border-dashed border-[#00bb0d] bg-[#565656] rounded-lg text-center cursor-pointer hover:bg-[#3a3a3a] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors outline-none"
                     onClick={() => fileInputRef.current?.click()}
                     aria-label="Sélectionner ou coller une image"
                   >
@@ -318,9 +328,9 @@ export default function ProfileModify() {
                       />
                     ) : (
                       <div className="text-white">
-                        <Upload className="w-8 h-8 mx-auto mb-2 text-[#00bb0d]" />
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-[#1BEA3A]" />
                         <p className="text-sm">Cliquer pour uploader une image</p>
-                        <p className="text-xs text-[#00bb0d]">Ctrl+V pour coller une image<br />depuis le presse-papier</p>
+                        <p className="text-xs text-[#1BEA3A]">Ctrl+V pour coller une image<br />depuis le presse-papier</p>
                       </div>
                     )}
                   </button>
@@ -340,7 +350,7 @@ export default function ProfileModify() {
                   <Button
                     type="submit"
                     disabled={avatarLoading}
-                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"
+                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-12 text-base font-semibold"
                   >
                     {avatarLoading ? "Validation..." : "Valider le nouvel avatar"}
                   </Button>
@@ -352,8 +362,18 @@ export default function ProfileModify() {
 
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardHeader
-            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
+            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors px-4 outline-none"
             onClick={() => toggleSection("pseudo")}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSection("pseudo");
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-expanded={openSection === "pseudo"}
+            aria-label="Modifier le pseudo"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -394,7 +414,7 @@ export default function ProfileModify() {
                   <Button
                     type="submit"
                     disabled={pseudoLoading}
-                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"
+                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-12 text-base font-semibold"
                   >
                     {pseudoLoading ? "Validation..." : "Valider le nouveau pseudo"}
                   </Button>
@@ -406,8 +426,18 @@ export default function ProfileModify() {
 
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardHeader
-            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
+            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors px-4 outline-none"
             onClick={() => toggleSection("email")}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSection("email");
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-expanded={openSection === "email"}
+            aria-label="Modifier l'email"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -459,7 +489,8 @@ export default function ProfileModify() {
                       <button
                         type="button"
                         onClick={() => setShowEmailPassword(!showEmailPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
+                        aria-label={showEmailPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                       >
                         {showEmailPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -473,7 +504,7 @@ export default function ProfileModify() {
                   <Button
                     type="submit"
                     disabled={emailLoading}
-                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"
+                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-12 text-base font-semibold"
                   >
                     {emailLoading ? "Validation..." : "Valider l'email"}
                   </Button>
@@ -485,8 +516,18 @@ export default function ProfileModify() {
 
         <Card className="bg-black border-2 border-[#00bb0d] rounded-none">
           <CardHeader
-            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 transition-colors px-4"
+            className="cursor-pointer hover:bg-[#00bb0d] hover:bg-opacity-10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors px-4 outline-none"
             onClick={() => toggleSection("password")}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSection("password");
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-expanded={openSection === "password"}
+            aria-label="Modifier le mot de passe"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -522,7 +563,8 @@ export default function ProfileModify() {
                       <button
                         type="button"
                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
+                        aria-label={showCurrentPassword ? "Masquer le mot de passe actuel" : "Afficher le mot de passe actuel"}
                       >
                         {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -545,7 +587,8 @@ export default function ProfileModify() {
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
+                        aria-label={showNewPassword ? "Masquer le nouveau mot de passe" : "Afficher le nouveau mot de passe"}
                       >
                         {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -568,7 +611,8 @@ export default function ProfileModify() {
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a5a5a5] hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black outline-none"
+                        aria-label={showConfirmPassword ? "Masquer la confirmation du mot de passe" : "Afficher la confirmation du mot de passe"}
                       >
                         {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
@@ -584,7 +628,7 @@ export default function ProfileModify() {
                   <Button
                     type="submit"
                     disabled={passwordLoading}
-                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold"
+                    className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-12 text-base font-semibold"
                   >
                     {passwordLoading ? "Validation..." : "Valider le mot de passe"}
                   </Button>

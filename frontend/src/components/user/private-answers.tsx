@@ -150,7 +150,7 @@ export default function PrivateAnswers() {
               <Button
                 onClick={handleNextAction}
                 disabled={isProcessing}
-                className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-auto min-h-12 py-3 px-4 text-base font-semibold leading-tight"
+                className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-auto min-h-12 py-3 px-4 text-base font-semibold leading-tight"
               >
                 {isProcessing ? "Chargement..." : getButtonText()}
               </Button>

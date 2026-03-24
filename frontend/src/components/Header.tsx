@@ -40,7 +40,7 @@ export default function Header() {
 	return (
 		<header className="p-4 bg-black text-white border-b-4 border-[#00bb0d]">
 			<div className="max-w-sm mx-auto flex justify-between items-center">
-				<Link href={`${user ? "/connected-user-page" : "/"}`} className="w-max">
+				<Link href={`${user ? "/connected-user-page" : "/home-page"}`} className="w-max">
 					<h1 className={`text-2xl font-bold text-[#00bb0d] ${quantico.className}`}>CyberQuiz</h1>
 				</Link>
 
@@ -57,36 +57,55 @@ export default function Header() {
 					{!user && 
 						<DropdownMenuGroup className={quantico.className}>
 
-							<Link href="/infos/contacts">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-contacts">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/infos/contacts" 
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none" 
+									data-testid="menu-contacts"
+								>
 									Contacts
-								</DropdownMenuItem>
-							</Link>
+								</Link>
+							</DropdownMenuItem>
 
-							<Link href="/infos/about">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-about">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/infos/about" 
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none" 
+									data-testid="menu-about"
+								>
 									A propos
-								</DropdownMenuItem>
-							</Link>
+								</Link>
+							</DropdownMenuItem>
 							
-							<Link href="/infos/personal-data-policy">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-personal-data">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/infos/personal-data-policy" 
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none" 
+									data-testid="menu-personal-data"
+								>
 									Protection des données
-								</DropdownMenuItem>
-							</Link>
+								</Link>
+							</DropdownMenuItem>
 
-							<Link href="/infos/legal-notices">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-legal-notices">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/infos/legal-notices" 
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none" 
+									data-testid="menu-legal-notices"
+								>
 									Mentions légales
-								</DropdownMenuItem>
-							</Link>
+								</Link>
+							</DropdownMenuItem>
 
-							<Link href="/home-page">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" data-testid="menu-home">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/home-page" 
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none" 
+									data-testid="menu-home"
+								>
 									Retour accueil
-								</DropdownMenuItem>
-							</Link>
-
+								</Link>
+							</DropdownMenuItem>
 
 						</DropdownMenuGroup>
 					}
@@ -95,28 +114,41 @@ export default function Header() {
 						<DropdownMenuGroup className={quantico.className}> 
 							{/* Affichage conditionnel : "Jouer" si on est sur la page profil, "Profil" sinon */}
 							{isOnProfilePage ? (
-								<Link href="/choice-page">
-									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem asChild>
+									<Link 
+										href="/choice-page" 
+										className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none"
+									>
 										Jouer
-									</DropdownMenuItem>
-								</Link>
+									</Link>
+								</DropdownMenuItem>
 							) : (
-								<Link href="/profile-modify-page">
-									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+								<DropdownMenuItem asChild>
+									<Link 
+										href="/profile-modify-page" 
+										className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none"
+									>
 										Profil & scores
-									</DropdownMenuItem>
-								</Link>
+									</Link>
+								</DropdownMenuItem>
 							)}
 							
-							{
-								user.is_admin && <Link href="/admin">
-									<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+							{user.is_admin && (
+								<DropdownMenuItem asChild>
+									<Link 
+										href="/admin" 
+										className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none block outline-none"
+									>
 										Admin
-									</DropdownMenuItem>
-								</Link>
-							}
-							<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none" onClick={handleLogout}>
-							Déconnexion
+									</Link>
+								</DropdownMenuItem>
+							)}
+							
+							<DropdownMenuItem 
+								className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-highlighted:bg-[#00bb0d] data-highlighted:text-black cursor-pointer rounded-none outline-none" 
+								onClick={handleLogout}
+							>
+								Déconnexion
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 					}

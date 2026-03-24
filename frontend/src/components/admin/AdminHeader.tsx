@@ -66,14 +66,17 @@ export default function AdminHeader() {
 						align="end"
 					>
 						<div className={quantico.className}>
-							<Link href="/admin">
-								<DropdownMenuItem className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none">
+							<DropdownMenuItem asChild>
+								<Link 
+									href="/admin"
+									className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-[highlighted]:bg-[#00bb0d] data-[highlighted]:text-black cursor-pointer rounded-none block outline-none"
+								>
 									Accueil Admin
-								</DropdownMenuItem>
-							</Link>
+								</Link>
+							</DropdownMenuItem>
 
 							<DropdownMenuItem
-								className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black cursor-pointer rounded-none"
+								className="py-3 text-xl hover:bg-[#00bb0d] hover:text-black focus:bg-[#00bb0d] focus:text-black data-[highlighted]:bg-[#00bb0d] data-[highlighted]:text-black cursor-pointer rounded-none outline-none"
 								onClick={handleLogout}
 							>
 								Déconnexion

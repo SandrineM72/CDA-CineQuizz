@@ -161,7 +161,13 @@ export function SignupForm() {
 										id="terms"
 										checked={acceptedTerms}
 										onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
-										className="border-2 border-[#00bb0d] data-[state=checked]:bg-[#00bb0d] data-[state=checked]:text-black"
+										onKeyDown={(e) => {
+											if (e.key === 'Enter') {
+												e.preventDefault();
+												setAcceptedTerms(!acceptedTerms);
+											}
+										}}
+										className="border-2 border-[#00bb0d] data-[state=checked]:bg-[#00bb0d] data-[state=checked]:text-black focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
 									/>
 									<Label
 										htmlFor="terms"
@@ -182,7 +188,7 @@ export function SignupForm() {
 								<Button
 									type="submit"
 									disabled={isSubmitting}
-									className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full h-12 text-base font-semibold mt-4"
+									className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full h-12 text-base font-semibold mt-4"
 								>
 									{isSubmitting ? "Inscription..." : "S'inscrire"}
 								</Button>

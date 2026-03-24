@@ -142,7 +142,7 @@ export default function ChoiceForm() {
 												<SelectItem 
 													key={level.id} 
 													value={level.id.toString()}
-													className="text-white hover:bg-[#00bb0d] focus:bg-[#00bb0d]"
+													className="text-white hover:bg-[#0E8A16] focus:bg-[#0E8A16]"
 												>
 													{level.name}
 												</SelectItem>
@@ -173,7 +173,7 @@ export default function ChoiceForm() {
 												<SelectItem 
 													key={theme.id} 
 													value={theme.id.toString()}
-													className="text-white hover:bg-[#00bb0d] focus:bg-[#00bb0d]"
+													className="text-white hover:bg-[#0E8A16] focus:bg-[#0E8A16]"
 												>
 													{theme.name}
 												</SelectItem>
@@ -187,7 +187,7 @@ export default function ChoiceForm() {
 							<Button
 								onClick={handleJouer}
 								disabled={isLoading}
-								className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] rounded-full mt-10 h-12 text-base font-semibold"
+								className="w-full bg-[#00bb0d] text-black border-4 border-[#00bb0d] hover:bg-transparent hover:text-[#00bb0d] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-full mt-10 h-12 text-base font-semibold"
 							>
 								{isLoading ? "Chargement..." : "Jouer"}
 							</Button>

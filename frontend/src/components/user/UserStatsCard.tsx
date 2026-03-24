@@ -31,11 +31,11 @@ export default function UserStatsCard() {
 				{/* Taux de réussite */}
 				<div className="bg-[#565656] p-4">
 					<div className="flex items-center gap-3 mb-2">
-						<BarChart3 className="w-5 h-5 text-[#00bb0d]" />
+						<BarChart3 className="w-5 h-5 text-[#1BEA3A]" />
 						<h3 className="text-white font-semibold">Taux de réussite</h3>
 					</div>
 					<div className="text-center">
-						<div className="text-3xl font-bold text-[#00bb0d]">
+						<div className="text-3xl font-bold text-[#1BEA3A]">
 							{stats.totalSuccessRate.toFixed(1)}%
 						</div>
 						<p className="text-xs text-gray-300 mt-1">
@@ -47,11 +47,11 @@ export default function UserStatsCard() {
 				{/* Quiz réussis */}
 				<div className="bg-[#565656] p-4">
 					<div className="flex items-center gap-3 mb-2">
-						<Trophy className="w-5 h-5 text-[#00bb0d]" />
+						<Trophy className="w-5 h-5 text-[#1BEA3A]" />
 						<h3 className="text-white font-semibold">Quiz réussis</h3>
 					</div>
 					<div className="text-center">
-						<div className="text-3xl font-bold text-[#00bb0d]">
+						<div className="text-3xl font-bold text-[#1BEA3A]">
 							{stats.totalQuizzesPassed}
 						</div>
 					</div>
@@ -60,7 +60,7 @@ export default function UserStatsCard() {
 				{/* Progression globale */}
 				<div className="bg-[#565656] p-4">
 					<div className="flex items-center gap-3 mb-2">
-						<Target className="w-5 h-5 text-[#00bb0d]" />
+						<Target className="w-5 h-5 text-[#1BEA3A]" />
 						<h3 className="text-white font-semibold">Progression</h3>
 					</div>
 					<div className="space-y-2">
@@ -73,7 +73,7 @@ export default function UserStatsCard() {
 						{/* Barre de progression */}
 						<div className="w-full bg-gray-700 rounded-full h-3">
 							<div
-								className="bg-[#00bb0d] h-3 rounded-full transition-all duration-500"
+								className="bg-[#1BEA3A] h-3 rounded-full transition-all duration-500"
 								style={{ width: `${stats.completionRate}%` }}
 							/>
 						</div>
