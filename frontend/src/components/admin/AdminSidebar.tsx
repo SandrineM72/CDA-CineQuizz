@@ -5,26 +5,26 @@ import { useRef, createContext, useContext, ReactNode, useState, useEffect } fro
 
 // Context pour partager les refs entre sidebar et contenu
 export const AdminFocusContext = createContext<{
-	usersRef: React.RefObject<HTMLAnchorElement> | null;
-	gamesRef: React.RefObject<HTMLAnchorElement> | null;
-	statsRef: React.RefObject<HTMLAnchorElement> | null;
-}>({
-	usersRef: null,
-	gamesRef: null,
-	statsRef: null,
-});
+	usersRef: React.RefObject<HTMLAnchorElement | null>;
+	gamesRef: React.RefObject<HTMLAnchorElement | null>;
+	statsRef: React.RefObject<HTMLAnchorElement | null>;
+} | null>(null);
 
 // Hook personnalisé pour récupérer les refs depuis n'importe quel composant
 export function useAdminFocus() {
-	return useContext(AdminFocusContext);
+	const context = useContext(AdminFocusContext);
+	if (!context) {
+		throw new Error("useAdminFocus doit être utilisé dans un AdminFocusProvider");
+	}
+	return context;
 }
 
-// NOUVEAU : Provider séparé qui wrappera toute la page admin
+// Provider séparé qui wrappera toute la page admin
 export function AdminFocusProvider({ children }: { children: ReactNode }) {
 	// Refs pour chaque lien de menu
-	const usersRef = useRef<HTMLAnchorElement>(null);
-	const gamesRef = useRef<HTMLAnchorElement>(null);
-	const statsRef = useRef<HTMLAnchorElement>(null);
+	const usersRef = useRef<HTMLAnchorElement | null>(null);
+	const gamesRef = useRef<HTMLAnchorElement | null>(null);
+	const statsRef = useRef<HTMLAnchorElement | null>(null);
 
 	const contextValue = {
 		usersRef,
