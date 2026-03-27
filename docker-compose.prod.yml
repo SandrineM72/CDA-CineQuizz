@@ -27,7 +27,7 @@ services:
     env_file:
       - .env.production
     healthcheck:
-      test: ["CMD-SHELL", "curl -sS -o /dev/null http://localhost:4001/graphql || exit 1"]
+      test: ["CMD-SHELL", "curl -sS -o /dev/null http://localhost:4000/graphql || exit 1"]
       interval: 2s
       timeout: 3s
       retries: 10
@@ -37,7 +37,7 @@ services:
     container_name: ${DEPLOY_ENV:-staging}-frontend
     image: sandrinem72/cyberquiz-front:${DEPLOY_ENV:-staging}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3001/login-page || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/login-page || exit 1"]
       interval: 2s
       timeout: 3s
       retries: 10

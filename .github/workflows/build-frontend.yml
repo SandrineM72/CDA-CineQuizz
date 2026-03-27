@@ -35,5 +35,7 @@ jobs:
           context: "{{defaultContext}}:frontend"
           file: "Dockerfile.prod"
           tags: ${{ inputs.image_name }}
+          build-args: |
+            DEPLOY_ENV=${{ contains(inputs.image_name, 'staging') && 'staging' || 'production' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
