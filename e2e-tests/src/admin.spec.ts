@@ -33,6 +33,6 @@ test('admin user should be redirected to admin page after login', async ({ page 
     await page.getByRole('button', { name: "Se connecter" }).click();
 
     // Vérifier la redirection vers la page admin
-    await expect(page).toHaveURL('http://localhost:3002/admin', { timeout: 10000 });
+    await expect(page).toHaveURL('http://localhost:3000/admin', { timeout: 10000 });
     await expect(page.getByText("Bienvenue sur l'écran de l'administration CyberQuiz !")).toBeVisible();
 });
