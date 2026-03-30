@@ -1,2 +1,3 @@
+# Ignore les .env à la racine uniquement
 /.env
 /.env.*
