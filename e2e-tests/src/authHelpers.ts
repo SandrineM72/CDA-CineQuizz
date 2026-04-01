@@ -22,7 +22,7 @@ export async function loginAs(page: Page, { email, pseudo, password, is_admin }:
   }).save();
 
   const token = await createJWT(user);
-  const baseUrl = process.env.BASE_URL || "http://localhost:3001";
+  const baseUrl = process.env.BASE_URL || "http://localhost:3002";
   const cookieDomain = new URL(baseUrl).hostname;
 
   await page.context().addCookies([
