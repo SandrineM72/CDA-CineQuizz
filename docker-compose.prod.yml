@@ -33,14 +33,14 @@ services:
       retries: 10
 
   
-  frontend:
-    container_name: ${DEPLOY_ENV:-staging}-frontend
-    image: sandrinem72/cyberquiz-front:${DEPLOY_ENV:-staging}
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/login-page || exit 1"]
-      interval: 2s
-      timeout: 3s
-      retries: 10
+frontend:
+  container_name: ${DEPLOY_ENV:-staging}-frontend
+  image: sandrinem72/cyberquiz-front:${DEPLOY_ENV:-staging}
+  healthcheck:
+    test: ["CMD-SHELL", "pgrep -f 'next start' || exit 1"]
+    interval: 2s
+    timeout: 3s
+    retries: 10
 
   gateway:
     container_name: ${DEPLOY_ENV:-staging}-gateway
