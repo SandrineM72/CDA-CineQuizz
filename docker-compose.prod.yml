@@ -31,7 +31,6 @@ services:
       interval: 2s
       timeout: 3s
       retries: 10
-
   
   frontend:
     container_name: ${DEPLOY_ENV:-staging}-frontend
