@@ -61,7 +61,7 @@ export class User extends BaseEntity {
 	attempts: Attempt[];
 
 	@Field(() => [Reward], {nullable: true})
-	@JoinTable() // déco TypeORM nécessaire d'un côté de ManyToMany - crée la jointure
+	@JoinTable() // déco TypeORM nécessaire d'un seul côté de ManyToMany "propriétaire" - crée la jointure
 	@ManyToMany(() => Reward) // déco TypeORM - relation n-n
 	won_rewards: Reward[];
 }

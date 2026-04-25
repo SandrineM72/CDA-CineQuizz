@@ -14,14 +14,12 @@ export async function createJWT(user: User): Promise<string>{
     const payload: JWTPayload = {
         userId: user.id                
     };
-    console.log("payload dans createJWT() : ", payload);
     
     return jwt.sign(payload, env.JWT_SECRET, {expiresIn: "7d"});
 }
 
 export async function startSession(context: GraphQLContext, user: User){
     const token = await createJWT(user);
-    console.log("token renvoyé par la fn createJWT : ", token);
 
     // Cast en 'any' pour contourner le problème de typage
     (context.res as any).cookie(cookieName, token, {
@@ -53,11 +51,9 @@ export async function getJWT(context: GraphQLContext): Promise<JWTPayload | null
 
 export async function getCurrentUser(context: GraphQLContext): Promise<User> {
     const jwt = await getJWT(context);
-    console.log("infos du jwt récupéré via getJWT() : ", jwt);
     if (jwt === null) throw new UnauthenticatedError();
     const currentUser = await User.findOne({where: {id: jwt.userId}});
     if (currentUser === null) throw new UnauthenticatedError();
-    console.log("current user renvoyé depuis getCurrentUser() : ", currentUser);
     return currentUser;    
 }
 

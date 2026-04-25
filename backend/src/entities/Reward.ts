@@ -25,7 +25,7 @@ export class Reward extends BaseEntity {
 	image: string;
 
 	@Field(() => [User])
-	@JoinTable()
+	// @JoinTable() -> pas de déco TypeORM de ce côté, uniquement dans User.ts
 	@ManyToMany(() => User)
 	users: User[];
 }
