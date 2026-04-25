@@ -19,7 +19,7 @@ const PersonalDataPolicy = () => {
 
                                 <h2 className="text-xl bg-[#565656] p-3 my-5 mx-0">Cookies</h2>
                                 <p className="px-4 text-white">
-                                    Cookies techniques uniquement, utilisés pour la navigation et la démonstration. Vous pouvez les refuser via votre navigateur.
+                                    Cookies techniques uniquement, utilisés pour la navigation et la démonstration. Vous pouvez les refuser via votre navigateur. (Mettre en place cookies !) 
                                 </p>
 
                                 <h2 className="text-xl bg-[#565656] p-3 my-5 mx-0">Liens hypertextes</h2>
